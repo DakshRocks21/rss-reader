@@ -2,7 +2,6 @@
 import { NextResponse } from "next/server";
 
 export async function middleware(request) {
-  console.log("Cookies:", request.cookies.getAll());
   const isAuthenticated = request.cookies.get("firebaseToken");
   
   const pathname = request.nextUrl.pathname;

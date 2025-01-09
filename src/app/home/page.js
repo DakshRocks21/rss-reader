@@ -102,7 +102,7 @@ export default function HomePage() {
           window.location.href = "/login";
         }}
       />
-      {/* <AddFeed onAddFeed={addFeed} error={error} /> */}
+      <AddFeed onAddFeed={addFeed} error={error} />
       <div className="bg-white p-6 rounded-lg shadow-md mb-6 border border-gray-200">
         <h2 className="text-lg font-semibold text-gray-800 mb-4">Add a New Feed</h2>
         <h3>This page has moved.</h3>
