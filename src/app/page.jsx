@@ -12,7 +12,7 @@ export default function LandingPage() {
           Welcome to FeedApp
         </h1>
         <p className="text-lg md:text-2xl text-gray-600 text-center mb-8">
-          Stay updated with the latest content from your favorite sources.
+          Stay updated with the latest content from your favourite sources.
         </p>
         <Link
           href="/login"
