@@ -63,7 +63,7 @@ export default function AddFeed({ onAddFeed, error }) {
           onClick={handleAddFeed}
           disabled={!feedUrl.trim() || !feedCategory.trim() || isLoading}
           className={`px-4 py-2 rounded-md font-semibold text-white ${
-            isLoading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+            isLoading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600 cursor-pointer"
           } transition-all`}
         >
           {isLoading ? "Adding..." : "Add Feed"}

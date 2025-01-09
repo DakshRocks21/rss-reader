@@ -102,7 +102,21 @@ export default function HomePage() {
           window.location.href = "/login";
         }}
       />
-      <AddFeed onAddFeed={addFeed} error={error} />
+      {/* <AddFeed onAddFeed={addFeed} error={error} /> */}
+      <div className="bg-white p-6 rounded-lg shadow-md mb-6 border border-gray-200">
+        <h2 className="text-lg font-semibold text-gray-800 mb-4">Add a New Feed</h2>
+        <h3>This page has moved.</h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="mt-4 flex items-center">
+              <a href="/interests">
+                <button
+                  className={`px-4 py-2 rounded-md font-semibold text-white bg-blue-500 hover:bg-blue-600 cursor-pointer transition-all`}>
+                  Configure Interests →
+                </button>
+              </a>
+            </div>
+          </div>
+      </div>
       <FeedFilters
         filter={filter}
         filterCategory={filterCategory}
