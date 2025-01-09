@@ -22,7 +22,10 @@ export default function Signup() {
     const result = await SignUpWithEmailPass(email, password, username); // Pass username
 
     if (result.success) {
-      router.push("/home");
+      console.log("User created successfully, redirecting to home page");
+      setTimeout(() => {
+        window.location.href = "/home";
+      }, 700); // Small delay to ensure cookies are set
     } else {
       setError(result.error);
     }
@@ -32,7 +35,9 @@ export default function Signup() {
   const handleGoogleSignIn = async () => {
     const result = await SignInWithGoogle();
     if (result.success) {
-      router.push("/");
+      setTimeout(() => {
+        window.location.href = "/home";
+      }, 700); // Small delay to ensure cookies are set
     } else {
       setError(result.error);
     }

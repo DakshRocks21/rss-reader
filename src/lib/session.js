@@ -36,7 +36,12 @@ export async function getUserInfoFromFirebaseAuth() {
     const user = await FIREBASE_AUTH.getUser(decodedToken.uid);
 
     
-    if (!decodedToken?.uid) return null;
+    if (!user) {
+        console.error("Invalid token.");
+        deleteCookie("firebaseToken");
+        redirect("/login");
+        return null;
+    }
 
     return { decodedToken };
   } catch (error) {

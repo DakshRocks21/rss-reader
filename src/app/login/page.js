@@ -1,7 +1,7 @@
 // This file is written by Daksh
 "use client";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import {
   LoginWithEmailPass,
   SignInWithGoogle,
@@ -20,7 +20,10 @@ export default function Login() {
     const result = await LoginWithEmailPass(email, password);
 
     if (result.success) {
-      router.push("/home");
+      console.log("User created successfully, redirecting to home page");
+      setTimeout(() => {
+        window.location.href = "/home";
+      }, 700); // Small delay to ensure cookies are set
     } else {
       setError(result.error);
     }
@@ -30,7 +33,10 @@ export default function Login() {
   const handleGoogleSignIn = async () => {
     const result = await SignInWithGoogle();
     if (result.success) {
-      router.push("/");
+      console.log("User created successfully, redirecting to home page");
+      setTimeout(() => {
+        window.location.href = "/home";
+      }, 700); // Small delay to ensure cookies are set
     } else {
       setError(result.error);
     }

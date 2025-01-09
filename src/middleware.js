@@ -2,7 +2,7 @@
 import { NextResponse } from "next/server";
 
 export async function middleware(request) {
-  // this allows me to do a quick check to see if the user is authenticated or not, instant redirect if not :D
+  console.log("Cookies:", request.cookies.getAll());
   const isAuthenticated = request.cookies.get("firebaseToken");
   
   const pathname = request.nextUrl.pathname;
@@ -11,10 +11,12 @@ export async function middleware(request) {
     pathname.startsWith(path)
   );
 
-  const isProtectedPage = pathname.startsWith("/home");
+  const isProtectedPage = ["/home", "/interests"].some((path) =>
+    pathname.startsWith(path)
+  );
 
   if (isAuthenticated) {
-    if (isAuthPage) {
+    if (isAuthPage || pathname === "/") {
       return NextResponse.redirect(new URL("/home", request.url));
     }
 
