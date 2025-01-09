@@ -1,4 +1,5 @@
 // Daksh wrote this
+"use client"
 import React, { useState } from "react";
 
 export default function AddFeed({ onAddFeed, error }) {

@@ -20,7 +20,7 @@ export default function Login() {
     const result = await LoginWithEmailPass(email, password);
 
     if (result.success) {
-      router.push("/");
+      router.push("/home");
     } else {
       setError(result.error);
     }

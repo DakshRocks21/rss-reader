@@ -1,19 +1,15 @@
 // This file is written by Daksh
 import admin, { credential } from "firebase-admin";
 
-if (!admin.apps.length) {
-  const serviceAccount = credential.cert(process.env.FIREBASE_ADMIN_SDK);
+const firebaseAdminSdk = JSON.parse(
+  Buffer.from(process.env.FIREBASE_ADMIN_SDK, 'base64').toString('utf8')
+);
 
-  if (serviceAccount) {
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
-    });
-  } else {
-    console.error("Firebase Admin SDK credentials are missing.");
-    throw new Error(
-      "Firebase Admin initialization failed: Missing credentials."
-    );
-  }
+
+if (admin.apps.length === 0) {
+  admin.initializeApp({
+    credential: admin.credential.cert(firebaseAdminSdk)
+  });
 }
 
 const FIREBASE_FIRESTORE = admin.firestore();

@@ -22,7 +22,7 @@ export default function Signup() {
     const result = await SignUpWithEmailPass(email, password, username); // Pass username
 
     if (result.success) {
-      router.push("/");
+      router.push("/home");
     } else {
       setError(result.error);
     }

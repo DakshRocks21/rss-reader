@@ -1,4 +1,6 @@
 // Daksh wrote this but seriously, change it to something more meaningful.
+"use client"
+
 import React from "react";
 
 export default function Header({ user, onSignOut }) {

@@ -1,11 +1,15 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import Header from "@/components/Header";
 import FeedFilters from "@/components/Feeds/FeedFilters";
 import FeedList from "@/components/Feeds/FeedList";
 import AddFeed from "@/components/Feeds/AddFeed";
 import { logoutSession, getUserInfoFromFirebaseAuth } from "@/lib/session";
-import { addFeedToDatabase, getFeedsFromDatabase } from "@/lib/firebase/feed_database";
+import {
+  addFeedToDatabase,
+  getFeedsFromDatabase,
+} from "@/lib/firebase/feed_database";
 
 // Daksh wrote this
 export default function HomePage() {
@@ -40,7 +44,9 @@ export default function HomePage() {
     try {
       const data = await getFeedsFromDatabase();
       for (const feed of data) {
-        const response = await fetch(`/api/fetch-rss?feedUrl=${encodeURIComponent(feed.url)}`);
+        const response = await fetch(
+          `/api/fetch-rss?feedUrl=${encodeURIComponent(feed.url)}`
+        );
         if (!response.ok) throw new Error("Failed to fetch RSS feed");
         feed.data = await response.json();
       }
@@ -53,11 +59,16 @@ export default function HomePage() {
   const addFeed = async (feedUrl, feedCategory) => {
     setError("");
     try {
-      const response = await fetch(`/api/fetch-rss?feedUrl=${encodeURIComponent(feedUrl)}`);
+      const response = await fetch(
+        `/api/fetch-rss?feedUrl=${encodeURIComponent(feedUrl)}`
+      );
       if (!response.ok) throw new Error("Failed to fetch RSS feed");
       await addFeedToDatabase(feedUrl, feedCategory);
       const data = await response.json();
-      setFeeds((prev) => [...prev, { url: feedUrl, category: feedCategory, data }]);
+      setFeeds((prev) => [
+        ...prev,
+        { url: feedUrl, category: feedCategory, data },
+      ]);
     } catch (err) {
       setError(err.message);
     }
@@ -84,7 +95,13 @@ export default function HomePage() {
 
   return (
     <div className="p-6 bg-gradient-to-b from-gray-100 to-gray-300 min-h-screen">
-      <Header user={user} onSignOut={async () => await logoutSession()} />
+      <Header
+        user={user}
+        onSignOut={async () => {
+          await logoutSession();
+          window.location.href = "/login";
+        }}
+      />
       <AddFeed onAddFeed={addFeed} error={error} />
       <FeedFilters
         filter={filter}
