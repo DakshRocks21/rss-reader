@@ -14,7 +14,7 @@ export async function middleware(request) {
   const isProtectedPage = pathname.startsWith("/home");
 
   if (isAuthenticated) {
-    if (isAuthPage || pathname === "/") {
+    if (isAuthPage) {
       return NextResponse.redirect(new URL("/home", request.url));
     }
 

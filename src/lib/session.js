@@ -12,7 +12,13 @@ export async function getCurrentUserID() {
         if (!idToken) return null;
 
         const decodedToken = await FIREBASE_AUTH.verifySessionCookie(idToken);
-        if (!decodedToken?.uid) return null;
+        if (!decodedToken?.uid) {
+            console.error("Invalid token.");
+            deleteCookie("firebaseToken");  
+            redirect("/login");
+            return null;
+        }
+
 
         return decodedToken.uid;
     } catch (error) {
