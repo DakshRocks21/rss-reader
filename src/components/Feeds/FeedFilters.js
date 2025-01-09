@@ -1,4 +1,5 @@
 // Daksh wrote this
+"use client"
 import React from "react";
 
 export default function FeedFilters({

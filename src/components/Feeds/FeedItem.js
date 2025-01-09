@@ -1,4 +1,5 @@
 // Daksh wrote this
+"use client"
 import React from "react";
 import ReactMarkdown from "react-markdown";
 
