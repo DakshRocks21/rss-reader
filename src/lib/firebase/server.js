@@ -1,13 +1,12 @@
+// This file is written by Daksh
 import admin, { credential } from "firebase-admin";
 
-// Ensure Firebase Admin is initialized only once
 if (!admin.apps.length) {
   const serviceAccount = credential.cert(process.env.FIREBASE_ADMIN_SDK);
 
   if (serviceAccount) {
     admin.initializeApp({
       credential: admin.credential.cert(serviceAccount),
-      storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET, // Add your storage bucket
     });
   } else {
     console.error("Firebase Admin SDK credentials are missing.");

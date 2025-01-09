@@ -1,30 +1,44 @@
-
+// This file is written by Daksh
 "use server";
 
 import { redirect } from "next/navigation";
 
 import { cookies } from "next/headers";
-import { FIREBASE_AUTH, FIREBASE_FIRESTORE } from "@/lib/firebase/server";
+import { FIREBASE_AUTH } from "@/lib/firebase/server";
 
-export async function getUserData() {
+export async function getCurrentUserID() {
+    try {
+        const idToken = await getCookie("firebaseToken");
+        if (!idToken) return null;
+
+        const decodedToken = await FIREBASE_AUTH.verifySessionCookie(idToken);
+        if (!decodedToken?.uid) return null;
+
+        return decodedToken.uid;
+    } catch (error) {
+        console.error("Error fetching user data:", error.message);
+        return null;
+    }
+}
+
+export async function getUserInfoFromFirebaseAuth() {
   try {
     const idToken = await getCookie("firebaseToken")
     if (!idToken) return null;
 
     const decodedToken = await FIREBASE_AUTH.verifySessionCookie(idToken);
+    const user = await FIREBASE_AUTH.getUser(decodedToken.uid);
+
+    
     if (!decodedToken?.uid) return null;
 
-    const userSnapshot = await FIREBASE_FIRESTORE.collection("users").doc(decodedToken.uid).get();
-    if (!userSnapshot.exists) return null;
-
-    const data = userSnapshot.data();
-    const serializedData = Object.fromEntries(
-      Object.entries(data).map(([key, value]) => [key, value?.toDate?.()?.toISOString() || value])
-    );
-
-    return { id: userSnapshot.id, ...serializedData };
+    return { decodedToken };
   } catch (error) {
+    console.log(error)
     console.error("Error fetching user data:", error.message);
+    if (error.code === "auth/id-token-expired") {
+      await logoutSession();
+    }
     return null;
   }
 }
@@ -36,7 +50,7 @@ export async function createSession(idToken) {
         const decodedToken = await FIREBASE_AUTH.verifyIdToken(idToken);
         if (!decodedToken) return { success: false, error: "Invalid token." };
 
-        const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
+        const expiresIn = 60 * 60 * 24 * 5 * 1000; 
         const sessionCookie = await FIREBASE_AUTH.createSessionCookie(idToken, { expiresIn });
 
         await setCookie("firebaseToken", sessionCookie, { maxAge: expiresIn / 1000 });
@@ -80,14 +94,9 @@ export async function logoutSession() {
         const sessionCookie = cookieStore.get("firebaseToken")?.value;
 
         if (sessionCookie) {
-            // Revoke all Firebase sessions
             await revokeAllSessions(sessionCookie);
-
-            // Clear the cookie by setting it to an empty value and past date
             cookieStore.delete("firebaseToken")
-
-            // Redirect the user
-            redirect("/"); // Redirect to login or home page
+            redirect("/"); 
         }
     } catch (error) {
         console.error("Error during logout:", error.message);

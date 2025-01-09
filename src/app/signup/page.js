@@ -1,107 +1,114 @@
+// Daksh wrote this
 "use client";
-import { FIREBASE_AUTH_CLIENT } from "@/lib/firebase/client";
-import { createUserWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { createSession } from "@/lib/session";
+
+import {
+  SignUpWithEmailPass,
+  SignInWithGoogle,
+} from "@/lib/firebase/auth_database";
 
 export default function Signup() {
-    const router = useRouter();
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
-    const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState(""); // Added username state
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-    const handleSignup = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        try {
-            const userCredential = await createUserWithEmailAndPassword(
-                FIREBASE_AUTH_CLIENT,
-                email,
-                password
-            );
-            const Idtoken = await userCredential.user.getIdToken();
-            await createSession(Idtoken);
-            router.push("/");
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+  const handleSignup = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const result = await SignUpWithEmailPass(email, password, username); // Pass username
 
-    const handleGoogleSignIn = async () => {
-        const provider = new GoogleAuthProvider();
-        setLoading(true);
-        try {
-            const result = await signInWithPopup(FIREBASE_AUTH_CLIENT, provider);
-            const Idtoken = await result.user.getIdToken();
-            await createSession(Idtoken);
-            router.push("/");
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+    if (result.success) {
+      router.push("/");
+    } else {
+      setError(result.error);
+    }
+    setLoading(false);
+  };
 
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-500 to-blue-600">
-            <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
-                <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">
-                    Create an Account
-                </h2>
-                <form onSubmit={handleSignup} className="space-y-4">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-600">Email</label>
-                        <input
-                            type="email"
-                            placeholder="Enter your email"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full px-4 py-2 text-gray-700 border rounded-lg"
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label className="block text-sm font-medium text-gray-600">Password</label>
-                        <input
-                            type="password"
-                            placeholder="Enter your password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full px-4 py-2 text-gray-700 border rounded-lg"
-                            required
-                        />
-                    </div>
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className={`w-full px-4 py-2 text-white font-semibold rounded-lg ${
-                            loading ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"
-                        }`}
-                    >
-                        {loading ? "Loading..." : "Sign Up"}
-                    </button>
-                </form>
-                <button
-                    onClick={handleGoogleSignIn}
-                    className="w-full mt-4 px-4 py-2 text-white font-semibold bg-red-500 hover:bg-red-600 rounded-lg"
-                >
-                    Sign up with Google
-                </button>
-                <p className="mt-4 text-center text-sm text-gray-600">
-                    Already have an account?{" "}
-                    <a
-                        href="/login"
-                        className="text-blue-500 hover:underline"
-                    >
-                        Login
-                    </a>
-                </p>
-                {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
-            </div>
-        </div>
-    );
+  const handleGoogleSignIn = async () => {
+    const result = await SignInWithGoogle();
+    if (result.success) {
+      router.push("/");
+    } else {
+      setError(result.error);
+    }
+    setLoading(false);
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-green-500 to-blue-600">
+      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
+        <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">
+          Create an Account
+        </h2>
+        <form onSubmit={handleSignup} className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-600">
+              Username
+            </label>
+            <input
+              type="text"
+              placeholder="Enter your username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)} // Update username state
+              className="w-full px-4 py-2 text-gray-700 border rounded-lg"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-600">
+              Email
+            </label>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full px-4 py-2 text-gray-700 border rounded-lg"
+              required
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-600">
+              Password
+            </label>
+            <input
+              type="password"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full px-4 py-2 text-gray-700 border rounded-lg"
+              required
+            />
+          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className={`w-full px-4 py-2 text-white font-semibold rounded-lg ${
+              loading ? "bg-gray-400" : "bg-green-500 hover:bg-green-600"
+            }`}
+          >
+            {loading ? "Loading..." : "Sign Up"}
+          </button>
+        </form>
+        <button
+          onClick={handleGoogleSignIn}
+          className="w-full mt-4 px-4 py-2 text-white font-semibold bg-red-500 hover:bg-red-600 rounded-lg"
+        >
+          Sign up with Google
+        </button>
+        <p className="mt-4 text-center text-sm text-gray-600">
+          Already have an account?{" "}
+          <a href="/login" className="text-blue-500 hover:underline">
+            Login
+          </a>
+        </p>
+        {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
+      </div>
+    </div>
+  );
 }

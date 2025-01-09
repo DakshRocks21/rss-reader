@@ -1,3 +1,4 @@
+// This file is written by Daksh
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
