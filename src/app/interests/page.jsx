@@ -2,6 +2,12 @@
 
 "use client";
 
+import { useState, useEffect } from "react";
+import { getUserInfoFromFirebaseAuth } from "@/lib/session";
+import AddFeed from "@/components/Unused_Feeds/AddFeed";
+import Header from "@/components/Header";
+import styles from "./page.module.css";
+
 export default function Interests() {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
