@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { FaSearch, FaUserCircle, FaSignOutAlt, FaCog } from "react-icons/fa";
 import Image from "next/image";
+import { logoutSession } from "@/lib/session";
 
 export default function Header({ user, keywordSearched, setKeywordSearched }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
