@@ -41,6 +41,7 @@ export default function Interests() {
         }}
       />
       <AddFeed />
+      <SubscribedInterests />
       <RenderInterestSelection />
     </div>
   )
@@ -48,18 +49,31 @@ export default function Interests() {
 
 function RenderInterestSelection() {
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md mb-6 border border-gray-200">
+    <>
       <h2 className="text-lg font-semibold text-gray-800 mb-4">Interests</h2>
-      <div className={styles.container}>
-        <div>
+      <div className="bg-white p-6 rounded-lg shadow-md mb-6 border border-gray-200 w-fit">
+        <div className={styles.container}>
+          <img src="images/TomsHardware.png" alt="Tom's Hardware" className={styles.image}/>
+          <div className={styles.centrediv}>
+            <h3 className={styles.interestname}>Tom's Hardware</h3>
+            <p className={styles.description}>An online publication focused on computer hardware and technology.</p>
+            <p>https://www.tomshardware.com/rss.xml</p>
+          </div>
+          <div className={styles.centrediv}>
+            <input type="checkbox" id="tomshardwarecheckbox" className={styles.checkbox}></input>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
 
-        </div>
-        <div>
-          <h3>Tom's Hardware</h3>
-        </div>
-        <div>
-          <input type="checkbox" id="tomshardwarecheckbox"></input>
-        </div>
+function SubscribedInterests() {
+  return (
+    <div className="bg-white p-6 rounded-lg shadow-md mb-6 border border-gray-200">
+      <h2 className="text-lg font-semibold text-gray-800 mb-4">Subscribed Interests</h2>
+      <div className={styles.container}>
+        
       </div>
     </div>
   )
