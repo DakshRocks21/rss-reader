@@ -6,7 +6,7 @@ import Link from "next/link";
 
 export default function LandingPage() {
   return (
-    <div className="bg-gradient-to-b from-gray-100 to-gray-300 min-h-screen flex flex-col">
+    <div className="bg-gradient-to-b from-gray-100 to-gray-300 min-h-screen flex flex-col w-">
       <Navbar />
       <div className="flex-grow flex flex-col items-center justify-center p-6">
         <h1 className="text-4xl md:text-6xl font-bold text-gray-800 text-center mb-4">
