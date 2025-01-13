@@ -10,7 +10,7 @@ export async function middleware(request) {
     pathname.startsWith(path)
   );
 
-  const isProtectedPage = ["/home", "/interests"].some((path) =>
+  const isProtectedPage = ["/home", "/interests", "/settings"].some((path) =>
     pathname.startsWith(path)
   );
 
