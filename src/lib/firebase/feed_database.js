@@ -1,4 +1,3 @@
-// Daksh wrote this
 import {
   collection,
   doc,
@@ -9,7 +8,7 @@ import {
 import { FIREBASE_FIRESTORE_CLIENT } from "./client";
 import { getCurrentUserID } from "../session";
 
-export const addFeedToDatabase = async (feedUrl, category) => {
+export const addFeedToDatabase = async (feedUrl, categories) => {
   const userId = await getCurrentUserID();
 
   const dataPath = doc(
@@ -19,15 +18,19 @@ export const addFeedToDatabase = async (feedUrl, category) => {
 
   const userDoc = await getDoc(dataPath);
 
-  category = category || "Uncategorized";
+  categories = categories || ["Uncategorized"];
 
   if (!userDoc.exists()) {
     await setDoc(dataPath, {
-      feeds: [{ url: feedUrl, category }],
+      feeds: [{ url: feedUrl, categories: [categories] }],
     });
   } else {
     const feeds = userDoc.data().feeds || [];
-    feeds.push({ url: feedUrl, category });
+    if (feeds.some((feed) => feed.url.toLowerCase() === feedUrl.toLowerCase())) {
+      throw new Error("Feed already exists.");
+    }
+
+    feeds.push({ url: feedUrl, categories: [categories] });
     await setDoc(dataPath, { feeds });
   }
 };

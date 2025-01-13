@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import Parser from "rss-parser";
-import { format, isValid } from "date-fns";
 
 const parser = new Parser({
   customFields: {
@@ -54,11 +53,6 @@ export async function GET(request) {
           extractImageFromContent(item["content:encoded"]); 
       }
 
-
-      const date = new Date(item.pubDate);
-      item.pubDate = isValid(date)
-        ? format(date, "yyyy-MM-dd'T'HH:mm:ssXXX")
-        : "Invalid Date";
 
       return item;
     });
