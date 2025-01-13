@@ -1,11 +1,6 @@
 // Chin Ray wrote this
-"use client"
 
-import { useState, useEffect } from "react";
-import Header from "@/components/Header";
-import AddFeed from "@/components/Feeds/AddFeed";
-import { logoutSession, getUserInfoFromFirebaseAuth } from "@/lib/session";
-import styles from "./page.module.css";
+"use client";
 
 export default function Interests() {
   const [user, setUser] = useState(null);

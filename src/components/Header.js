@@ -1,19 +1,74 @@
-// Daksh wrote this but seriously, change it to something more meaningful.
-"use client"
+// Daksh wrote this
+// Used in /home
+import { useState } from "react";
+import { FaSearch, FaUserCircle, FaSignOutAlt, FaCog } from "react-icons/fa";
+import Image from "next/image";
 
-import React from "react";
+export default function Header({ user, keywordSearched, setKeywordSearched }) {
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
-export default function Header({ user, onSignOut }) {
+  const toggleDropdown = () => setDropdownOpen((prev) => !prev);
+
+  const handleSignOut = async () => {
+    await logoutSession();
+    window.location.href = "/login";
+  };
+
+  const goToSettings = () => {
+    window.location.href = "/settings";
+  };
+
   return (
-    <header className="flex items-center justify-between mb-8">
-      <h2>Welcome Back, {user.name}</h2>
-      <h1 className="text-3xl font-bold text-gray-800">RSS News Reader</h1>
-      <button
-        onClick={() => onSignOut()}
-        className="bg-red-500 text-white px-4 py-2 rounded-md hover:bg-red-600 transition-colors"
-      >
-        Sign Out
-      </button>
-    </header>
+    <div className="bg-white shadow-md p-4 flex items-center justify-between">
+      <h1 className="text-xl font-bold text-gray-800">
+        <a href="/">RSS Feeds</a>
+      </h1>
+
+      <div className="relative flex items-center w-full max-w-md text-black">
+        <FaSearch className="absolute left-3 text-gray-500" />
+        <input
+          type="text"
+          placeholder="Search articles..."
+          value={keywordSearched}
+          onChange={(e) => setKeywordSearched(e.target.value)}
+          className="pl-10 p-2 w-full border rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        />
+      </div>
+
+      <div className="relative">
+        <div className="cursor-pointer" onClick={toggleDropdown}>
+          {user && user.picture ? (
+            <Image
+              src={user.picture}
+              alt="Profile Picture"
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
+          ) : (
+            <FaUserCircle className="text-2xl text-gray-700" />
+          )}
+        </div>
+
+        {dropdownOpen && (
+          <div className="absolute right-0 mt-2 w-40 bg-white border rounded-md shadow-lg z-10">
+            <button
+              onClick={goToSettings}
+              className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center"
+            >
+              <FaCog className="mr-2 text-gray-600" />
+              Settings
+            </button>
+            <button
+              onClick={handleSignOut}
+              className="w-full text-left px-4 py-2 text-red-600 hover:bg-red-100 flex items-center"
+            >
+              <FaSignOutAlt className="mr-2 text-red-600" />
+              Sign Out
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
