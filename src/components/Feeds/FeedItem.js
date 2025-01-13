@@ -1,20 +1,21 @@
-// Daksh wrote this
-"use client"
+"use client";
 import React from "react";
 import ReactMarkdown from "react-markdown";
 
-export default function FeedItem({ item, category }) {
+export default function FeedItem({ item, categories }) {
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow border border-gray-200 relative">
+    <div className="p-6 bg-gradient-to-b from-white to-gray-50 rounded-lg shadow-lg hover:shadow-xl transition-shadow border border-gray-300 relative transform hover:scale-105 duration-200">
       {item.image ? (
         <img
           src={item.image}
           alt={item.title}
-          className="w-full h-40 object-cover rounded-t-md mb-4"
+          className="w-full h-40 object-cover rounded-lg mb-4"
         />
       ) : (
-        <div className="w-full h-40 bg-gray-200 flex items-center justify-center rounded-t-md mb-4">
-          <span className="text-gray-500 text-sm">No Image Available</span>
+        <div className="w-full h-40 bg-gradient-to-b from-gray-200 to-gray-300 flex items-center justify-center rounded-lg mb-4">
+          <span className="text-gray-600 text-sm font-medium">
+            No Image Available
+          </span>
         </div>
       )}
 
@@ -22,12 +23,12 @@ export default function FeedItem({ item, category }) {
         href={item.link}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-lg font-semibold text-blue-600 hover:underline block mb-2"
+        className="text-xl font-semibold text-blue-600 hover:text-blue-800 hover:underline block mb-2"
       >
         {item.title}
       </a>
 
-      <div className="text-gray-700 text-sm leading-relaxed line-clamp-4">
+      <div className="text-gray-600 text-sm leading-relaxed line-clamp-4">
         {item.content ? (
           <div dangerouslySetInnerHTML={{ __html: item.content }} />
         ) : (
@@ -35,14 +36,22 @@ export default function FeedItem({ item, category }) {
         )}
       </div>
 
-      <span className="text-gray-500 text-xs block mt-2">
+      <span className="text-gray-500 text-xs block mt-3">
         {new Date(item.pubDate).toLocaleString()}
       </span>
-      
 
-      <span className="absolute top-2 right-2 bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-full">
-        {category || "Uncategorized"}
-      </span>
+      {categories && (
+        <div className="absolute top-2 right-2 flex flex-wrap gap-2">
+          {categories.map((category) => (
+            <span
+              key={category+item.title}
+              className="px-2 py-1 bg-blue-100 text-blue-600 text-xs rounded-md"
+            >
+              {category}
+            </span>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

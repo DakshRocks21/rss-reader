@@ -8,9 +8,11 @@ export default function AddFeed({ onAddFeed, error }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleAddFeed = async () => {
-    if (feedUrl.trim() && feedCategory.trim()) {
+    console.log("Adding feed", feedUrl, feedCategory);
+    if (feedUrl.trim()) {
       setIsLoading(true);
-      await onAddFeed(feedUrl, feedCategory);
+      console.log("here")
+      await onAddFeed(feedUrl, feedCategory.trim() || "Uncategorized");
       setIsLoading(false);
       setFeedUrl("");
       setFeedCategory("");
@@ -61,7 +63,7 @@ export default function AddFeed({ onAddFeed, error }) {
       <div className="mt-4 flex items-center">
         <button
           onClick={handleAddFeed}
-          disabled={!feedUrl.trim() || !feedCategory.trim() || isLoading}
+          disabled={!feedUrl.trim() || isLoading}
           className={`px-4 py-2 rounded-md font-semibold text-white ${
             isLoading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600 cursor-pointer"
           } transition-all`}
