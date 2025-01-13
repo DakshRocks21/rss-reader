@@ -1,4 +1,5 @@
 // Chin Ray wrote this
+
 "use client";
 
 export default function Interests() {
