@@ -15,6 +15,16 @@
     --foreground: #ededed;
   }
 }
+body.light {
+  --background: #ffffff;  /* Background for light theme */
+  --foreground: #171717;   /* Text color for light theme */
+}
+
+/* Dark theme when 'dark' class is added to <body> */
+body.dark {
+  --background: #121212;  /* Background for dark theme */
+  --foreground: #ffffff;  /* Text color for dark theme */
+}
 
 body {
   color: var(--foreground);
