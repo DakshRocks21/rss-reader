@@ -1,5 +1,5 @@
 /* No one wrote this */
-
+/* Puru wrote body.light and body.dark*/
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,6 +14,16 @@
     --background: #0a0a0a;
     --foreground: #ededed;
   }
+}
+body.light {
+  --background: #ffffff;  
+  --foreground: #201414;   
+}
+
+
+body.dark {
+  --background: #433434;  
+  --foreground: #ffffff;  
 }
 
 body {

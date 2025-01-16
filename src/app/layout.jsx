@@ -9,7 +9,6 @@ export default function RootLayout({ children }) {
     <html>
       <body>
         <AuthComp />
-
         {children}
       </body>
     </html>

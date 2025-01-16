@@ -11,6 +11,7 @@ export default function Login() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -18,7 +19,7 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     const result = await LoginWithEmailPass(email, password);
-
+    
     if (result.success) {
       console.log("User created successfully, redirecting to home page");
       setTimeout(() => {
@@ -29,6 +30,8 @@ export default function Login() {
     }
     setLoading(false);
   };
+  
+  
 
   const handleGoogleSignIn = async () => {
     const result = await SignInWithGoogle();
