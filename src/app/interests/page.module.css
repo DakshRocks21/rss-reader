@@ -28,6 +28,13 @@
     align-self: center;
 }
 
+.image-small {
+    width: 90px;
+    height: 90px;
+    border-radius: 10%;
+    align-self: center;
+}
+
 .interestname {
     font-size: 1.75rem;
     font-weight: bold;
