@@ -1,26 +1,39 @@
+// Puru Wrote this
 "use client";
 import { getUserInfoFromDatabase } from "@/lib/firebase/auth_database";
 import { useState, useEffect } from "react";
 import { getCurrentUserID } from "@/lib/session";
 import { getAuth, updateProfile } from "firebase/auth";
 import {
-    collection,
-    doc,
-    getDoc,
-    setDoc,
-  } from "firebase/firestore";
+  collection,
+  doc,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
+import { FaUserCircle } from "react-icons/fa";
+import Image from "next/image";
+
 import { FIREBASE_FIRESTORE_CLIENT } from "@/lib/firebase/client";
+import { setTheme } from "@/components/DarkConfig";
 
 export default function App() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
   const [username, setUsername] = useState("");
   const [message, setMessage] = useState("");
-
+  
   const toggleTheme = () => {
-    setIsDarkMode((dark) => !dark);
+    setIsDarkMode((dark) => {
+      const newTheme = !dark;
+      const theme = newTheme ? "dark" : "light";
+      document.body.classList.toggle("dark", newTheme);
+      document.body.classList.toggle("light", !newTheme);
+      localStorage.setItem("theme", theme);
+      return newTheme;
+    });
   };
+  setTheme();
 
   const handleUsernameChange = (e) => {
     setUsername(e.target.value);
@@ -45,14 +58,14 @@ export default function App() {
 
       await updateProfile(currentUser, { displayName: username });
       setMessage("Username successfully updated!");
-      setUser({ ...user, data: {...user.data, displayName: username } }); 
+      setUser({ ...user, data: { ...user.data, displayName: username } }); 
     } catch (error) {
       console.error("Error updating username:", error);
       setMessage(`Failed to update username: ${error.message}`);
     } finally {
       setIsLoading(false);
     }
-    console.log(user);
+
     const usersCollection = collection(FIREBASE_FIRESTORE_CLIENT, "users");
     const userDocRef = doc(usersCollection, await getCurrentUserID());
     await setDoc(userDocRef, {
@@ -64,24 +77,11 @@ export default function App() {
   };
 
   useEffect(() => {
-    if (isDarkMode) {
-      document.body.classList.add("dark");
-      document.body.classList.remove("light");
-    } else {
-      document.body.classList.add("light");
-      document.body.classList.remove("dark");
-    }
-  }, [isDarkMode]);
-
-  useEffect(() => {
     const fetchUserData = async () => {
       try {
         const userId = await getCurrentUserID();
         const userData = await getUserInfoFromDatabase(userId);
         setUser(userData);
-
-        // Set initial username state if displayName exists
-        
       } catch (error) {
         console.error("Error fetching user data:", error);
       } finally {
@@ -97,9 +97,19 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-background text-foreground text-center">
+    <div className="min-h-screen text-center">
       <div className="flex justify-center">
-        <img src="/profile.jpg" className="w-64 h-auto" />
+        {user && user.data.photoURL ? (
+          <Image
+            src={user.data.photoURL}
+            alt="Profile Picture"
+            width={150}
+            height={150}
+            className="rounded-full"
+          />
+        ) : (
+          <FaUserCircle className="text-gray-700 w-[150px] h-[150px]" />
+        )}
       </div>
       <h1 className="text-5xl font-semibold">Settings</h1>
       {user ? (
@@ -107,14 +117,12 @@ export default function App() {
           <p className="mt-2 text-3xl font-bold">Email: {user.data.email}</p>
           <p className="text-3xl font-bold">Username: {user.data.displayName}</p>
           <button
-            className="mt-3"
+            className="mt-3 bg-foreground text-background"
             onClick={toggleTheme}
             style={{
               padding: "10px 20px",
               fontSize: "16px",
               cursor: "pointer",
-              backgroundColor: isDarkMode ? "#ffffff" : "#121212",
-              color: isDarkMode ? "#121212" : "#ffffff",
               border: "none",
               borderRadius: "5px",
               transition: "background-color 0.5s, color 0.5s",
@@ -133,6 +141,7 @@ export default function App() {
                 border: "1px solid #ccc",
                 borderRadius: "5px",
                 marginRight: "10px",
+                color: "#121212",
               }}
             />
             <button

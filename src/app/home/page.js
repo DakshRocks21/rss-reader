@@ -8,6 +8,7 @@ import Sidebar from "@/components/Sidebar";
 import Feeds from "@/components/Feeds/Feeds";
 import Header from "@/components/Header";
 
+
 export default function HomePage() {
   const [feeds, setFeeds] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
@@ -36,6 +37,7 @@ export default function HomePage() {
     fetchData();
     fetchFeeds();
   }, []);
+
 
   const fetchFeeds = async () => {
     try {
@@ -90,6 +92,5 @@ export default function HomePage() {
     </div>
   );
 }
-
 
 

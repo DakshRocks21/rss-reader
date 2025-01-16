@@ -3,6 +3,7 @@
 import Select from "react-select";
 import { FaThLarge, FaList, FaPlayCircle } from "react-icons/fa";
 
+
 export default function Sidebar({ categoryList, setFilterCategory, setViewMode, viewMode }) {
   
     const handleCategoryFilterChange = (selectedOptions) => {
@@ -13,8 +14,10 @@ export default function Sidebar({ categoryList, setFilterCategory, setViewMode, 
 
   const isLoading = !categoryList || categoryList.length === 0;
 
+
+
   return (
-    <div className="bg-white shadow-md w-64 p-4">
+    <div className="shadow-md w-64 p-4">
       <h2 className="text-lg font-medium mb-4">Filter by Category</h2>
       {isLoading ? (
         <p className="text-gray-500">Loading categories...</p>
