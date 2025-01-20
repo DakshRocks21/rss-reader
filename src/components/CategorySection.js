@@ -1,3 +1,5 @@
+// This file is written by Daksh
+
 import FeedRow from "@/components/Feeds/FeedRow";
 
 export default function CategorySection({ category, feeds, viewMode }) {

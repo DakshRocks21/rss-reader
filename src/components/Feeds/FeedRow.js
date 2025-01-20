@@ -1,4 +1,5 @@
-// Daksh Wrote this
+// Daksh wrote this
+
 export default function FeedRow({ feed, type }) {
     const { publisher, title, contentSnippet, pubDate, link, image } = feed;
   

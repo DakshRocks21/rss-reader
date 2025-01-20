@@ -1,5 +1,5 @@
 // Daksh wrote this
-// Used in /home and /interests
+
 import { useState } from "react";
 import { FaSearch, FaUserCircle, FaSignOutAlt, FaCog } from "react-icons/fa";
 import Image from "next/image";

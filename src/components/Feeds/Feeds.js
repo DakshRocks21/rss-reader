@@ -1,3 +1,5 @@
+// This file is written by Daksh
+
 import CategorySection from "@/components/CategorySection";
 
 export default function Feeds({ feeds, keyword, category, viewMode }) {
