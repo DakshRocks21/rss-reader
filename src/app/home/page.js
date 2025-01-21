@@ -17,7 +17,6 @@ export default function HomePage() {
   const [isLoadingUser, setIsLoadingUser] = useState(true);
   const [isLoadingFeeds, setIsLoadingFeeds] = useState(false);
   const [error, setError] = useState(null);
-  const [viewMode, setViewMode] = useState("tiles"); // tiles, list, carousel
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -92,10 +91,9 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-100 flex">
       <Sidebar
+      user={user}
         categoryList={categoryList}
         setFilterCategory={setFilterCategory}
-        setViewMode={setViewMode}
-        viewMode={viewMode}
       />
       <div className="flex-1 p-6">
         <Header
@@ -113,7 +111,6 @@ export default function HomePage() {
             keyword={keywordSearched}
             category={filterCategory}
             categories={categoryList}
-            viewMode={viewMode}
           />
         )}
       </div>

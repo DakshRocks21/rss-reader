@@ -1,8 +1,13 @@
 // This file is written by Daksh
+import Image from "next/image";
 
-import { FaThLarge, FaList, FaPlayCircle } from "react-icons/fa";
-
-export default function Sidebar({ categoryList, setFilterCategory, setViewMode, viewMode }) {
+export default function Sidebar({
+  user,
+  categoryList,
+  setFilterCategory,
+  setViewMode,
+  viewMode,
+}) {
   const handleCategoryFilterChange = (category) => {
     setFilterCategory((prevCategories) => {
       if (prevCategories.includes(category)) {
@@ -18,7 +23,33 @@ export default function Sidebar({ categoryList, setFilterCategory, setViewMode, 
   const isLoading = !categoryList || categoryList.length === 0;
 
   return (
-    <div className="shadow-md w-64 p-4">
+    <div className="shadow-md w-64 p-4 sticky top-0 bg-red-200">
+      <div className="flex items-center space-x-4 mb-4 justify-center">
+        <div className="w-12 h-12 items-center justify-center flex bg-gray-100 rounded-full">
+          {user && user.picture ? (
+            <Image
+              src={user.picture}
+              alt="Profile Picture"
+              width={40}
+              height={40}
+              className="rounded-full"
+            />
+          ) : (
+            <FaUserCircle className="text-2xl text-gray-700" />
+          )}
+        </div>
+        <div>
+          <h2 className="text-lg font-medium">{user ? user.name : "Guest"}</h2>
+          <p className="text-sm text-gray-500">
+            {user ? user.email : "You are not logged in"}
+          </p>
+        </div>
+      </div>
+
+      <hr className="my-4" />
+
+     
+
       <h2 className="text-lg font-medium mb-4">Filter by Category</h2>
       {isLoading ? (
         <p className="text-gray-500">Loading categories...</p>
@@ -40,38 +71,7 @@ export default function Sidebar({ categoryList, setFilterCategory, setViewMode, 
           ))}
         </div>
       )}
-      <div className="mt-6">
-        <h2 className="text-lg font-medium mb-2">View Mode</h2>
-        <div className="space-y-2">
-          <div
-            className={`p-4 border rounded-lg cursor-pointer ${
-              viewMode === "tiles" ? "bg-blue-100 border-blue-500" : ""
-            }`}
-            onClick={() => setViewMode("tiles")}
-          >
-            <FaThLarge className="inline mr-2" />
-            Tiles
-          </div>
-          <div
-            className={`p-4 border rounded-lg cursor-pointer ${
-              viewMode === "list" ? "bg-blue-100 border-blue-500" : ""
-            }`}
-            onClick={() => setViewMode("list")}
-          >
-            <FaList className="inline mr-2" />
-            List
-          </div>
-          <div
-            className={`p-4 border rounded-lg cursor-pointer ${
-              viewMode === "carousel" ? "bg-blue-100 border-blue-500" : ""
-            }`}
-            onClick={() => setViewMode("carousel")}
-          >
-            <FaPlayCircle className="inline mr-2" />
-            Carousel
-          </div>
-        </div>
-      </div>
+     
     </div>
   );
 }

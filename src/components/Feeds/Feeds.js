@@ -2,7 +2,8 @@
 
 import CategorySection from "@/components/CategorySection";
 
-export default function Feeds({ feeds, keyword, category, viewMode }) {
+export default function Feeds({ feeds, keyword, category }) {
+  
   const allItems = feeds
     .flatMap((feed) => {
       const publisher = feed.data.title || "Unknown Publisher";
@@ -44,7 +45,6 @@ export default function Feeds({ feeds, keyword, category, viewMode }) {
           key={index}
           category={category}
           feeds={groupedFeeds[category]}
-          viewMode={viewMode}
         />
       ))}
     </div>
