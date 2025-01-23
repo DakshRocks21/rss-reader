@@ -78,7 +78,7 @@ export default function Interests() {
   let presetFeedsTemp = presetFeeds;
 
   console.log(presetFeedsTemp);
-  
+
   for (let i = 0; i < feedsTemp.length; i++) {
     for (let presetFeed of presetFeedsTemp) {
       if (feeds[i].url === presetFeed.url) {
@@ -87,6 +87,8 @@ export default function Interests() {
       }
     }
   }
+
+  feedsTemp.forEach(feed => feed.checked = true);
 
   return (
     <div className="p-6 bg-gradient-to-b from-gray-100 to-gray-300 min-h-screen">
@@ -121,7 +123,7 @@ function RenderSubscribedInterests({ feeds }) {
                 <p>{feed.url}</p>
               </div>
               <div className={styles.centrediv}>
-                <input type="checkbox" checked className={styles.checkbox}></input>
+                <Checkbox feed={feed} feeds={feeds} />
               </div>
             </div>
           </div>
@@ -148,7 +150,7 @@ function RenderInterestSelection({ presetFeeds }) {
                   <p>{feed.url}</p>
                 </div>
                 <div className={styles.centrediv}>
-                  <input type="checkbox" checked={feed.checked} id={`${feed.name.toLowerCase().replace(/\s/g, "").replace("'", "").replace("\"", "")}checkbox`} className={styles.checkbox}></input>
+                  <Checkbox feed={feed} feeds={presetFeeds} />
                 </div>
               </div>
             </div>
@@ -157,4 +159,24 @@ function RenderInterestSelection({ presetFeeds }) {
       </div>
     </>
   )
+}
+
+function Checkbox({ feed, feeds }) {
+  const [checked, setChecked] = useState(feed.checked);
+
+  function HandleCheckboxChange(event, url, feedsTemp) {
+    if (event.target.checked == true) {
+      console.log("Adding", url);
+      feedsTemp.find(x => x.url === url).checked = true;
+    } else {
+      console.log("Removing", url);
+      feedsTemp.find(x => x.url === url).checked = false;
+      // } else {
+      //   feedsTemp.splice(feedsTemp.indexOf(feedsTemp.find(x => x.url === url)), 1);
+      // }
+    }
+    setChecked(event.target.checked);
+  }
+  
+  return <input type="checkbox" checked={checked} onChange={event => HandleCheckboxChange(event, feed.url, feeds)} className={styles.checkbox}></input>
 }
