@@ -1,5 +1,6 @@
 // This file is written by Daksh
 import Image from "next/image";
+import { FaUserCircle } from "react-icons/fa";
 
 export default function Sidebar({
   user,

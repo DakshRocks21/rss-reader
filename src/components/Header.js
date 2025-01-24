@@ -9,7 +9,7 @@ export default function Header({
   user,
   keywordSearched,
   setKeywordSearched,
-  showSearchBar = true,
+  showSearchBar = true, // Chin Ray: Added showSearchBar property to hide search on pages that don't need it
   isOnHomePage = true,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -45,6 +45,7 @@ export default function Header({
   }
 
   return (
+    // Chin Ray: Made header rounded, anchor to top of page, implement search bar show/hide
     <div className="bg-white shadow-lg p-4 flex items-center justify-between rounded-lg sticky top-0">
       <h1 className="text-xl font-bold text-gray-800">
         <a href="/">RSS Feeds</a>

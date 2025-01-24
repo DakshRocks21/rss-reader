@@ -1,12 +1,10 @@
 /* Chin Ray wrote this CSS file */
 
-.blank-space {
-    padding: 10px;
-}
-
 .container {
     display: flex;
     flex-direction: row;
+    min-width: 580px;
+    max-width: 580px;
 }
 
 .checkbox {
@@ -17,6 +15,15 @@
 .centrediv {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    margin-left: 40px;
+}
+
+.rightalign {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex: 1;
     flex-direction: column;
     margin-left: 40px;
 }

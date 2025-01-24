@@ -1,15 +1,16 @@
-// This file is written by Daksh
+// This file is written by Daksh and Chin Ray
 
 import {
   doc,
   getDoc,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 
 import { FIREBASE_FIRESTORE_CLIENT } from "./client";
 import { getCurrentUserID } from "../session";
 
-export const addFeedToDatabase = async (feedUrl, categories) => {
+export const addFeedToDatabase = async ({ name, feedUrl, categories, image = null, description = null}) => {
   const userId = await getCurrentUserID();
 
   const dataPath = doc(
@@ -19,11 +20,11 @@ export const addFeedToDatabase = async (feedUrl, categories) => {
 
   const userDoc = await getDoc(dataPath);
 
-  categories = categories || ["Uncategorized"];
+  categories = categories || ["Uncategorised"];
 
   if (!userDoc.exists()) {
-    await setDoc(dataPath, {
-      feeds: [{ url: feedUrl, categories: [categories] }],
+    await updateDoc(dataPath, {
+      0: [{ name: name, url: feedUrl, categories: categories, image: image, description: description }],
     });
   } else {
     const feeds = userDoc.data().feeds || [];
@@ -31,8 +32,9 @@ export const addFeedToDatabase = async (feedUrl, categories) => {
       throw new Error("Feed already exists.");
     }
 
-    feeds.push({ url: feedUrl, categories: [categories] });
-    await setDoc(dataPath, { feeds });
+    feeds.push({ name: name, url: feedUrl, categories: categories, image: image, description: description });
+    console.log(feeds);
+    await updateDoc(dataPath, { feeds });
   }
 };
 
