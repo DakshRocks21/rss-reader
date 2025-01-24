@@ -1,12 +1,10 @@
 /* Chin Ray wrote this CSS file */
 
-.blank-space {
-    padding: 10px;
-}
-
 .container {
     display: flex;
     flex-direction: row;
+    min-width: 580px;
+    max-width: 580px;
 }
 
 .checkbox {
@@ -21,16 +19,18 @@
     margin-left: 40px;
 }
 
-.image {
-    width: 120px;
-    height: 120px;
-    border-radius: 10%;
-    align-self: center;
+.rightalign {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-grow: 1;
+    flex-direction: column;
+    margin-left: 40px;
 }
 
-.image-small {
-    width: 90px;
-    height: 90px;
+.image {
+    width: 100px;
+    height: 100px;
     border-radius: 10%;
     align-self: center;
 }
