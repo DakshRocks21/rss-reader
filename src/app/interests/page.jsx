@@ -34,7 +34,7 @@ export default function Interests() {
       url: "https://feeds.feedburner.com/hardwarezone/all",
       categories: ["Technology", "Hardware"],
       image: "images/HardwareZone.png",
-      description: "An Singaporean online publication and forum focused on computer hardware and technology.",
+      description: "An Singaporean technology forum and news outlet specialising in hardware.",
       checked: false
     }
   ])
@@ -102,7 +102,7 @@ export default function Interests() {
         showSearchBar={false}
         isOnHomePage={false}
       />
-      <AddFeed />
+      <AddFeed onAddFeed={() => window.location.reload()}/>
       <RenderSubscribedInterests feeds={feedsTemp} />
       <RenderInterestSelection presetFeeds={presetFeedsTemp} />
     </div>
@@ -118,18 +118,29 @@ function RenderSubscribedInterests({ feeds }) {
         {feeds.map((feed) => (
           <div className={`bg-white p-6 rounded-lg shadow-md mb-6 border border-gray-200 w-fit max-w-2xl mr-6 flex items-center`} key={feed.url}>
             <div className={styles.container}>
-              <CiGlobe className={styles["image-small"]} />
-              {feed.name ? (
-                <div className={styles.centrediv}>
-                  <h3 className={styles.interestname}>{feed.name}</h3>
-                  <p className={styles.description}>{feed.description}</p>
-                  <p>{feed.url}</p>
-                </div>
+              {feed.name && feed.name != "" ? (
+                <>
+                  {
+                    feed.image && feed.image != "" ? (
+                      <img src={feed.image} alt={feed.name} className={styles["image"]} />
+                    ) : (
+                      <CiGlobe className={styles["image"]} />
+                    )
+                  }
+                  <div className={styles.centrediv}>
+                    <h3 className={styles.interestname}>{feed.name}</h3>
+                    <p className={styles.description}>{feed.description}</p>
+                    <p>{feed.url}</p>
+                  </div>
+                </>
               ) : (
-                <div className={styles.centrediv}>
-                  <h3 className={styles.interestname}>{feed.url.toString().replace("https://", "").split("/")[0].split(".").slice(-2).join(".")}</h3>
-                  <p>{feed.url}</p>
-                </div>
+                <>
+                  <CiGlobe className={styles["image"]} />
+                  <div className={styles.centrediv}>
+                    <h3 className={styles.interestname}>{feed.url.toString().replace("https://", "").split("/")[0].split(".").slice(-2).join(".")}</h3>
+                    <p>{feed.url}</p>
+                  </div>
+                </>
               )}
 
               <div className={styles.rightalign}>
@@ -153,7 +164,7 @@ function RenderInterestSelection({ presetFeeds }) {
           presetFeeds.map((feed) => (
             <div className={`bg-white p-6 rounded-lg shadow-md mb-6 border border-gray-200 w-fit max-w-2xl mr-6 flex items-center`} key={feed.url}>
               <div className={styles.container}>
-                <img src={feed.image} alt={feed.name} className={styles["image-small"]} />
+                <img src={feed.image} alt={feed.name} className={styles["image"]} />
                 <div className={styles.centrediv}>
                   <h3 className={styles.interestname}>{feed.name}</h3>
                   <p className={styles.description}>{feed.description}</p>
