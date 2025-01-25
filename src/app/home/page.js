@@ -7,6 +7,7 @@ import { getFeedsFromDatabase } from "@/lib/firebase/feed_database";
 import Sidebar from "@/components/Sidebar";
 import Feeds from "@/components/Feeds/Feeds";
 import Header from "@/components/Header";
+import { setTheme } from "@/components/DarkConfig";
 
 
 export default function HomePage() {
@@ -19,7 +20,6 @@ export default function HomePage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [viewMode, setViewMode] = useState("tiles"); // tiles, list, carousel
-
   useEffect(() => {
     const fetchData = async () => {
       const userData = await getUserInfoFromFirebaseAuth();
@@ -37,7 +37,7 @@ export default function HomePage() {
     fetchData();
     fetchFeeds();
   }, []);
-
+  setTheme();
 
   const fetchFeeds = async () => {
     try {
@@ -68,7 +68,7 @@ export default function HomePage() {
   if (!isAuthenticated) return null;
 
   return (
-    <div className="min-h-screen bg-gray-100 flex">
+    <div className="min-h-screen flex">
       <Sidebar
         categoryList={categoryList}
         setFilterCategory={setFilterCategory}

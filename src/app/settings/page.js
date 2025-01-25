@@ -1,18 +1,17 @@
-// Puru Wrote this
+//Puru Wrote this
 "use client";
 import { getUserInfoFromDatabase } from "@/lib/firebase/auth_database";
 import { useState, useEffect } from "react";
-import { getCurrentUserID } from "@/lib/session";
-import { getAuth, updateProfile } from "firebase/auth";
+import { getCurrentUserID, getUserInfoFromFirebaseAuth, logoutSession } from "@/lib/session";
+import { getAuth, updateProfile} from "firebase/auth";
 import {
   collection,
   doc,
-  getDoc,
   setDoc,
 } from "firebase/firestore";
 import { FaUserCircle } from "react-icons/fa";
 import Image from "next/image";
-
+import ChangePassword from "@/components/changePassword";
 import { FIREBASE_FIRESTORE_CLIENT } from "@/lib/firebase/client";
 import { setTheme } from "@/components/DarkConfig";
 
@@ -22,7 +21,18 @@ export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [username, setUsername] = useState("");
   const [message, setMessage] = useState("");
-  
+  const [isAuthenticated, setIsAuthenticated] = useState(true);
+
+  const fetchData = async () => {
+    const userData = await getUserInfoFromFirebaseAuth();
+    if (!userData) {
+      setIsAuthenticated(false);
+      window.location.href = "/login";
+      return;
+    }
+    setIsAuthenticated(true);
+  };
+
   const toggleTheme = () => {
     setIsDarkMode((dark) => {
       const newTheme = !dark;
@@ -39,6 +49,11 @@ export default function App() {
     setUsername(e.target.value);
   };
 
+  const handleSignOut = async () => {
+    await logoutSession();
+    window.location.href = "/login";
+  };
+
   const updateUsername = async () => {
     if (!username.trim()) {
       setMessage("Username cannot be empty.");
@@ -51,17 +66,16 @@ export default function App() {
       const auth = getAuth();
       const currentUser = auth.currentUser;
 
-      if (!currentUser) {
+      if (!isAuthenticated) {
         setMessage("No user is currently signed in.");
         return;
       }
-
       await updateProfile(currentUser, { displayName: username });
       setMessage("Username successfully updated!");
-      setUser({ ...user, data: { ...user.data, displayName: username } }); 
+      setUser({ ...user, data: { ...user.data, displayName: username } });
     } catch (error) {
       console.error("Error updating username:", error);
-      setMessage(`Failed to update username: ${error.message}`);
+      setMessage("Failed to update username");
     } finally {
       setIsLoading(false);
     }
@@ -88,7 +102,6 @@ export default function App() {
         setIsLoading(false);
       }
     };
-
     fetchUserData();
   }, []);
 
@@ -161,11 +174,18 @@ export default function App() {
               {isLoading ? "Saving..." : "Change Username"}
             </button>
           </div>
-          <h1 className="mt-3">{message}</h1>
+          <ChangePassword />
+          <div className="flex justify-center mt-5">
+          <button
+            onClick={handleSignOut}
+            className="rounded-md bg-red-300 px-4 py-2 transition-all duration-300 ease-in-out hover:bg-blue-600 hover:text-white"
+            >Sign out
+            </button>
+          </div>
         </>
       ) : (
         <p>No user information available.</p>
       )}
     </div>
   );
-}
+}              
