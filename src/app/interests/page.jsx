@@ -40,7 +40,7 @@ export default function Interests() {
     }
   ])
 
-  // Get list of subscribed feeds and categories
+  // Authentication protection
   useEffect(() => {
     const fetchData = async () => {
       const userData = await getUserInfoFromFirebaseAuth();
@@ -56,6 +56,7 @@ export default function Interests() {
 
     fetchData();
 
+    // Get list of subscribed feeds and categories
     const fetchFeeds = async () => {
       try {
         const data = await getFeedsFromDatabase();
@@ -76,8 +77,8 @@ export default function Interests() {
 
   if (!isAuthenticated && isLoading) return <p>LOADING...</p>;
 
+  // Check respective preset feed checkboxes if user is already subscribed to them, remove duplicates
   const populateFeeds = () => {
-    // Check respective preset feed checkboxes if user is already subscribed to them, remove duplicates
     for (let i = 0; i < feeds.length; i++) {
       for (let presetFeed of presetFeeds) {
         if (feeds[i].url === presetFeed.url) {
