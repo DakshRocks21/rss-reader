@@ -77,8 +77,8 @@ export default function Interests() {
 
   if (!isAuthenticated && isLoading) return <p>LOADING...</p>;
 
-  // Check respective preset feed checkboxes if user is already subscribed to them, remove duplicates
   const populateFeeds = () => {
+    // Check respective preset feed checkboxes if user is already subscribed to them, remove duplicates
     for (let i = 0; i < feeds.length; i++) {
       for (let presetFeed of presetFeeds) {
         if (feeds[i].url === presetFeed.url) {
