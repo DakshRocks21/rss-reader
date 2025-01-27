@@ -1,33 +1,111 @@
-/* No one wrote this */
-/* Puru wrote body.light and body.dark*/
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --md-sys-color-primary: 144 74 73;
+  --md-sys-color-surface-tint: 144 74 73;
+  --md-sys-color-on-primary: 255 255 255;
+  --md-sys-color-primary-container: 255 218 216;
+  --md-sys-color-on-primary-container: 115 51 51;
+  --md-sys-color-secondary: 119 86 85;
+  --md-sys-color-on-secondary: 255 255 255;
+  --md-sys-color-secondary-container: 255 218 216;
+  --md-sys-color-on-secondary-container: 93 63 62;
+  --md-sys-color-tertiary: 116 90 46;
+  --md-sys-color-on-tertiary: 255 255 255;
+  --md-sys-color-tertiary-container: 255 222 170;
+  --md-sys-color-on-tertiary-container: 90 67 25;
+  --md-sys-color-error: 186 26 26;
+  --md-sys-color-on-error: 255 255 255;
+  --md-sys-color-error-container: 255 218 214;
+  --md-sys-color-on-error-container: 147 0 10;
+  --md-sys-color-background: 255 248 247;
+  --md-sys-color-on-background: 35 25 25;
+  --md-sys-color-surface: 255 248 247;
+  --md-sys-color-on-surface: 35 25 25;
+  --md-sys-color-surface-variant: 244 221 220;
+  --md-sys-color-on-surface-variant: 83 67 66;
+  --md-sys-color-outline: 133 115 114;
+  --md-sys-color-outline-variant: 215 193 192;
+  --md-sys-color-shadow: 0 0 0;
+  --md-sys-color-scrim: 0 0 0;
+  --md-sys-color-inverse-surface: 56 46 45;
+  --md-sys-color-inverse-on-surface: 255 237 235;
+  --md-sys-color-inverse-primary: 255 179 176;
+  --md-sys-color-primary-fixed: 255 218 216;
+  --md-sys-color-on-primary-fixed: 59 8 11;
+  --md-sys-color-primary-fixed-dim: 255 179 176;
+  --md-sys-color-on-primary-fixed-variant: 115 51 51;
+  --md-sys-color-secondary-fixed: 255 218 216;
+  --md-sys-color-on-secondary-fixed: 44 21 20;
+  --md-sys-color-secondary-fixed-dim: 230 189 186;
+  --md-sys-color-on-secondary-fixed-variant: 93 63 62;
+  --md-sys-color-tertiary-fixed: 255 222 170;
+  --md-sys-color-on-tertiary-fixed: 39 25 0;
+  --md-sys-color-tertiary-fixed-dim: 227 194 140;
+  --md-sys-color-on-tertiary-fixed-variant: 90 67 25;
+  --md-sys-color-surface-dim: 232 214 213;
+  --md-sys-color-surface-bright: 255 248 247;
+  --md-sys-color-surface-container-lowest: 255 255 255;
+  --md-sys-color-surface-container-low: 255 240 239;
+  --md-sys-color-surface-container: 252 234 232;
+  --md-sys-color-surface-container-high: 246 228 227;
+  --md-sys-color-surface-container-highest: 240 222 221;
+  --md-ref-typeface-plain: 'Poppins', sans-serif;
+  --md-ref-typeface-mono: 'Martian Mono', monospace;
 }
 
-@media (prefers-color-scheme: light) {
+@media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --md-sys-color-primary: 255 179 176;
+    --md-sys-color-surface-tint: 255 179 176;
+    --md-sys-color-on-primary: 87 29 30;
+    --md-sys-color-primary-container: 115 51 51;
+    --md-sys-color-on-primary-container: 255 218 216;
+    --md-sys-color-secondary: 230 189 186;
+    --md-sys-color-on-secondary: 68 41 40;
+    --md-sys-color-secondary-container: 93 63 62;
+    --md-sys-color-on-secondary-container: 255 218 216;
+    --md-sys-color-tertiary: 227 194 140;
+    --md-sys-color-on-tertiary: 65 45 5;
+    --md-sys-color-tertiary-container: 90 67 25;
+    --md-sys-color-on-tertiary-container: 255 222 170;
+    --md-sys-color-error: 255 180 171;
+    --md-sys-color-on-error: 105 0 5;
+    --md-sys-color-error-container: 147 0 10;
+    --md-sys-color-on-error-container: 255 218 214;
+    --md-sys-color-background: 26 17 17;
+    --md-sys-color-on-background: 240 222 221;
+    --md-sys-color-surface: 26 17 17;
+    --md-sys-color-on-surface: 240 222 221;
+    --md-sys-color-surface-variant: 83 67 66;
+    --md-sys-color-on-surface-variant: 215 193 192;
+    --md-sys-color-outline: 160 140 139;
+    --md-sys-color-outline-variant: 83 67 66;
+    --md-sys-color-shadow: 0 0 0;
+    --md-sys-color-scrim: 0 0 0;
+    --md-sys-color-inverse-surface: 240 222 221;
+    --md-sys-color-inverse-on-surface: 56 46 45;
+    --md-sys-color-inverse-primary: 144 74 73;
+    --md-sys-color-primary-fixed: 255 218 216;
+    --md-sys-color-on-primary-fixed: 59 8 11;
+    --md-sys-color-primary-fixed-dim: 255 179 176;
+    --md-sys-color-on-primary-fixed-variant: 115 51 51;
+    --md-sys-color-secondary-fixed: 255 218 216;
+    --md-sys-color-on-secondary-fixed: 44 21 20;
+    --md-sys-color-secondary-fixed-dim: 230 189 186;
+    --md-sys-color-on-secondary-fixed-variant: 93 63 62;
+    --md-sys-color-tertiary-fixed: 255 222 170;
+    --md-sys-color-on-tertiary-fixed: 39 25 0;
+    --md-sys-color-tertiary-fixed-dim: 227 194 140;
+    --md-sys-color-on-tertiary-fixed-variant: 90 67 25;
+    --md-sys-color-surface-dim: 26 17 17;
+    --md-sys-color-surface-bright: 66 55 54;
+    --md-sys-color-surface-container-lowest: 20 12 12;
+    --md-sys-color-surface-container-low: 35 25 25;
+    --md-sys-color-surface-container: 39 29 29;
+    --md-sys-color-surface-container-high: 50 40 39;
+    --md-sys-color-surface-container-highest: 61 50 50;
   }
-}
-body.light {
-  --background: #ffffff;  
-  --foreground: #201414;   
-}
-
-
-body.dark {
-  --background: #433434;  
-  --foreground: #ffffff;  
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }

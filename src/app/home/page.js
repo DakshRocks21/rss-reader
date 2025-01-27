@@ -91,7 +91,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gray-100 flex">
       <Sidebar
-      user={user}
+        user={user}
         categoryList={categoryList}
         setFilterCategory={setFilterCategory}
       />
