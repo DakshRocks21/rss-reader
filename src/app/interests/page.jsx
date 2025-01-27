@@ -99,7 +99,6 @@ export default function Interests() {
           await logoutSession();
           window.location.href = "/login";
         }}
-        showSearchBar={false}
         isOnHomePage={false}
       />
       <AddFeed onAddFeed={() => window.location.reload()}/>

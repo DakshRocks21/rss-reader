@@ -24,7 +24,7 @@ export default function Sidebar({
   const isLoading = !categoryList || categoryList.length === 0;
 
   return (
-    <div className="shadow-md w-64 p-4 sticky top-0 bg-red-200">
+    <div className="shadow-md w-64 p-4 sticky top-0 bg-red-200 h-screen">
       <div className="flex items-center space-x-4 mb-4 justify-center">
         <div className="w-12 h-12 items-center justify-center flex bg-gray-100 rounded-full">
           {user && user.picture ? (

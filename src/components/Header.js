@@ -9,7 +9,6 @@ export default function Header({
   user,
   keywordSearched,
   setKeywordSearched,
-  showSearchBar = true, // Chin Ray: Added showSearchBar property to hide search on pages that don't need it
   isOnHomePage = true,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -28,9 +27,7 @@ export default function Header({
   if (isOnHomePage) {
     return (
       <div
-        className={`relative flex items-center w-full text-black" ${
-          showSearchBar ? "" : "hidden"
-        }`}
+        className={`relative flex items-center w-full text-black`}
       >
         <FaSearch className="absolute left-3 text-gray-500" />
         <input
@@ -50,22 +47,7 @@ export default function Header({
       <h1 className="text-xl font-bold text-gray-800">
         <a href="/">RSS Feeds</a>
       </h1>
-
-      <div
-        className={`relative flex items-center w-full max-w-md text-black" ${
-          showSearchBar ? "" : "hidden"
-        }`}
-      >
-        <FaSearch className="absolute left-3 text-gray-500" />
-        <input
-          type="text"
-          placeholder="Search articles..."
-          value={keywordSearched}
-          onChange={(e) => setKeywordSearched(e.target.value)}
-          className="pl-10 p-2 w-full border rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        />
-      </div>
-
+      
       <div className="relative">
         <div className="cursor-pointer" onClick={toggleDropdown}>
           {user && user.picture ? (
