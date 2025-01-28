@@ -76,7 +76,7 @@ export default function Header({
               className="rounded-full"
             />
           ) : (
-            <FaUserCircle className="text-2xl text-on-primary" />
+            <FaUserCircle className="text-2xl text-on-secondary-container" />
           )}
         </div>
 
