@@ -10,7 +10,11 @@ export function Categories({ categoryList, onCategoryChange }) {
             {categoryList.map((category) => (
               <label
                 key={category}
+<<<<<<< HEAD
                 className="flex items-center text-on-primary-container"
+=======
+                className="flex items-center space-x-2 text-on-primary-container"
+>>>>>>> 289d11a (Theming)
               >
                 <Checkbox
                   type="checkbox"
