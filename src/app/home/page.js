@@ -6,6 +6,7 @@ import { getFeedsFromDatabase } from "@/lib/firebase/feed_database";
 import Sidebar from "@/components/Sidebar";
 import Feeds from "@/components/Feeds/Feeds";
 import Header from "@/components/Header";
+import { setTheme } from "@/components/DarkConfig";
 
 export default function HomePage() {
   const [feeds, setFeeds] = useState([]);
@@ -45,6 +46,7 @@ export default function HomePage() {
       fetchFeeds();
     }
   }, [isAuthenticated]);
+
 
   const fetchFeeds = async () => {
     setIsLoadingFeeds(true);
@@ -89,7 +91,7 @@ export default function HomePage() {
   if (!isAuthenticated) return null;
 
   return (
-    <div className="min-h-screen bg-gray-100 flex">
+    <div className="min-h-screen flex">
       <Sidebar
         user={user}
         categoryList={categoryList}
