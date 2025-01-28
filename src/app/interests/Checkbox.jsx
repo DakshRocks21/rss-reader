@@ -11,6 +11,7 @@ export function Checkbox({ feed, feeds }) {
     useEffect(() => setChecked(feed.checked), [feed.checked]);
   
     function HandleCheckboxChange(event, url, feedsTemp) {
+      if (checked === event.target.checked) return;
       if (event.target.checked == true) {
         console.log("Adding", url);
         let feed = feedsTemp.find(x => x.url === url);
