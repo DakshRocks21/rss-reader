@@ -24,12 +24,12 @@ export default function AddFeed({ onAddFeed, error }) {
 
   return (
     <>
-      <h2 className="text-lg font-semibold text-gray-800 mb-4 mt-5">Add a New Feed</h2>
-      <div className="bg-white p-6 rounded-lg shadow-md mb-6 border border-gray-200">
+      <h2 className="text-lg font-semibold text-on-surface mb-4 mt-5">Add a New Feed</h2>
+      <div className="bg-surface-bright p-6 rounded-lg shadow-md mb-6 border border-gray-200">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Feed URL Input */}
           <div>
-            <label htmlFor="feed-name" className="block text-l font-medium text-gray-700 mb-1">
+            <label htmlFor="feed-name" className="block text-l font-medium text-on-surface mb-1">
               Feed Name
             </label>
             <input
@@ -44,7 +44,7 @@ export default function AddFeed({ onAddFeed, error }) {
 
           {/* Feed URL Input */}
           <div>
-            <label htmlFor="feed-url" className="block text-l font-medium text-gray-700 mb-1">
+            <label htmlFor="feed-url" className="block text-l font-medium text-on-surface mb-1">
               RSS Feed URL
             </label>
             <input
@@ -59,7 +59,7 @@ export default function AddFeed({ onAddFeed, error }) {
 
           {/* Feed Category Input */}
           <div>
-            <label htmlFor="feed-category" className="block text-l font-medium text-gray-700 mb-1">
+            <label htmlFor="feed-category" className="block text-l font-medium text-on-surface mb-1">
               Category
             </label>
             <input
@@ -83,8 +83,8 @@ export default function AddFeed({ onAddFeed, error }) {
           <button
             onClick={handleAddFeed}
             disabled={!feedUrl.trim() || isLoading}
-            className={`px-4 py-2 rounded-md font-semibold text-white ${
-              isLoading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600 cursor-pointer"
+            className={`px-4 py-2 rounded-md font-semibold text-on-secondary-container ${
+              isLoading ? "bg-blue-300 cursor-not-allowed" : "bg-secondary-container hover:bg-outline cursor-pointer"
             } transition-all`}
           >
             {isLoading ? "Adding..." : "Add Feed"}
