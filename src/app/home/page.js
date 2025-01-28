@@ -71,6 +71,7 @@ export default function HomePage() {
     } finally {
       setIsLoadingFeeds(false);
     }
+    
   };
 
   const LoadingSpinner = () => (
@@ -111,7 +112,7 @@ export default function HomePage() {
           <Feeds
             feeds={feeds}
             keyword={keywordSearched}
-            category={filterCategory}
+            filteredCategory={filterCategory}
             categories={categoryList}
           />
         )}

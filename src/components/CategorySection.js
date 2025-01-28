@@ -5,9 +5,11 @@ import { useState } from "react";
 import { FaThLarge, FaList } from "react-icons/fa";
 import { Carousel, CarouselItem, Spacer } from "actify";
 
-export default function CategorySection({ category, feeds }) {
-  if (!feeds.length) return null;
+export default function CategorySection({ category_selected, feeds }) {
 
+  const header = category_selected.length === 0 ? `Your Feeds` : `Latest in ${category_selected}`;
+
+  
   const [viewMode, setViewMode] = useState("tiles");
   
   const [currentPage, setCurrentPage] = useState(1);
@@ -32,7 +34,7 @@ export default function CategorySection({ category, feeds }) {
       {/* Section Header */}
       <div className="flex flex-row items-center justify-between mb-4 h-full ">
         <h2 className="text-xl font-semibold text-gray-800">
-          {category === "Your Feeds" ? category : `Latest in ${category}`}
+          {header}
         </h2>
         {/* View Mode Buttons */}
         <div className="flex flex-row justify-center gap-x-4">

@@ -37,7 +37,7 @@ export default function FeedRow({ feed, type }) {
             {publisher || "Unknown Publisher"}
           </p>
           <p variant="caption" className="text-on-surface-variant">
-            {timeAgo}
+            {timeAgo} 
           </p>
         </div>
       </div>
