@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@tailwindcss/typography": "^0.5.16",
+    "actify": "^0.4.1",
     "date-fns": "^4.1.0",
     "firebase": "^11.1.0",
     "firebase-admin": "^13.0.2",

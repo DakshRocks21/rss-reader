@@ -1,11 +1,16 @@
 // Daksh wrote this
-// Used in /home
+
 import { useState } from "react";
 import { FaSearch, FaUserCircle, FaSignOutAlt, FaCog } from "react-icons/fa";
 import Image from "next/image";
 import { logoutSession } from "@/lib/session";
 
-export default function Header({ user, keywordSearched, setKeywordSearched }) {
+export default function Header({
+  user,
+  keywordSearched,
+  setKeywordSearched,
+  isOnHomePage = true,
+}) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const toggleDropdown = () => setDropdownOpen((prev) => !prev);
@@ -19,13 +24,11 @@ export default function Header({ user, keywordSearched, setKeywordSearched }) {
     window.location.href = "/settings";
   };
 
-  return (
-    <div className="bg-white shadow-md p-4 flex items-center justify-between">
-      <h1 className="text-xl font-bold text-gray-800">
-        <a href="/">RSS Feeds</a>
-      </h1>
-
-      <div className="relative flex items-center w-full max-w-md text-black">
+  if (isOnHomePage) {
+    return (
+      <div
+        className={`relative flex items-center w-full text-black`}
+      >
         <FaSearch className="absolute left-3 text-gray-500" />
         <input
           type="text"
@@ -35,7 +38,16 @@ export default function Header({ user, keywordSearched, setKeywordSearched }) {
           className="pl-10 p-2 w-full border rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
         />
       </div>
+    );
+  }
 
+  return (
+    // Chin Ray: Made header rounded, anchor to top of page, implement search bar show/hide
+    <div className="bg-white shadow-lg p-4 flex items-center justify-between rounded-lg sticky top-0">
+      <h1 className="text-xl font-bold text-gray-800">
+        <a href="/">RSS Feeds</a>
+      </h1>
+      
       <div className="relative">
         <div className="cursor-pointer" onClick={toggleDropdown}>
           {user && user.picture ? (

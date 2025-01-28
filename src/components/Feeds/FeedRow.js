@@ -1,91 +1,104 @@
-// Daksh Wrote this
+import { Card, Button } from "actify";
+import Image from "next/image";
+
 export default function FeedRow({ feed, type }) {
-    const { publisher, title, contentSnippet, pubDate, link, image } = feed;
-  
-    const timeAgo = calculateTimeAgo(pubDate);
-  
-    if (type === "tiles") {
-      return (
-        <div className="bg-white shadow-md rounded-lg p-4 max-w-xs">
-          <div className="text-gray-600 mb-2">
-            <span className="font-semibold text-red-700">{publisher}</span>
-            <span className="mx-2">•</span>
-            <span>{timeAgo}</span>
-          </div>
-          <a
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="block text-lg font-medium text-black hover:underline"
-          >
-            {title}
-          </a>
-          <p className="mt-2 text-gray-700 text-sm">{contentSnippet}</p>
+  const { publisher, title, contentSnippet, pubDate, link, image } = feed;
+
+  const timeAgo = formatTimeAgo(pubDate);
+
+ if (type === "tiles" || type === "carousel") {
+  return (
+  <Card className="max-w-lg bg-surface shadow-lg hover:shadow-xl rounded-xl transition-shadow duration-300">
+      {image && (
+        <Image
+          src={image}
+          alt={title}
+          width={640}
+          height={320}
+          className="w-full h-48 object-cover rounded-t-xl"
+        />
+      )}
+      <div className="p-6 space-y-4">
+        <p
+          as="a"
+          href={link}
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="h5"
+          className="text-title-large text-primary font-bold hover:underline hover:text-primary-dark"
+        >
+          {title}
+        </p>
+        <p variant="body2" className="text-on-surface-variant">
+          {contentSnippet}
+        </p>
+        <div className="flex justify-between items-center">
+          <p variant="body2" className="text-primary">
+            {publisher || "Unknown Publisher"}
+          </p>
+          <p variant="caption" className="text-on-surface-variant">
+            {timeAgo}
+          </p>
         </div>
-      );
-    }
-  
-    if (type === "list") {
-      return (
-        <div className="bg-white shadow-md p-4 rounded-lg flex flex-row">
-          {image ? (
-            <img
-              src={image}
-              alt={title}
-              className="w-24 h-24 object-cover rounded-lg"
-            />
-          ) : (
-            <div className="w-24 h-24 bg-gray-200 rounded-lg"></div>
-          )}
-          <div className="ml-4">
-            <a
-              href={link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block text-lg font-medium text-black hover:underline"
-            >
-              {title}
-            </a>
-            <div className="text-gray-600 mb-2 text-sm">
-              <span className="font-semibold text-red-700">{publisher}</span>
-              <span className="mx-2">•</span>
-              <span className="">{timeAgo}</span>
-            </div>
-            <p className="mt-2 text-gray-700 text-sm">{contentSnippet}</p>
-          </div>
+      </div>
+    </Card>
+  )
+ } else if (type === "list"){
+  return (
+  <div className="bg-surface shadow-lg hover:shadow-xl rounded-xl transition-shadow duration-300 w-full flex flex-row">
+      {image && (
+        <Image
+          src={image}
+          alt={title}
+          width={320}
+          height={160}
+          className="w-48 h-48 object-cover rounded-l-xl mr-4"
+        />
+      )}
+      <div className="py-3 px-3 space-y-4 flex flex-col w-full">
+        <p
+          as="a"
+          href={link}
+          target="_blank"
+          rel="noopener noreferrer"
+          variant="h5"
+          className="text-title-medium text-primary font-bold hover:underline hover:text-primary-dark"
+        >
+          {title}
+        </p>
+        <p variant="body2" className="text-on-surface-variant">
+          {contentSnippet}
+        </p>
+        <div className="flex justify-between items-center">
+          <p variant="body2" className="text-primary">
+            {publisher || "Unknown Publisher"}
+          </p>
+          <p variant="caption" className="text-on-surface-variant">
+            {timeAgo}
+          </p>
         </div>
-      );
-    }
+      </div>
+    </div>
+  )
+ }
+}
 
-    if (type === "carousel") {
-      return (
-        <p>Carousel view not implemented yet</p>
-      )
-    }
+const formatTimeAgo = (pubDate) => {
+  const now = new Date();
+  const published = new Date(pubDate);
+  const diffMs = now - published;
+  const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
 
-    return (
-      <p>Invalid view type</p>
-    )
-
+  if (diffHours < 1) {
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+    return `${diffMinutes} minute${diffMinutes === 1 ? "" : "s"} ago`;
   }
-  
-  const calculateTimeAgo = (pubDate) => {
-    const now = new Date();
-    const published = new Date(pubDate);
-    const diffMs = now - published;
-    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
-  
-    if (diffHours < 1) {
-      const diffMinutes = Math.floor(diffMs / (1000 * 60));
-      return `${diffMinutes} minutes ago`;
-    }
-    if (diffHours < 24) return `${diffHours} hours ago`;
-    if (diffHours < 48) return "Yesterday";
-    if (diffHours < 720) return `${Math.floor(diffHours / 24)} days ago`;
-    return published.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-    });
-  };
-  
+  if (diffHours < 24) return `${diffHours} hour${diffHours === 1 ? "" : "s"} ago`;
+  if (diffHours < 48) return "Yesterday";
+  if (diffHours < 720) return `${Math.floor(diffHours / 24)} days ago`;
+  return published.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+  });
+};

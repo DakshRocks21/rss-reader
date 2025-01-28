@@ -4,15 +4,43 @@
 
 import { useState, useEffect } from "react";
 import { getUserInfoFromFirebaseAuth } from "@/lib/session";
-import AddFeed from "@/components/Unused_Feeds/AddFeed";
+import { getFeedsFromDatabase } from "@/lib/firebase/feed_database";
+import AddFeed from "@/app/interests/AddFeed";
 import Header from "@/components/Header";
-import styles from "./page.module.css";
+
+import { RenderSubscribedInterests, RenderInterestSelection } from "./RenderInterests";
+import { Categories } from "./Filters";
 
 export default function Interests() {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [feeds, setFeeds] = useState([]);
+  const [categoryList, setCategoryList] = useState([]);
+  const [categoryFilterList, setCategoryFilterList] = useState([]);
+  const [error, setError] = useState(null);
+
+  const [presetFeeds, setPresetFeeds] = useState([
+    {
+      name: "Tom's Hardware",
+      url: "https://www.tomshardware.com/rss.xml",
+      categories: ["Technology", "Hardware"],
+      image: "images/TomsHardware.png",
+      description: "A technology news outlet specialising in hardware.",
+      checked: false
+    },
+    {
+      name: "HardwareZone",
+      url: "https://feeds.feedburner.com/hardwarezone/all",
+      categories: ["Technology", "Hardware", "Singapore"],
+      image: "images/HardwareZone.png",
+      description: "An Singaporean technology forum and news outlet specialising in hardware.",
+      checked: false
+    }
+  ])
+
+  // Authentication protection
   useEffect(() => {
     const fetchData = async () => {
       const userData = await getUserInfoFromFirebaseAuth();
@@ -24,13 +52,54 @@ export default function Interests() {
       }
       setUser(userData.decodedToken);
       setIsAuthenticated(true);
-      setIsLoading(false);
     };
 
     fetchData();
+
+    // Get list of subscribed feeds and categories
+    const fetchFeeds = async () => {
+      try {
+        const data = await getFeedsFromDatabase();
+        const categories = data
+          .flatMap((feed) => feed.categories || [])
+          .filter((value, index, self) => self.indexOf(value) === index);
+        setFeeds(data);
+        setCategoryList(categories);
+        setIsLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setIsLoading(false);
+      }
+    };
+
+    fetchFeeds();
   }, []);
 
   if (!isAuthenticated && isLoading) return <p>LOADING...</p>;
+
+  // Check respective preset feed checkboxes if user is already subscribed to them, remove duplicates
+  const populateFeeds = () => {
+    for (let i = 0; i < feeds.length; i++) {
+      for (let presetFeed of presetFeeds) {
+        if (feeds[i].url === presetFeed.url) {
+          presetFeed.checked = true;
+          feeds.splice(i, 1);
+        }
+      }
+    }
+
+    console.log(presetFeeds)
+
+    feeds.forEach(feed => feed.checked = true); // Check all remaining feeds (since they are subscribed if they are already in the database)
+  }
+
+  const handleCategoryFilterChange = (category) => {
+    if (categoryFilterList.includes(category)) {
+      setCategoryFilterList(categoryFilterList.filter(item => item !== category));
+    } else {
+      setCategoryFilterList([...categoryFilterList, category]);
+    }
+  };
 
   return (
     <div className="p-6 bg-gradient-to-b from-gray-100 to-gray-300 min-h-screen">
@@ -40,42 +109,13 @@ export default function Interests() {
           await logoutSession();
           window.location.href = "/login";
         }}
+        isOnHomePage={false}
       />
-      <AddFeed />
-      <SubscribedInterests />
-      <RenderInterestSelection />
-    </div>
-  )
-}
-
-function RenderInterestSelection() {
-  return (
-    <>
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">Interests</h2>
-      <div className="bg-white p-6 rounded-lg shadow-md mb-6 border border-gray-200 w-fit">
-        <div className={styles.container}>
-          <img src="images/TomsHardware.png" alt="Tom's Hardware" className={styles.image}/>
-          <div className={styles.centrediv}>
-            <h3 className={styles.interestname}>Tom's Hardware</h3>
-            <p className={styles.description}>An online publication focused on computer hardware and technology.</p>
-            <p>https://www.tomshardware.com/rss.xml</p>
-          </div>
-          <div className={styles.centrediv}>
-            <input type="checkbox" id="tomshardwarecheckbox" className={styles.checkbox}></input>
-          </div>
-        </div>
-      </div>
-    </>
-  )
-}
-
-function SubscribedInterests() {
-  return (
-    <div className="bg-white p-6 rounded-lg shadow-md mb-6 border border-gray-200">
-      <h2 className="text-lg font-semibold text-gray-800 mb-4">Subscribed Interests</h2>
-      <div className={styles.container}>
-        
-      </div>
+      {populateFeeds()}
+      <AddFeed onAddFeed={() => window.location.reload()} />
+      <Categories categoryList={categoryList} onCategoryChange={(category) => handleCategoryFilterChange(category)} />
+      <RenderSubscribedInterests feeds={feeds} filter={categoryFilterList} />
+      <RenderInterestSelection presetFeeds={presetFeeds} filter={categoryFilterList} />
     </div>
   )
 }

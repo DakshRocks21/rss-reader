@@ -1,4 +1,3 @@
-// Daksh wrote this
 "use client";
 
 import { useState, useEffect } from "react";
@@ -9,7 +8,6 @@ import Feeds from "@/components/Feeds/Feeds";
 import Header from "@/components/Header";
 import { setTheme } from "@/components/DarkConfig";
 
-
 export default function HomePage() {
   const [feeds, setFeeds] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
@@ -17,29 +15,41 @@ export default function HomePage() {
   const [filterCategory, setFilterCategory] = useState([]);
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingUser, setIsLoadingUser] = useState(true);
+  const [isLoadingFeeds, setIsLoadingFeeds] = useState(false);
   const [error, setError] = useState(null);
-  const [viewMode, setViewMode] = useState("tiles"); // tiles, list, carousel
+
   useEffect(() => {
-    const fetchData = async () => {
-      const userData = await getUserInfoFromFirebaseAuth();
-      if (!userData) {
-        setIsAuthenticated(false);
-        setIsLoading(false);
-        window.location.href = "/login";
-        return;
+    const fetchUserData = async () => {
+      try {
+        const userData = await getUserInfoFromFirebaseAuth();
+        if (!userData) {
+          setIsAuthenticated(false);
+          setIsLoadingUser(false);
+          window.location.href = "/login";
+          return;
+        }
+        setUser(userData.decodedToken);
+        setIsAuthenticated(true);
+      } catch (err) {
+        setError("Failed to fetch user data.");
+      } finally {
+        setIsLoadingUser(false);
       }
-      setUser(userData.decodedToken);
-      setIsAuthenticated(true);
-      await fetchFeeds();
     };
 
-    fetchData();
-    fetchFeeds();
+    fetchUserData();
   }, []);
-  setTheme();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      fetchFeeds();
+    }
+  }, [isAuthenticated]);
+
 
   const fetchFeeds = async () => {
+    setIsLoadingFeeds(true);
     try {
       const data = await getFeedsFromDatabase();
       for (const feed of data) {
@@ -56,24 +66,36 @@ export default function HomePage() {
 
       setCategoryList(categories);
       setFeeds(data || []);
-      setIsLoading(false);
     } catch (err) {
       setError(err.message);
-      setIsLoading(false);
+    } finally {
+      setIsLoadingFeeds(false);
     }
   };
 
+  const LoadingSpinner = () => (
+    <div className="flex items-center justify-center w-full h-full">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+  );
+
+  if (isLoadingUser) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+  
   if (error) return <p>{error}</p>;
-  if (isLoading) return <p>LOADING...</p>;
   if (!isAuthenticated) return null;
 
   return (
     <div className="min-h-screen flex">
       <Sidebar
+        user={user}
         categoryList={categoryList}
         setFilterCategory={setFilterCategory}
-        setViewMode={setViewMode}
-        viewMode={viewMode}
       />
       <div className="flex-1 p-6">
         <Header
@@ -81,16 +103,19 @@ export default function HomePage() {
           keywordSearched={keywordSearched}
           setKeywordSearched={setKeywordSearched}
         />
-        <Feeds
-          feeds={feeds}
-          keyword={keywordSearched}
-          category={filterCategory}
-          categories={categoryList}
-          viewMode={viewMode}
-        />
+        {isLoadingFeeds ? (
+          <div className="h-64 flex items-center justify-center">
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <Feeds
+            feeds={feeds}
+            keyword={keywordSearched}
+            category={filterCategory}
+            categories={categoryList}
+          />
+        )}
       </div>
     </div>
   );
 }
-
-
