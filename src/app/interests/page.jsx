@@ -75,7 +75,19 @@ export default function Interests() {
     fetchFeeds();
   }, []);
 
-  if (!isAuthenticated && isLoading) return <p>LOADING...</p>;
+  const LoadingSpinner = () => (
+    <div className="flex items-center justify-center w-full h-full">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+  );
+
+  if (!isAuthenticated && isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <LoadingSpinner />
+      </div>
+    )
+  }
 
   // Check respective preset feed checkboxes if user is already subscribed to them, remove duplicates
   const populateFeeds = () => {
@@ -102,7 +114,7 @@ export default function Interests() {
   };
 
   return (
-    <div className="p-6 bg-gradient-to-b from-gray-100 to-gray-300 min-h-screen">
+    <div className="p-6 bg-gradient-to-b bg-background min-h-screen">
       <Header
         user={user}
         onSignOut={async () => {

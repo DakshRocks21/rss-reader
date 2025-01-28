@@ -43,8 +43,8 @@ export default function Header({
 
   return (
     // Chin Ray: Made header rounded, anchor to top of page, implement search bar show/hide
-    <div className="bg-white shadow-lg p-4 flex items-center justify-between rounded-lg sticky top-0">
-      <h1 className="text-xl font-bold text-gray-800">
+    <div className="bg-secondary-container shadow-lg p-4 flex items-center justify-between rounded-lg sticky top-0">
+      <h1 className="text-xl font-bold text-on-secondary-container">
         <a href="/">RSS Feeds</a>
       </h1>
       
@@ -59,7 +59,7 @@ export default function Header({
               className="rounded-full"
             />
           ) : (
-            <FaUserCircle className="text-2xl text-gray-700" />
+            <FaUserCircle className="text-2xl text-on-primary" />
           )}
         </div>
 
