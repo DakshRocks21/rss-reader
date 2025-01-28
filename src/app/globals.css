@@ -1,3 +1,8 @@
+/* Added by Daksh
+I also made a python script to convert the colours from the generator to the tailwindcss format.
+it is in convert.py
+*/
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -52,8 +57,8 @@
   --md-sys-color-surface-container: 252 234 232;
   --md-sys-color-surface-container-high: 246 228 227;
   --md-sys-color-surface-container-highest: 240 222 221;
-  --md-ref-typeface-plain: 'Poppins', sans-serif;
-  --md-ref-typeface-mono: 'Martian Mono', monospace;
+  /* --md-ref-typeface-plain: 'Poppins', sans-serif;
+  --md-ref-typeface-mono: 'Martian Mono', monospace; */
 }
 
 @media (prefers-color-scheme: dark) {

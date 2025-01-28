@@ -1,46 +1,44 @@
-// This file is written by Daksh
+// Made by Daksh
 
 import FeedRow from "@/components/Feeds/FeedRow";
 import { useState } from "react";
 import { FaThLarge, FaList } from "react-icons/fa";
-import { Carousel, CarouselItem, Spacer } from "actify";
+import { Carousel, CarouselItem, Pagination } from "actify";
 
 export default function CategorySection({ category_selected, feeds }) {
+  const header =
+    category_selected.length === 0
+      ? "Your Feeds"
+      : `Latest in ${category_selected}`;
 
-  const header = category_selected.length === 0 ? `Your Feeds` : `Latest in ${category_selected}`;
-
-  
   const [viewMode, setViewMode] = useState("tiles");
-  
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10;
+  const [selectedPageSize, setSelectedPageSize] = useState(10); // Default page size
 
-  const totalPages = Math.ceil(feeds.length / itemsPerPage);
+  const totalPages = Math.ceil(feeds.length / selectedPageSize);
+
+  // Slice feeds based on the current page and selected page size
   const paginatedFeeds = feeds.slice(
-    (currentPage - 1) * itemsPerPage,
-    currentPage * itemsPerPage
+    (currentPage - 1) * selectedPageSize,
+    currentPage * selectedPageSize
   );
 
-  const handleNextPage = () => {
-    if (currentPage < totalPages) setCurrentPage((prev) => prev + 1);
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   return (
-    <div className="mb-8 mt-4 h-full">
+    <div className="mb-8 mt-4 h-full bg-surface-container-low p-6 rounded-lg shadow-lg">
       {/* Section Header */}
-      <div className="flex flex-row items-center justify-between mb-4 h-full ">
-        <h2 className="text-xl font-semibold text-gray-800">
-          {header}
-        </h2>
+      <div className="flex flex-row items-center justify-between mb-4 h-full">
+        <h2 className="text-xl font-semibold text-on-surface">{header}</h2>
         {/* View Mode Buttons */}
         <div className="flex flex-row justify-center gap-x-4">
           <div
             className={`w-10 h-10 border rounded-lg cursor-pointer flex items-center justify-center ${
-              viewMode === "tiles" ? "bg-primary-light text-on-primary" : ""
+              viewMode === "tiles"
+                ? "bg-secondary-container text-on-surface"
+                : "text-on-surface"
             }`}
             onClick={() => setViewMode("tiles")}
           >
@@ -48,7 +46,9 @@ export default function CategorySection({ category_selected, feeds }) {
           </div>
           <div
             className={`w-10 h-10 border rounded-lg cursor-pointer flex items-center justify-center ${
-              viewMode === "list" ? "bg-primary-light text-on-primary" : ""
+              viewMode === "list"
+                ? "bg-secondary-container text-on-surface"
+                : "text-on-surface"
             }`}
             onClick={() => setViewMode("list")}
           >
@@ -56,7 +56,9 @@ export default function CategorySection({ category_selected, feeds }) {
           </div>
           <div
             className={`w-10 h-10 border rounded-lg cursor-pointer flex items-center justify-center ${
-              viewMode === "carousel" ? "bg-primary-light text-on-primary" : ""
+              viewMode === "carousel"
+                ? "bg-secondary-container text-on-surface"
+                : "text-on-surface"
             }`}
             onClick={() => setViewMode("carousel")}
           >
@@ -80,7 +82,7 @@ export default function CategorySection({ category_selected, feeds }) {
         </div>
       )}
       {viewMode === "carousel" && (
-        <Carousel control infinite className="h-[40rem] w-full " interval={5000}>
+        <Carousel control infinite className="h-[40rem] w-full" interval={5000}>
           {feeds.map((feed, index) => (
             <CarouselItem key={index} className="">
               <FeedRow feed={feed} type="carousel" />
@@ -91,32 +93,18 @@ export default function CategorySection({ category_selected, feeds }) {
 
       {/* Pagination */}
       {viewMode !== "carousel" && (
-        <div className="mt-6 flex justify-between items-center">
-          <button
-            className={`px-4 py-2 bg-gray-200 rounded-md ${
-              currentPage === 1
-                ? "opacity-50 cursor-not-allowed"
-                : "hover:bg-gray-300"
-            }`}
-            onClick={handlePreviousPage}
-            disabled={currentPage === 1}
-          >
-            Previous
-          </button>
-          <p className="text-gray-600">
-            Page {currentPage} of {totalPages}
+        <div className="mt-6 flex flex-col items-center text-on-surface-variant">
+          <Pagination
+            totalPages={totalPages}
+            currentPage={currentPage}
+            pageSizes={[5, 10, 20, 50]} // Options for page sizes
+            selectedPageSize={selectedPageSize}
+            setSelectedPageSize={setSelectedPageSize}
+            onPageChange={handlePageChange}
+          />
+          <p className="mt-4 text-sm">
+            Showing {paginatedFeeds.length} of {feeds.length} feeds
           </p>
-          <button
-            className={`px-4 py-2 bg-gray-200 rounded-md ${
-              currentPage === totalPages
-                ? "opacity-50 cursor-not-allowed"
-                : "hover:bg-gray-300"
-            }`}
-            onClick={handleNextPage}
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
         </div>
       )}
     </div>

@@ -27,7 +27,7 @@ export default function Header({
   if (isOnHomePage) {
     return (
       <div
-        className={`relative flex items-center w-full text-black`}
+        className={`relative flex items-center w-full`}
       >
         <FaSearch className="absolute left-3 text-gray-500" />
         <input
@@ -35,7 +35,7 @@ export default function Header({
           placeholder="Search articles..."
           value={keywordSearched}
           onChange={(e) => setKeywordSearched(e.target.value)}
-          className="pl-10 p-2 w-full border rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          className="pl-10 p-2 w-full border rounded-md bg-primary-container shadow-sm focus:outline-none focus:ring-2 focus:ring-tertiary-container focus:border-tertiary-container"
         />
       </div>
     );

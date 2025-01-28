@@ -1,3 +1,5 @@
+// Made by Daksh
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -7,6 +9,7 @@ import Sidebar from "@/components/Sidebar";
 import Feeds from "@/components/Feeds/Feeds";
 import Header from "@/components/Header";
 import { setTheme } from "@/components/DarkConfig";
+import { CircularProgress } from "actify";
 
 export default function HomePage() {
   const [feeds, setFeeds] = useState([]);
@@ -47,7 +50,6 @@ export default function HomePage() {
     }
   }, [isAuthenticated]);
 
-
   const fetchFeeds = async () => {
     setIsLoadingFeeds(true);
     try {
@@ -71,12 +73,11 @@ export default function HomePage() {
     } finally {
       setIsLoadingFeeds(false);
     }
-    
   };
 
   const LoadingSpinner = () => (
-    <div className="flex items-center justify-center w-full h-full">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    <div className="flex items-center justify-center w-screen h-screen bg-background">
+      <CircularProgress isIndeterminate={true} />
     </div>
   );
 
@@ -87,12 +88,12 @@ export default function HomePage() {
       </div>
     );
   }
-  
+
   if (error) return <p>{error}</p>;
   if (!isAuthenticated) return null;
 
   return (
-    <div className="min-h-screen flex">
+    <div className="min-h-screen flex bg-background">
       <Sidebar
         user={user}
         categoryList={categoryList}
