@@ -1,5 +1,8 @@
 # RSS-Reader
 
+
+Demo Creds : `daksh@dakshthapar.com:123456`
+
 ## Misc TODO
 
 - [ ] Input validation for URL. Check if it's RSS is valid.
