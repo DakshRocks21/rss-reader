@@ -8,7 +8,6 @@ import { getFeedsFromDatabase } from "@/lib/firebase/feed_database";
 import Sidebar from "@/components/Sidebar";
 import Feeds from "@/components/Feeds/Feeds";
 import Header from "@/components/Header";
-import { setTheme } from "@/components/DarkConfig";
 import { CircularProgress } from "actify";
 
 export default function HomePage() {
@@ -75,6 +74,7 @@ export default function HomePage() {
     }
   };
 
+
   const LoadingSpinner = () => (
     <div className="flex items-center justify-center w-screen h-screen bg-background">
       <CircularProgress isIndeterminate={true} />
@@ -93,7 +93,7 @@ export default function HomePage() {
   if (!isAuthenticated) return null;
 
   return (
-    <div className="min-h-screen flex bg-background">
+    <div className="flex bg-background">
       <Sidebar
         user={user}
         categoryList={categoryList}
