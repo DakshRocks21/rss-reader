@@ -2,21 +2,27 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from 'next/navigation'
 
 export default function Navbar() {
+  const pathname = usePathname()
+  const isOnLoginPage = pathname.includes("/login") || pathname.includes("/signup");
+
   return (
-    <nav className="bg-gray-800 p-4 text-white shadow-lg">
+    <nav className="bg-surface-container p-4 text-white shadow-lg w-full sticky top-0">
       <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-2xl font-bold">RSSFeed</h1>
+        <Link className="text-2xl font-bold" href="/">RSSFeed</Link>
+        {!isOnLoginPage && (
         <ul className="flex space-x-4">
           <li>
             <Link href="/login">
-              <p className="bg-blue-500 px-4 py-2 rounded hover:bg-blue-700 transition">
+              <p className="bg-secondary-container px-4 py-2 rounded transition">
                 Get Started
               </p>
             </Link>
           </li>
         </ul>
+        )}
       </div>
     </nav>
   );

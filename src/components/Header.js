@@ -18,6 +18,7 @@ export default function Header({
   keywordSearched,
   setKeywordSearched,
   isOnHomePage = true,
+  isMobile = false,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -45,12 +46,14 @@ export default function Header({
             className="pl-10 p-2 w-full border rounded-md bg-primary-container shadow-sm focus:outline-none focus:ring-2 focus:ring-tertiary-container focus:border-tertiary-container"
           />
         </div>
-        <button
-          className="p-2 bg-primary-container rounded-full cursor-pointer"
-          onClick={() => (window.location.href = "/interests")}
-        >
-          <FaPlus className="text-xl text-on-primary-container" />
-        </button>
+        {!isMobile && (
+          <button
+            className="p-2 bg-primary-container rounded-full cursor-pointer"
+            onClick={() => (window.location.href = "/interests")}
+          >
+            <FaPlus className="text-xl text-on-primary-container" />
+          </button>
+        )}
       </div>
     );
   }

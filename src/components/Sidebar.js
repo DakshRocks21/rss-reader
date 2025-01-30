@@ -47,9 +47,6 @@ export default function Sidebar({ user, categoryList, setFilterCategory }) {
       </div>
 
       {/* Filter Section */}
-      <p className="text-on-surface mb-4 text-lg font-medium">
-        Filter by Category
-      </p>
       {isLoading ? (
         <p className="text-on-surface-variant text-sm">Loading categories...</p>
       ) : (
