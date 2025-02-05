@@ -2,7 +2,7 @@
 
 import { CiGlobe } from "react-icons/ci";
 import styles from "./page.module.css";
-import { Checkbox } from "./Checkbox";
+import { RenderCheckbox } from "./Checkbox";
 
 // Already subscribed interests section (pull from Firebase)
 export function RenderSubscribedInterests({ feeds, filter }) {
@@ -40,7 +40,7 @@ export function RenderSubscribedInterests({ feeds, filter }) {
                                 )}
 
                                 <div className={styles.rightalign}>
-                                    <Checkbox feed={feed} feeds={feeds} />
+                                    <RenderCheckbox feed={feed} feeds={feeds} />
                                 </div>
                             </div>
                         </div>
@@ -69,7 +69,7 @@ export function RenderInterestSelection({ presetFeeds, filter }) {
                                         <p className="text-on-surface">{feed.url}</p>
                                     </div>
                                     <div className={styles.centrediv}>
-                                        <Checkbox feed={feed} feeds={presetFeeds} />
+                                        <RenderCheckbox feed={feed} feeds={presetFeeds} />
                                     </div>
                                 </div>
                             </div>

@@ -1,5 +1,6 @@
 // Chin Ray wrote this
 
+import { Checkbox } from "actify";
 export function Categories({ categoryList, onCategoryChange }) {
     return (
       <>
@@ -9,12 +10,12 @@ export function Categories({ categoryList, onCategoryChange }) {
             {categoryList.map((category) => (
               <label
                 key={category}
-                className="flex items-center space-x-2 text-on-primary-container"
+                className="flex items-center text-on-primary-container"
               >
-                <input
+                <Checkbox
                   type="checkbox"
                   value={category}
-                  className="form-checkbox h-6 w-6 text-blue-600"
+                  //className="form-checkbox h-6 w-6 text-blue-600"
                   onChange={() => onCategoryChange(category)}
                 />
                 <span className="text-base">{category}</span>
