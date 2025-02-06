@@ -72,6 +72,7 @@ export default function HomePage() {
       setIsLoadingFeeds(false);
     }
   };
+  setTheme();
 
   const LoadingSpinner = () => (
     <div className="flex items-center justify-center w-full h-full">

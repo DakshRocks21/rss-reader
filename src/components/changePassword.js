@@ -47,28 +47,28 @@ export default function ChangePassword() {
 
     return (
     <div className="mt-5">
-        <h2 className="text-2xl font-bold">Change Password</h2>
+
         <div className="flex flex-col gap-4 w-full max-w-md mx-auto mt-3">
         <input
             type="password"
             placeholder="Old Password"
             value={oldPassword}
             onChange={(e) => setOldPassword(e.target.value)}
-            className="border border-gray-300 p-2 rounded"
+            className="border border-gray-300 text-black p-2 rounded"
         />
         <input
             type="password"
             placeholder="New Password"
             value={newPassword}
             onChange={(e) => setNewPassword(e.target.value)}
-            className="border border-gray-300 p-2 rounded"
+            className="border border-gray-300 text-black p-2 rounded"
         />
         <input
             type="password"
             placeholder="Confirm Password"
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="border border-gray-300 p-2 rounded"
+            className="border border-gray-300 text-black p-2 rounded"
         />
         <button
             onClick={changePassword}
