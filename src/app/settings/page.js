@@ -181,7 +181,6 @@ export default function App() {
             </SegmentedButtonSet>
           </div>
 
-          {/* Sign Out Button */}
           <button onClick={handleSignOut} className="rounded-md bg-red-400 px-4 py-2 text-white transition-all duration-300 ease-in-out hover:bg-red-600 hover:text-white w-full">
             Sign out
           </button>
