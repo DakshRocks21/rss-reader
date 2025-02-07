@@ -58,7 +58,7 @@ Demo Creds : `daksh@dakshthapar.com:123456`
 > Written by Puru
 
 - **Purpose**: Allows for a default profile picture to be displayed if user does not have one
-- **Why Used**: To allow users to select RSS feeds from a dropdown list, enabling easy feed selection and management.
+- **Why Used**: Ensures a default profile picture is shown
 
 ## Library: `actify`
 
