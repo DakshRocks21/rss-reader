@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import ThemeControl from "@/components/ThemeControl";
 import { Button } from "actify";
+import { motion } from "framer-motion";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -14,30 +15,39 @@ export default function Navbar() {
     setIsMounted(true);
   }, []);
 
-  const isOnLoginPage = pathname.includes("/login") || pathname.includes("/signup");
+  const isOnLoginPage =
+    pathname.includes("/login") || pathname.includes("/signup");
 
   return (
-    <nav className="bg-secondary-container p-4 text-white shadow-lg w-full sticky top-0 z-50">
+    <motion.nav className="bg-secondary-container p-4 text-white shadow-lg w-full sticky top-0 z-50"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}>
       <div className="container mx-auto flex justify-between items-center">
-        <Link className="text-2xl font-bold text-on-secondary-container" href="/">
+        <Link
+          className="text-2xl font-bold text-on-secondary-container"
+          href="/"
+        >
           RSSFeed
         </Link>
         <div className="flex items-center space-x-8">
-          <ThemeControl initialTheme="system" />
+          <div className="w-52">
+            <ThemeControl initialTheme="system" />
+          </div>
           {isMounted && !isOnLoginPage && (
-            <Button 
+            <Button
               variant="filled"
               color="primary"
-              className="w-52 px-2 py-2 rounded transition hover:bg-on-primary-container"
+              className="w-44 px-2 py-2 rounded transition hover:bg-on-primary-container font-semibold"
               onClick={() => {
                 window.location.href = "/login";
               }}
-              >
+            >
               Get Started
             </Button>
           )}
         </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 }
