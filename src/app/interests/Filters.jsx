@@ -3,13 +3,13 @@
 export function Categories({ categoryList, onCategoryChange }) {
     return (
       <>
-        <h2 className="text-lg font-semibold text-gray-800 mb-4 mt-5">Categories</h2>
-        <div className="rounded-lg mb-6 border border-gray-200">
-          <div className="flex flex-wrap space-x-4">
+        <h2 className="text-lg font-semibold text-on-primary-container mb-4 mt-5">Categories</h2>
+        <div className="rounded-lg mb-6">
+          <div className="flex flex-wrap space-x-10">
             {categoryList.map((category) => (
               <label
                 key={category}
-                className="flex items-center space-x-2"
+                className="flex items-center space-x-2 text-on-primary-container"
               >
                 <input
                   type="checkbox"
