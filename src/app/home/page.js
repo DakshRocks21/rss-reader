@@ -6,13 +6,15 @@ import { getFeedsFromDatabase } from "@/lib/firebase/feed_database";
 import Sidebar from "@/components/Sidebar";
 import Feeds from "@/components/Feeds/Feeds";
 import Header from "@/components/Header";
-import { Checkbox, CheckboxGroup } from "actify"; // Assuming you still use Actify for checkboxes
-import { CircularProgress } from "actify";
+import { Checkbox, CheckboxGroup, CircularProgress } from "actify";
 import { FaFilter } from "react-icons/fa";
 import BottomNav from "@/components/mobile/BottomNav";
-import BottomSheet from "@/components/mobile/BottomSheet"; // Import the custom BottomSheet
+import BottomSheet from "@/components/mobile/BottomSheet";
+import { useApplyStoredTheme } from "@/components/DarkConfig";
 
 export default function HomePage() {
+  useApplyStoredTheme();
+
   const [feeds, setFeeds] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [keywordSearched, setKeywordSearched] = useState("");
@@ -24,13 +26,11 @@ export default function HomePage() {
   const [error, setError] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
-  const [isFilterOpen, setIsFilterOpen] = useState(false); // State to control BottomSheet
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   useEffect(() => {
     // Check screen size for dynamic UI updates
     const checkScreenSize = () => setIsMobile(window.innerWidth < 1200);
-    console.log("Checking screen size...");
-    console.log(window.innerWidth);
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
     return () => window.removeEventListener("resize", checkScreenSize);
@@ -54,7 +54,6 @@ export default function HomePage() {
         setIsLoadingUser(false);
       }
     };
-
     fetchUserData();
   }, []);
 
@@ -75,11 +74,9 @@ export default function HomePage() {
         if (!response.ok) throw new Error("Failed to fetch RSS feed");
         feed.data = await response.json();
       }
-
       const categories = data
         .flatMap((feed) => feed.categories || [])
         .filter((value, index, self) => self.indexOf(value) === index);
-
       setCategoryList(categories);
       setFeeds(data || []);
     } catch (err) {
@@ -88,32 +85,21 @@ export default function HomePage() {
       setIsLoadingFeeds(false);
     }
   };
-  setTheme();
 
   const handleCategoryChange = (selected) => {
     setSelectedCategories(selected);
     setFilterCategory(selected);
   };
 
-  const LoadingSpinner = () => (
-    <div className="flex items-center justify-center w-screen h-screen bg-background">
-      <CircularProgress isIndeterminate={true} />
-    </div>
-  );
-
-  if (isLoadingUser) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <LoadingSpinner />
-      </div>
-    );
-  }
-
   if (error) return <p className="p-4 text-red-500">{error}</p>;
   if (!isAuthenticated) return null;
 
   return (
-    <div className="flex bg-background min-h-screen">
+    // Use an inline style to directly show the effect of var(--md-sys-color-background)
+    <div
+      className="flex min-h-screen"
+      style={{ backgroundColor: `rgb(var(--md-sys-color-background))` }}
+    >
       {/* Desktop Sidebar */}
       {!isMobile && (
         <Sidebar
@@ -133,7 +119,7 @@ export default function HomePage() {
 
         {isLoadingFeeds ? (
           <div className="h-64 flex items-center justify-center">
-            <LoadingSpinner />
+            <CircularProgress isIndeterminate={true} />
           </div>
         ) : (
           <Feeds
@@ -179,7 +165,6 @@ export default function HomePage() {
         )}
       </BottomSheet>
 
-      {/* Mobile: Bottom Navigation */}
       {isMobile && <BottomNav />}
     </div>
   );
