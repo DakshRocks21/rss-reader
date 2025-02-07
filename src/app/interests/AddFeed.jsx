@@ -2,8 +2,9 @@
 "use client"
 import React, { useState } from "react";
 import { addFeedToDatabase } from "@/lib/firebase/feed_database";
+import CreatableSelect from "react-select/creatable";
 
-export default function AddFeed({ onAddFeed, error }) {
+export default function AddFeed({ onAddFeed, error, categoryList }) {
   const [feedName, setFeedName] = useState("");
   const [feedUrl, setFeedUrl] = useState("");
   const [feedCategory, setFeedCategory] = useState("");
@@ -14,7 +15,7 @@ export default function AddFeed({ onAddFeed, error }) {
     if (feedUrl.trim()) {
       setIsLoading(true);
       console.log()
-      await addFeedToDatabase({name: feedName, feedUrl: feedUrl, categories: feedCategory.split(",") || ["Uncategorised"] });
+      await addFeedToDatabase({name: feedName, feedUrl: feedUrl, categories: feedCategory.map(category => category.label) || ["Uncategorised"] });
       await onAddFeed();
       setIsLoading(false);
       setFeedUrl("");
@@ -38,7 +39,7 @@ export default function AddFeed({ onAddFeed, error }) {
               value={feedName}
               onChange={(e) => setFeedName(e.target.value)}
               placeholder="Enter RSS Feed Name"
-              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full p-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
@@ -53,7 +54,7 @@ export default function AddFeed({ onAddFeed, error }) {
               value={feedUrl}
               onChange={(e) => setFeedUrl(e.target.value)}
               placeholder="Enter RSS Feed URL"
-              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full p-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
@@ -62,13 +63,12 @@ export default function AddFeed({ onAddFeed, error }) {
             <label htmlFor="feed-category" className="block text-l font-medium text-on-surface mb-1">
               Category
             </label>
-            <input
+            <CreatableSelect
               id="feed-category"
-              type="text"
-              value={feedCategory}
-              onChange={(e) => setFeedCategory(e.target.value)}
+              isMulti
+              options={categoryList.map(category => ({ value: category, label: category }))}
+              onChange={(choice) => setFeedCategory(choice)}
               placeholder="Enter Feed Categories (delimited by commas)"
-              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
         </div>

@@ -11,6 +11,7 @@ import Header from "@/components/Header";
 import { RenderSubscribedInterests, RenderInterestSelection } from "./RenderInterests";
 import { Categories } from "./Filters";
 import { CircularProgress } from "actify";
+import { setTheme } from "@/components/DarkConfig";
 
 export default function Interests() {
   const [user, setUser] = useState(null);
@@ -100,6 +101,10 @@ export default function Interests() {
 
   }, [isLoading, presetFeeds])
 
+  // useEffect(() => {
+  //   setTheme();
+  // }, [])
+
   const LoadingSpinner = () => (
     <div className="flex items-center justify-center w-screen h-screen bg-background">
       <CircularProgress isIndeterminate={true} />
@@ -132,7 +137,7 @@ export default function Interests() {
         }}
         isOnHomePage={false}
       />
-      <AddFeed onAddFeed={() => window.location.reload()} />
+      <AddFeed categoryList={categoryList} onAddFeed={() => window.location.reload()} />
       <Categories categoryList={categoryList} onCategoryChange={(category) => handleCategoryFilterChange(category)} />
       <RenderSubscribedInterests feeds={feeds} filter={categoryFilterList} />
       <RenderInterestSelection presetFeeds={presetFeeds} filter={categoryFilterList} />
