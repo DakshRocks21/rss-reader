@@ -88,6 +88,7 @@ export default function HomePage() {
       setIsLoadingFeeds(false);
     }
   };
+  setTheme();
 
   const handleCategoryChange = (selected) => {
     setSelectedCategories(selected);
