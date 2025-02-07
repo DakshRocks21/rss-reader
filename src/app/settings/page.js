@@ -6,8 +6,8 @@ import { collection, doc, setDoc } from "firebase/firestore";
 import { FaUserCircle } from "react-icons/fa";
 import Image from "next/image";
 import { MdArrowDropDown } from "react-icons/md";
-import { SegmentedButton, SegmentedButtonSet, Icon } from "actify";  // Import Actify components
-
+import { SegmentedButton, SegmentedButtonSet, Icon } from "actify";  
+import { FaArrowLeft } from "react-icons/fa";
 import { getUserInfoFromDatabase } from "@/lib/firebase/auth_database";
 import { getCurrentUserID, getUserInfoFromFirebaseAuth, logoutSession } from "@/lib/session";
 import { FIREBASE_FIRESTORE_CLIENT } from "@/lib/firebase/client";
@@ -18,6 +18,7 @@ export default function App() {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [username, setUsername] = useState("");
+  const [bio, setBio] = useState(""); // Add state for bio
   const [message, setMessage] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(true);
   const [selectedColorMode, setSelectedColorMode] = useState("system");
@@ -25,7 +26,8 @@ export default function App() {
   const [isDropdownOpen, setIsDropdownOpen] = useState({
     username: false,
     password: false,
-    theme: false,
+    faq: false,
+    bio: false 
   });
 
   useEffect(() => {
@@ -61,6 +63,9 @@ export default function App() {
     document.body.classList.toggle("light", theme === "light");
     localStorage.setItem("theme", theme);
   };
+  const goBack = () => {
+    window.location.href = "/home";
+  }
   
 
   const handleSignOut = async () => {
@@ -100,22 +105,72 @@ export default function App() {
       email: user.data.email,
       displayName: username,
       photoURL: user.data.photoURL || "",
+      bio: bio, 
       createdAt: new Date(),
     });
   };
+
+  const updateBio = async () => {
+    if (!bio.trim()) {
+      setMessage("Username cannot be empty.");
+      return;
+    }
+    try {
+      setMessage("");
+      setIsLoading(true);
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+
+      if (!isAuthenticated) {
+        setMessage("No user is currently signed in.");
+        return;
+      }
+
+      const usersCollection = collection(FIREBASE_FIRESTORE_CLIENT, "users");
+      const userDocRef = doc(usersCollection, await getCurrentUserID());
+      await setDoc(userDocRef, {
+        bio: bio,
+      }, { merge: true });
+
+      setMessage("Bio successfully updated!");
+      setUser({ ...user, data: { ...user.data, bio: bio } });
+    } catch (error) {
+      console.error("Error updating bio:", error);
+      setMessage("Failed to update bio");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
 
   const toggleDropdown = (section) => {
     setIsDropdownOpen((prev) => ({ ...prev, [section]: !prev[section] }));
   };
 
+  const LoadingSpinner = () => (
+    <div className="flex items-center justify-center w-full h-full">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+    </div>
+  );
+
   if (isLoading) {
-    return <p>Loading...</p>;
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <LoadingSpinner />
+      </div>
+    );
   }
   
 
   return (
     <div className="min-h-screen flex justify-center items-center">
-      <div className="flex flex-row gap-20 p-20 bg-white shadow-md rounded-lg w-full min-h-[700px] max-w-7xl">
+        <button 
+        onClick={goBack} 
+        className="absolute top-5 left-5 flex items-center gap-2 px-4 py-2 text-foreground rounded-md hover:bg-gray-400 transition">
+        <FaArrowLeft className="w-5 h-5" />
+        </button>
+      <div className="flex flex-row gap-20 p-20 bg-background shadow-md rounded-lg w-full min-h-[700px] max-w-7xl">
         <div className="flex flex-col items-center justify-center border-r pr-24">
           {user && user.data.photoURL ? (
             <Image src={user.data.photoURL} alt="Profile Picture" width={180} height={180} className="rounded-full" />
@@ -125,8 +180,14 @@ export default function App() {
           <h1 className="text-3xl font-semibold mt-3 text-black">Settings</h1>
           {user && (
             <>
-              <p className="mt-2 text-xl font-bold text-black">Email: {user.data.email}</p>
-              <p className="text-xl font-bold text-black">Username: {user.data.displayName}</p>
+                <p className="mt-2 text-xl font-bold text-black">Email: {user.data.email}</p>
+                <p className="text-xl font-bold text-black">Username: {user.data.displayName}</p>
+              {user.data.bio && (
+        
+                <p className="font-semibold text-black mt-2 ">Bio: {user.data.bio}</p>
+              
+              )}
+              
             </>
           )}
         </div>
@@ -147,6 +208,27 @@ export default function App() {
             )}
           </div>
 
+          
+          <div className="w-full">
+            <button onClick={() => toggleDropdown("bio")} className="border px-3 py-2 text-black rounded-md w-full text-left flex justify-between items-center">
+              Add Bio
+              <MdArrowDropDown className="inline ml-2" />
+            </button>
+            {isDropdownOpen.bio && (
+              <div className="mt-2 p-2 border rounded-md bg-white shadow-lg w-full">
+                <textarea
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value)}
+                  placeholder="Enter your bio"
+                  className="border px-3 py-2 text-black rounded-md w-full"
+                />
+                <button onClick={updateBio} disabled={isLoading} className={`px-4 py-2 rounded-md w-full mt-2 ${isLoading ? "bg-gray-400" : "bg-blue-500 text-white hover:bg-blue-600"}`}>
+                  {isLoading ? "Saving..." : "Change Bio"}
+                </button>
+              </div>
+            )}
+          </div>
+
           <div className="w-full">
             <button onClick={() => toggleDropdown("password")} className="border px-3 py-2 text-black rounded-md w-full text-left flex justify-between items-center">
               Change Password
@@ -158,6 +240,24 @@ export default function App() {
               </div>
             )}
           </div>
+
+          <div className="w-full">
+            <button onClick={() => toggleDropdown("faq")} className="border px-3 py-2 text-black rounded-md w-full text-left flex justify-between items-center">
+              FAQs
+              <MdArrowDropDown className="inline ml-2" />
+            </button>
+            {isDropdownOpen.faq && (
+              <div className="mt-2 p-2 border rounded-md bg-white shadow-lg w-full">
+                <p className="text-xl">Q: What does RSS stand for?</p>
+                <p className="mt-2">RSS stands for Really Simple Syndication</p>
+                <p className="text-xl mt-5">Q: What is an RSS feed?</p>
+                <p className="mt-2">RSS is a web feed format that allows users to recieve automatic updates from subscribed websites,blogs,news sites etc.</p>
+                <p className="text-xl  mt-5">Q: How does RSS work?</p>
+                <p className="mt-2">Users can subscribed to different RSS feeds in the interests page after which updates from that source will come in their feed</p>
+              </div>
+            )}
+          </div>
+
           <div className="w-full">
             <SegmentedButtonSet role="presentation" className="w-full" aria-label="Color mode">
               <div role="group" className="h-10 grid w-full grid-flow-col auto-rows-auto auto-cols-[1fr]">
