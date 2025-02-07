@@ -1,5 +1,5 @@
 // This file is written by Daksh
-import CategorySection from "@/components/CategorySection";
+import CategorySection from "@/components/Feeds/CategorySection";
 
 export default function Feeds({ feeds, keyword, filteredCategory, categories }) {
 

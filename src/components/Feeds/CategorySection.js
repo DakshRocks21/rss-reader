@@ -1,9 +1,12 @@
-// Made by Daksh
-
-import FeedRow from "@/components/Feeds/FeedRow";
-import { useState } from "react";
+// Written by Daksh 
+import dynamic from "next/dynamic";
+import { memo, useMemo, useState } from "react";
+import FeedRow from "./FeedRow";
 import { FaThLarge, FaList } from "react-icons/fa";
-import { Carousel, CarouselItem, Pagination } from "actify";
+import { Pagination } from "actify";
+import Autoplay from "embla-carousel-autoplay";
+
+const EmblaCarousel = dynamic(() => import("./EmblaCarousel"), { ssr: false });
 
 export default function CategorySection({ category_selected, feeds }) {
   const header =
@@ -13,14 +16,18 @@ export default function CategorySection({ category_selected, feeds }) {
 
   const [viewMode, setViewMode] = useState("tiles");
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedPageSize, setSelectedPageSize] = useState(10); // Default page size
-
+  const [selectedPageSize, setSelectedPageSize] = useState(10);
   const totalPages = Math.ceil(feeds.length / selectedPageSize);
-
-  // Slice feeds based on the current page and selected page size
   const paginatedFeeds = feeds.slice(
     (currentPage - 1) * selectedPageSize,
     currentPage * selectedPageSize
+  );
+
+  // Memoize options and plugins so they don't change on every render.
+  const carouselOptions = useMemo(() => ({ axis: "y", loop: true }), []);
+  const carouselPlugins = useMemo(
+    () => [Autoplay({ stopOnInteraction: true })],
+    []
   );
 
   const handlePageChange = (page) => {
@@ -42,7 +49,7 @@ export default function CategorySection({ category_selected, feeds }) {
             }`}
             onClick={() => setViewMode("tiles")}
           >
-            <FaThLarge className="inline" />
+            <FaThLarge />
           </div>
           <div
             className={`w-10 h-10 border rounded-lg cursor-pointer flex items-center justify-center ${
@@ -52,7 +59,7 @@ export default function CategorySection({ category_selected, feeds }) {
             }`}
             onClick={() => setViewMode("list")}
           >
-            <FaList className="inline" />
+            <FaList />
           </div>
           <div
             className={`w-10 h-10 border rounded-lg cursor-pointer flex items-center justify-center ${
@@ -62,13 +69,14 @@ export default function CategorySection({ category_selected, feeds }) {
             }`}
             onClick={() => setViewMode("carousel")}
           >
-            <FaThLarge className="inline" />
+            <FaThLarge />
           </div>
         </div>
       </div>
+
       {/* View Modes */}
       {viewMode === "tiles" && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {paginatedFeeds.map((feed, index) => (
             <FeedRow key={index} feed={feed} type="tiles" />
           ))}
@@ -82,22 +90,23 @@ export default function CategorySection({ category_selected, feeds }) {
         </div>
       )}
       {viewMode === "carousel" && (
-        <Carousel control infinite className="h-[40rem] w-full" interval={5000}>
-          {feeds.map((feed, index) => (
-            <CarouselItem key={index} className="">
-              <FeedRow feed={feed} type="carousel" />
-            </CarouselItem>
-          ))}
-        </Carousel>
+        <EmblaCarousel
+          slides={feeds}
+          options={carouselOptions}
+          plugins={carouselPlugins}
+          renderSlide={(feed, index) => (
+            <FeedRow key={index} feed={feed} type="carousel" />
+          )}
+        />
       )}
 
-      {/* Pagination */}
+      {/* Pagination (not used in carousel view) */}
       {viewMode !== "carousel" && (
         <div className="mt-6 flex flex-col items-center text-on-surface-variant">
           <Pagination
             totalPages={totalPages}
             currentPage={currentPage}
-            pageSizes={[5, 10, 20, 50]} // Options for page sizes
+            pageSizes={[5, 10, 20, 50]}
             selectedPageSize={selectedPageSize}
             setSelectedPageSize={setSelectedPageSize}
             onPageChange={handlePageChange}

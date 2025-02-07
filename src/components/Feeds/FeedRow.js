@@ -10,7 +10,7 @@ export default function FeedRow({ feed, type }) {
 
  if (type === "tiles" || type === "carousel") {
   return (
-  <Card className="max-w-lg bg-surface-container text-on-primary-container shadow-lg hover:shadow-xl rounded-xl transition-shadow duration-300">
+  <Card className="max-w-2xl bg-surface-container text-on-primary-container shadow-lg hover:shadow-xl rounded-xl transition-shadow duration-300">
       {image && (
         <Image
           src={image}

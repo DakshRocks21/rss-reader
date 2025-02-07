@@ -9,9 +9,9 @@ export default function Navbar() {
   const isOnLoginPage = pathname.includes("/login") || pathname.includes("/signup");
 
   return (
-    <nav className="bg-surface-container p-4 text-white shadow-lg w-full sticky top-0">
+    <nav className="bg-secondary-container p-4 text-white shadow-lg w-full sticky top-0">
       <div className="container mx-auto flex justify-between items-center">
-        <Link className="text-2xl font-bold" href="/">RSSFeed</Link>
+        <Link className="text-2xl font-bold text-on-secondary-container" href="/">RSSFeed</Link>
         {!isOnLoginPage && (
         <ul className="flex space-x-4">
           <li>

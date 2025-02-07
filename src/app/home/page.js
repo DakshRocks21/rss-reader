@@ -28,7 +28,9 @@ export default function HomePage() {
 
   useEffect(() => {
     // Check screen size for dynamic UI updates
-    const checkScreenSize = () => setIsMobile(window.innerWidth < 768);
+    const checkScreenSize = () => setIsMobile(window.innerWidth < 1200);
+    console.log("Checking screen size...");
+    console.log(window.innerWidth);
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
     return () => window.removeEventListener("resize", checkScreenSize);

@@ -86,7 +86,14 @@ export default function Signup() {
             className="w-full rounded-lg text-lg"
             disabled={loading}
           >
-            {loading ? <CircularProgress className="mr-2" /> : "Sign Up"}
+            {loading ? (
+              <CircularProgress
+                isIndeterminate={true}
+                className="mr-2 text-inverse-on-surface"
+              />
+            ) : (
+              "Sign Up"
+            )}
           </Button>
         </form>
 
@@ -96,11 +103,7 @@ export default function Signup() {
           color="primary"
           className="w-full flex items-center justify-center rounded-lg text-lg"
         >
-          {loading ? (
-            <CircularProgress className="mr-2" />
-          ) : (
-            <FcGoogle className="mr-2 text-2xl" />
-          )}
+          <FcGoogle className="mr-2 text-2xl" />
           Sign up with Google
         </Button>
 
