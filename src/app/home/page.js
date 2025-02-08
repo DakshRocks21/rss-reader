@@ -11,6 +11,8 @@ import { FaFilter } from "react-icons/fa";
 import BottomNav from "@/components/mobile/BottomNav";
 import BottomSheet from "@/components/mobile/BottomSheet";
 import { useApplyStoredTheme } from "@/components/DarkConfig";
+import { FaSearch, FaRegSadTear } from "react-icons/fa";
+import { Button } from "actify";
 
 export default function HomePage() {
   useApplyStoredTheme();
@@ -121,12 +123,36 @@ export default function HomePage() {
           <div className="h-64 flex items-center justify-center">
             <CircularProgress isIndeterminate={true} />
           </div>
+        ) : // Filter feeds based on selected categories
+        feeds.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-80 text-center bg-surface-container-low rounded-lg shadow-md p-6">
+            <FaRegSadTear className="text-6xl text-on-surface-variant mb-4" />
+            <h2 className="text-2xl font-semibold text-on-surface">
+              No Feeds Found
+            </h2>
+            <p className="text-md text-on-surface-variant mt-2">
+              It looks like you haven’t added any interests yet. Start exploring
+              topics that matter to you!
+            </p>
+            <Button
+              className="mt-5"
+              color="primary"
+              variant="filled"
+              icon={<FaSearch />}
+              onClick={() => (window.location.href = "/interests")}
+            >
+              Explore Interests
+            </Button>
+          </div>
         ) : (
           <Feeds
-            feeds={feeds}
-            keyword={keywordSearched}
-            filteredCategory={filterCategory}
-            categories={categoryList}
+            feeds={feeds.filter((feed) =>
+              feed.categories.some((category) =>
+                filterCategory.includes(category)
+              )
+            )}
+            keywordSearched={keywordSearched}
+            filterCategory={filterCategory}
           />
         )}
       </div>

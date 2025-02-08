@@ -1,6 +1,7 @@
 // This file is written by Daksh and Chin Ray
 
 import {
+  addDoc,
   doc,
   getDoc,
   setDoc,
@@ -22,9 +23,10 @@ export const addFeedToDatabase = async ({ name, feedUrl, categories, image = nul
 
   categories = categories || ["Uncategorised"];
 
-  if (!userDoc.exists()) {
-    await updateDoc(dataPath, {
-      0: [{ name: name, url: feedUrl, categories: categories, image: image, description: description }],
+  if (!userDoc.exists() || !userDoc.data().feeds) {
+    console.log("Creating new doc as it doesn't exist");
+    await setDoc(dataPath, {
+      "feeds": [{ name: name, url: feedUrl, categories: categories, image: image, description: description }],
     });
   } else {
     const feeds = userDoc.data().feeds || [];
