@@ -109,6 +109,8 @@ export default function App() {
       bio: bio, 
       createdAt: new Date(),
     });
+    setUsername("");
+    
   };
 
   const updateBio = async () => {
