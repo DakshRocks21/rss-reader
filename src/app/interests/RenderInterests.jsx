@@ -9,10 +9,10 @@ export function RenderSubscribedInterests({ feeds, filter }) {
         <>
             <h2 className="text-lg font-semibold text-on-surface mb-4">Subscribed Interests</h2>
             {feeds.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-6">
+                <div className="flex flex-row flex-wrap">
                     {feeds.map((feed) => (
                         (filter.length === 0 || feed.categories.some(category => filter.includes(category))) ? (
-                            <div className={`bg-surface-bright p-6 rounded-lg shadow-md mb-6 w-fit max-w-2xl mr-6 flex items-center`} key={feed.url}>
+                            <div className={`bg-surface-bright p-6 rounded-lg drop-shadow-md mb-6 w-fit max-w-2xl mr-6 flex items-center`} key={feed.url}>
                                 <div className={styles.container}>
                                     {feed.name && feed.name != "" ? (
                                         <>
