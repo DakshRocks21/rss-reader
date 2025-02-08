@@ -63,8 +63,13 @@ export default function Interests() {
         const categories = data
           .flatMap((feed) => feed.categories || [])
           .filter((value, index, self) => self.indexOf(value) === index);
+
+        const presetCategories = presetFeeds
+          .flatMap((feed) => feed.categories || [])
+          .filter((value, index, self) => self.indexOf(value) === index);
+        
         setFeeds(data);
-        setCategoryList(categories);
+        setCategoryList(categories.length > 0 ? categories : presetCategories);
         setIsLoading(false);
       } catch (err) {
         setError(err.message);
@@ -94,17 +99,13 @@ export default function Interests() {
 
         return [newFeeds, newPresetFeeds];
       };
-      
+
       const [newFeeds, newPresetFeeds] = populateFeeds();
       setFeeds(newFeeds);
       setPresetFeeds(newPresetFeeds);
     };
 
   }, [isLoading, presetFeeds])
-
-  // useEffect(() => {
-  //   setTheme();
-  // }, [])
 
   const LoadingSpinner = () => (
     <div className="flex items-center justify-center w-screen h-screen bg-background">

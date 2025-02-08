@@ -79,7 +79,7 @@ export default function LandingPage() {
             <AccordionHeader className="text-on-tertiary-container">
               What is RSSFeed?
             </AccordionHeader>
-            <AccordionContent className="text-on-tertiary-container">
+            <AccordionContent className="text-white">
               RSSFeed is a platform that helps you stay updated with the latest
               articles and blogs from your favorite sources.
             </AccordionContent>
@@ -88,16 +88,16 @@ export default function LandingPage() {
             <AccordionHeader className="text-on-tertiary-container">
               Is RSSFeed free to use?
             </AccordionHeader>
-            <AccordionContent className="text-on-tertiary-container">
+            <AccordionContent className="text-white">
               Yes! RSSFeed is completely free to use, and you can follow as many
               sources as you like.
             </AccordionContent>
           </AccordionItem>
           <AccordionItem>
-            <AccordionHeader className="text-on-secondary-container">
+            <AccordionHeader className="text-on-tertiary-container">
               How do I get started?
             </AccordionHeader>
-            <AccordionContent className="text-on-secondary-container">
+            <AccordionContent className="text-white">
               Simply click the "Get Started" button above, create an account,
               and start following your favorite feeds!
             </AccordionContent>
