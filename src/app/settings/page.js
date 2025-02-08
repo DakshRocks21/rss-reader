@@ -39,7 +39,6 @@ export default function App() {
     // Uses for dropdowns state and when user clicks on dropdown button then it changes to flase
     username: false,
     password: false,
-    faq: false,
     bio: false,
   });
 
@@ -317,35 +316,6 @@ export default function App() {
             )}
           </div>
 
-          {/* FAQs dropdwon */}
-          <div className="w-full">
-            <button
-              onClick={() => toggleDropdown("faq")}
-              className="border px-3 py-2 text-on-primary-container rounded-md w-full text-left flex justify-between items-center"
-            >
-              FAQs
-              <MdArrowDropDown className="inline ml-2" />
-              {/* When dropdown button is clicked FAQs are shown*/}
-            </button>
-            {isDropdownOpen.faq && (
-              <div className="mt-2 p-2 border rounded-md bg-white shadow-lg w-full">
-                <p className="text-xl">Q: What does RSS stand for?</p>
-                <p className="mt-2">RSS stands for Really Simple Syndication</p>
-                <p className="text-xl mt-5">Q: What is an RSS feed?</p>
-                <p className="mt-2">
-                  RSS is a web feed format that allows users to recieve
-                  automatic updates from subscribed websites,blogs,news sites
-                  etc.
-                </p>
-                <p className="text-xl  mt-5">Q: How does RSS work?</p>
-                <p className="mt-2">
-                  Users can subscribed to different RSS feeds in the interests
-                  page after which updates from that source will come in their
-                  feed
-                </p>
-              </div>
-            )}
-          </div>
           <ThemeControl
             selectedColorMode={selectedColorMode}
             handleChangeColorMode={handleChangeColorMode}

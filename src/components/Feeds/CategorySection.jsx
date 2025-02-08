@@ -1,15 +1,16 @@
-// Written by Daksh 
+// Written by Daksh
 import dynamic from "next/dynamic";
 import { memo, useMemo, useState } from "react";
 import FeedRow from "./FeedRow";
 import { FaThLarge, FaList } from "react-icons/fa";
+import { MdViewCarousel } from "react-icons/md";
 import { Pagination } from "actify";
 import Autoplay from "embla-carousel-autoplay";
-
+import {FaSearch, FaRegFrown } from "react-icons/fa";
+import { Button } from "actify";
 const EmblaCarousel = dynamic(() => import("./EmblaCarousel"), { ssr: false });
 
 export default function CategorySection({ category_selected, feeds }) {
-
   const header =
     category_selected.length === 0
       ? "Your Feeds"
@@ -70,10 +71,35 @@ export default function CategorySection({ category_selected, feeds }) {
             }`}
             onClick={() => setViewMode("carousel")}
           >
-            <FaThLarge />
+            <MdViewCarousel className="text-2xl" />
           </div>
         </div>
       </div>
+
+      {
+        /* If no feeds at all */
+        feeds.length === 0 && (
+          <div className="flex flex-col items-center justify-center h-80 text-center bg-surface-container-low rounded-lg shadow-md p-6">
+            <FaRegFrown className="text-6xl text-on-surface-variant mb-4" />
+            <h2 className="text-2xl font-semibold text-on-surface">
+              Oops, No Feeds!
+            </h2>
+            <p className="text-md text-on-surface-variant mt-2">
+              It looks like we couldn't find any feeds here. Try adding or
+              exploring different categories.
+            </p>
+            <Button
+              className="mt-5"
+              color="primary"
+              variant="filled"
+              icon={<FaSearch />}
+              onClick={() => (window.location.href = "/interests")}
+            >
+              Discover Interests
+            </Button>
+          </div>
+        )
+      }
 
       {/* View Modes */}
       {viewMode === "tiles" && (
@@ -102,7 +128,7 @@ export default function CategorySection({ category_selected, feeds }) {
       )}
 
       {/* Pagination (not used in carousel view) */}
-      {viewMode !== "carousel" && (
+      {(viewMode !== "carousel" && feeds.length !== 0  )&& (
         <div className="mt-6 flex flex-col items-center text-on-surface-variant">
           <Pagination
             totalPages={totalPages}

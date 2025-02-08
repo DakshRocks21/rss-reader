@@ -17,7 +17,10 @@ export default function FeedRow({ feed, type }) {
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.4 }}
       >
-        <Card className="max-w-2xl bg-surface-container text-on-primary-container shadow-lg hover:shadow-xl rounded-xl transition-shadow duration-300">
+        <Card
+          onClick={() => window.open(link, "_blank", "noopener,noreferrer")}
+          className="max-w-2xl bg-surface-container text-on-primary-container cursor-pointer shadow-lg hover:shadow-xl rounded-xl transition-shadow duration-300"
+        >
           {image && (
             <Image
               src={image}
@@ -28,22 +31,17 @@ export default function FeedRow({ feed, type }) {
             />
           )}
           <div className="p-6 space-y-4">
-            <Link
-              href={link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-title-large text-primary font-bold hover:underline hover:text-primary-dark"
-            >
+            <p className="text-title-large text-primary font-bold hover:underline hover:text-primary-dark">
               {title}
-            </Link>
+            </p>
             <p className="text-on-surface-variant line-clamp-5">
               {contentSnippet}
             </p>
             <div className="flex justify-between items-center">
-              <p className="text-primary w-8/12 line-clamp-2">{publisher || "Unknown Publisher"}</p>
-              <p className="text-on-surface-variant">
-                {timeAgo}
+              <p className="text-primary w-8/12 line-clamp-2">
+                {publisher || "Unknown Publisher"}
               </p>
+              <p className="text-on-surface-variant">{timeAgo}</p>
             </div>
           </div>
         </Card>
@@ -77,12 +75,8 @@ export default function FeedRow({ feed, type }) {
             {contentSnippet}
           </p>
           <div className="flex justify-between items-center">
-            <p  className="text-primary ">
-              {publisher || "Unknown Publisher"}
-            </p>
-            <p className="text-on-surface-variant ">
-              {timeAgo}
-            </p>
+            <p className="text-primary ">{publisher || "Unknown Publisher"}</p>
+            <p className="text-on-surface-variant ">{timeAgo}</p>
           </div>
         </div>
       </motion.a>
