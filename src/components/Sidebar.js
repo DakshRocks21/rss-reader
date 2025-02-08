@@ -18,7 +18,8 @@ export default function Sidebar({ user, categoryList, setFilterCategory }) {
     setFilterCategory(selected);
   };
 
-  const isLoading = !categoryList || categoryList.length === 0;
+  console.log(user);
+  const isLoading = !categoryList.length;
 
   return (
     <div className="shadow-md w-64 p-4 sticky top-0 h-screen bg-secondary-container flex flex-col">
@@ -48,7 +49,12 @@ export default function Sidebar({ user, categoryList, setFilterCategory }) {
 
       {/* Filter Section */}
       {isLoading ? (
-        <p className="text-on-surface-variant text-sm">Loading categories...</p>
+        selectedCategories.length > 0 ? (
+          <p className="text-on-surface-variant text-sm">Loading categories...</p>
+        ) : (
+          <p className="text-on-surface-variant text-sm">No categories found</p>
+        )
+
       ) : (
         <CheckboxGroup
           label="Categories"
