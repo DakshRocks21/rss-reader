@@ -106,10 +106,6 @@ export default function Interests() {
 
   }, [isLoading, presetFeeds])
 
-  // useEffect(() => {
-  //   setTheme();
-  // }, [])
-
   const LoadingSpinner = () => (
     <div className="flex items-center justify-center w-screen h-screen bg-background">
       <CircularProgress isIndeterminate={true} />
@@ -133,7 +129,7 @@ export default function Interests() {
   };
 
   return (
-    <div className="p-6 bg-gradient-to-b bg-background min-h-screen" onClick={Header.closeDropdown}>
+    <div className="p-6 bg-gradient-to-b bg-background min-h-screen">
       <Header
         user={user}
         onSignOut={async () => {
