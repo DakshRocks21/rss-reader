@@ -36,6 +36,48 @@ export default function Interests() {
       categories: ["Technology", "Hardware", "Singapore"],
       image: "images/HardwareZone.png",
       description: "An Singaporean technology forum and news outlet specialising in hardware."
+    },
+    {
+      name: "RedSports",
+      url: "https://www.redsports.sg/feed",
+      categories: ["Sports", "Singapore"],
+      image: "images/RedSports.png",
+      description: "A Singaporean sports news outlet."
+    },
+    {
+      name: "CNA (Latest News)",
+      url: "https://www.channelnewsasia.com/api/v1/rss-outbound-feed?_format=xml",
+      categories: ["Singapore", "News"],
+      image: "images/ChannelNewsAsia.png",
+      description: "A Singaporean mainstream news outlet."
+    },
+    {
+      name: "Fox News",
+      url: "https://moxie.foxnews.com/google-publisher/latest.xml",
+      categories: ["United States", "News", "Politics"],
+      image: "images/FoxNews.png",
+      description: "A conservative news outlet in the United States."
+    },
+    {
+      name: "NDTV (India)",
+      url: "https://feeds.feedburner.com/ndtvnews-india-news",
+      categories: ["India", "News", "Politics"],
+      image: "images/NDTV.png",
+      description: "A pro-BJP news outlet in India."
+    },
+    {
+      name: "ABP Live (India News)",
+      url: "https://news.abplive.com/news/india/feed",
+      categories: ["India", "News", "Politics"],
+      image: "images/ABPLive.png",
+      description: "A mainstream news outlet in India."
+    },
+    {
+      name: "Zee News (Nation)",
+      url: "https://zeenews.india.com/rss/india-national-news.xml",
+      categories: ["India", "News", "Politics"],
+      image: "images/ZeeNews.png",
+      description: "A pro-BJP news outlet in India."
     }
   ])
 
@@ -67,7 +109,7 @@ export default function Interests() {
           .filter((value, index, self) => self.indexOf(value) === index);
         
         setFeeds(data);
-        setCategoryList(categories.length > 0 ? categories : presetCategories);
+        setCategoryList(Array.from(new Set([...categories, ...presetCategories])));
         setIsLoading(false);
       } catch (err) {
         setError(err.message);
