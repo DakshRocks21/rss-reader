@@ -26,7 +26,7 @@ export default function AddFeed({ onAddFeed, error, categoryList }) {
   return (
     <>
       <h2 className="text-lg font-semibold text-on-surface mb-4 mt-5">Add a New Feed</h2>
-      <div className="bg-surface-bright p-6 rounded-lg shadow-md mb-6 border border-gray-200">
+      <div className="bg-surface-bright p-6 rounded-lg drop-shadow-md mb-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Feed URL Input */}
           <div>

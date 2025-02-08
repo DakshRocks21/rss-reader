@@ -62,8 +62,13 @@ export default function Interests() {
         const categories = data
           .flatMap((feed) => feed.categories || [])
           .filter((value, index, self) => self.indexOf(value) === index);
+
+        const presetCategories = presetFeeds
+          .flatMap((feed) => feed.categories || [])
+          .filter((value, index, self) => self.indexOf(value) === index);
+        
         setFeeds(data);
-        setCategoryList(categories);
+        setCategoryList(categories.length > 0 ? categories : presetCategories);
         setIsLoading(false);
       } catch (err) {
         setError(err.message);
@@ -93,7 +98,7 @@ export default function Interests() {
 
         return [newFeeds, newPresetFeeds];
       };
-      
+
       const [newFeeds, newPresetFeeds] = populateFeeds();
       setFeeds(newFeeds);
       setPresetFeeds(newPresetFeeds);
@@ -128,7 +133,7 @@ export default function Interests() {
   };
 
   return (
-    <div className="p-6 bg-gradient-to-b bg-background min-h-screen">
+    <div className="p-6 bg-gradient-to-b bg-background min-h-screen" onClick={Header.closeDropdown}>
       <Header
         user={user}
         onSignOut={async () => {

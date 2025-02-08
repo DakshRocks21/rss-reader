@@ -131,7 +131,7 @@ export default function HomePage() {
               No Feeds Found
             </h2>
             <p className="text-md text-on-surface-variant mt-2">
-              It looks like you haven’t added any interests yet. Start exploring
+              It looks like you haven't added any interests yet. Start exploring
               topics that matter to you!
             </p>
             <Button

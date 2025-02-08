@@ -19,7 +19,7 @@ export default function Navbar() {
     pathname.includes("/login") || pathname.includes("/signup");
 
   return (
-    <motion.nav className="bg-secondary-container p-4 text-white shadow-lg w-full sticky top-0 z-50"
+    <motion.nav className={`bg-secondary-container p-4 text-white ${isMounted && !isOnLoginPage ? "" : "rounded-lg"} shadow-lg w-full sticky top-0 z-50`} // Chin Ray: Rounded corners only when on login page
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     transition={{ duration: 0.5 }}>
