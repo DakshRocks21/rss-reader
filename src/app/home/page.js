@@ -24,7 +24,11 @@ export default function HomePage() {
   const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
+
+  // Feed loading states
   const [isLoadingFeeds, setIsLoadingFeeds] = useState(false);
+  const [feedLoadingMessage, setFeedLoadingMessage] = useState("");
+
   const [error, setError] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [selectedCategories, setSelectedCategories] = useState([]);
@@ -67,25 +71,60 @@ export default function HomePage() {
 
   const fetchFeeds = async () => {
     setIsLoadingFeeds(true);
+    setFeedLoadingMessage("Starting feed fetch...");
+
     try {
       const data = await getFeedsFromDatabase();
+      const fetchedFeeds = [];
+
+      // Fetch each feed in sequence, ignoring IP-based rate-limit errors
       for (const feed of data) {
-        const response = await fetch(
-          `/api/fetch-rss?feedUrl=${encodeURIComponent(feed.url)}`
-        );
-        if (!response.ok) throw new Error("Failed to fetch RSS feed");
-        feed.data = await response.json();
+        const feedName = feed.title || feed.name || feed.url;
+        setFeedLoadingMessage(`Loading feed: ${feedName}`);
+
+        try {
+          const response = await fetch(
+            `/api/fetch-rss?feedUrl=${encodeURIComponent(feed.url)}`
+          );
+
+          if (!response.ok) {
+            if (response.status === 429 || response.status === 500) {
+              console.warn(`Skipping feed due to rate limit or server error: ${feedName}`);
+              continue; 
+            } else {
+              throw new Error(`Failed to fetch ${feedName} (status ${response.status})`);
+            }
+          }
+
+          // If it's okay, parse and store the feed data
+          feed.data = await response.json();
+          fetchedFeeds.push(feed);
+
+        } catch (innerError) {
+          if (
+            innerError.message.includes("rate limit") ||
+            innerError.message.includes("429")
+          ) {
+            console.warn(`Skipping feed: ${feedName} due to IP-based rate limit`);
+          } else {
+            throw innerError;
+          }
+        }
       }
-      const categories = data
+
+      const categories = fetchedFeeds
         .flatMap((feed) => feed.categories || [])
         .filter((value, index, self) => self.indexOf(value) === index);
+
+      setFeeds(fetchedFeeds);
       setCategoryList(categories);
-      setFeeds(data || []);
-      console.log("Fetched feeds", data);
+      console.log("Fetched feeds", fetchedFeeds);
       console.log("Categories", categories);
     } catch (err) {
+      // Only set error here for non-rate-limit-related problems
       setError(err.message);
     } finally {
+      setFeedLoadingMessage("");
       setIsLoadingFeeds(false);
     }
   };
@@ -99,7 +138,6 @@ export default function HomePage() {
   if (!isAuthenticated) return null;
 
   return (
-    // Use an inline style to directly show the effect of var(--md-sys-color-background)
     <div
       className="flex min-h-screen"
       style={{ backgroundColor: `rgb(var(--md-sys-color-background))` }}
@@ -122,11 +160,14 @@ export default function HomePage() {
         />
 
         {isLoadingFeeds ? (
-          <div className="h-64 flex items-center justify-center">
+          <div className="h-64 flex flex-col items-center justify-center space-y-3">
             <CircularProgress isIndeterminate={true} />
+            {feedLoadingMessage && (
+              <p className="text-on-surface-variant">{feedLoadingMessage}</p>
+            )}
           </div>
-        ) : // Filter feeds based on selected categories
-        feeds.length === 0 ? (
+        ) : feeds.length === 0 ? (
+          // If no feeds at all
           <div className="flex flex-col items-center justify-center h-80 text-center bg-surface-container-low rounded-lg shadow-md p-6">
             <FaRegSadTear className="text-6xl text-on-surface-variant mb-4" />
             <h2 className="text-2xl font-semibold text-on-surface">
@@ -147,11 +188,12 @@ export default function HomePage() {
             </Button>
           </div>
         ) : (
+          // Filter feeds based on selected categories
           <Feeds
             feeds={
               filterCategory.length > 0
                 ? feeds.filter((feed) =>
-                    feed.categories.some((category) =>
+                    feed.categories?.some((category) =>
                       filterCategory.includes(category)
                     )
                   )
