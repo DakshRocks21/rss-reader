@@ -15,7 +15,7 @@ export default function AddFeed({ onAddFeed, error, categoryList }) {
     if (feedUrl.trim()) {
       setIsLoading(true);
       console.log()
-      await addFeedToDatabase({name: feedName, feedUrl: feedUrl, categories: feedCategory.map(category => category.label) || ["Uncategorised"] });
+      await addFeedToDatabase({name: feedName, feedUrl: feedUrl, categories: feedCategory.length > 0 ? feedCategory.map(category => category.label) : ["Uncategorised"] });
       await onAddFeed();
       setIsLoading(false);
       setFeedUrl("");
