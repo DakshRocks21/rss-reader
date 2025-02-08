@@ -12,7 +12,7 @@ export function RenderSubscribedInterests({ feeds, filter }) {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-6">
                     {feeds.map((feed) => (
                         (filter.length === 0 || feed.categories.some(category => filter.includes(category))) ? (
-                            <div className={`bg-surface-bright p-6 rounded-lg shadow-md mb-6 border border-gray-200 w-fit max-w-2xl mr-6 flex items-center`} key={feed.url}>
+                            <div className={`bg-surface-bright p-6 rounded-lg shadow-md mb-6 w-fit max-w-2xl mr-6 flex items-center`} key={feed.url}>
                                 <div className={styles.container}>
                                     {feed.name && feed.name != "" ? (
                                         <>
@@ -48,7 +48,7 @@ export function RenderSubscribedInterests({ feeds, filter }) {
                     ))}
                 </div>
             ) : (
-                <div className="flex flex-col items-center justify-center h-60 w-full text-center bg-surface-container-low rounded-lg shadow-md p-6">
+                <div className="flex flex-col items-center justify-center h-60 w-full text-center bg-surface-container-low rounded-lg shadow-md p-6 mb-6">
                     <FaRegSadTear className="text-6xl text-on-surface-variant mb-4" />
                     <h2 className="text-2xl font-semibold text-on-surface">
                         No Subscribed Interests Found
@@ -79,7 +79,7 @@ export function RenderInterestSelection({ presetFeeds, filter }) {
                                         <p className={`${styles.description} text-on-surface`}>{feed.description}</p>
                                         <p className="text-on-surface">{feed.url}</p>
                                     </div>
-                                    <div className={styles.centrediv}>
+                                    <div className={styles.rightalign}>
                                         <RenderCheckbox feed={feed} feeds={presetFeeds} />
                                     </div>
                                 </div>
