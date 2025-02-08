@@ -68,7 +68,7 @@ export default function AddFeed({ onAddFeed, error, categoryList }) {
               isMulti
               options={categoryList.map(category => ({ value: category, label: category }))}
               onChange={(choice) => setFeedCategory(choice)}
-              placeholder="Enter Feed Categories (delimited by commas)"
+              placeholder="Enter Feed Categories"
             />
           </div>
         </div>

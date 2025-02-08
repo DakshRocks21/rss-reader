@@ -7,12 +7,10 @@ import { getUserInfoFromFirebaseAuth } from "@/lib/session";
 import { getFeedsFromDatabase } from "@/lib/firebase/feed_database";
 import AddFeed from "@/app/interests/AddFeed";
 import Header from "@/components/Header";
-import { setTheme } from "@/components/DarkConfig";
 
 import { RenderSubscribedInterests, RenderInterestSelection } from "./RenderInterests";
 import { Categories } from "./Filters";
 import { CircularProgress } from "actify";
-import { setTheme } from "@/components/DarkConfig";
 
 export default function Interests() {
   const [user, setUser] = useState(null);
@@ -40,7 +38,7 @@ export default function Interests() {
       description: "An Singaporean technology forum and news outlet specialising in hardware."
     }
   ])
-    setTheme();
+
   // Authentication protection
   useEffect(() => {
     const fetchData = async () => {
