@@ -1,17 +1,25 @@
-// This file is written by Daksh
 "use client";
 import { useState } from "react";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   LoginWithEmailPass,
   SignInWithGoogle,
 } from "@/lib/firebase/auth_database";
+import { Card, Button, TextField, CircularProgress, Divider } from "actify";
+import { FcGoogle } from "react-icons/fc"; // Google Icon
+import dynamic from "next/dynamic";
+
+const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
+
+import { motion } from "framer-motion";
+import { useApplyStoredTheme } from "@/components/DarkConfig";
 
 export default function Login() {
+  useApplyStoredTheme();
+
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -19,27 +27,26 @@ export default function Login() {
     e.preventDefault();
     setLoading(true);
     const result = await LoginWithEmailPass(email, password);
-    
+
     if (result.success) {
-      console.log("User created successfully, redirecting to home page");
+      console.log("User logged in successfully, redirecting to home page");
       setTimeout(() => {
-        window.location.href = "/home";
-      }, 700); // Small delay to ensure cookies are set
+        router.push("/home");
+      }, 700); // Small delay to ensure authentication state updates
     } else {
       setError(result.error);
     }
     setLoading(false);
   };
-  
-  
 
   const handleGoogleSignIn = async () => {
+    setLoading(true);
     const result = await SignInWithGoogle();
     if (result.success) {
-      console.log("User created successfully, redirecting to home page");
+      console.log("User logged in successfully, redirecting to home page");
       setTimeout(() => {
-        window.location.href = "/home";
-      }, 700); // Small delay to ensure cookies are set
+        router.push("/home");
+      }, 700);
     } else {
       setError(result.error);
     }
@@ -47,62 +54,78 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600">
-      <div className="w-full max-w-md bg-white rounded-lg shadow-lg p-8">
-        <h2 className="text-2xl font-semibold text-center text-gray-700 mb-6">
-          Login to Your Account
-        </h2>
-        <form onSubmit={handleLogin} className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-600">
-              Email
-            </label>
-            <input
-              type="email"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-2 text-gray-700 border rounded-lg"
-              required
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-600">
-              Password
-            </label>
-            <input
-              type="password"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 text-gray-700 border rounded-lg"
-              required
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={loading}
-            className={`w-full px-4 py-2 text-white font-semibold rounded-lg ${
-              loading ? "bg-gray-400" : "bg-blue-500 hover:bg-blue-600"
-            }`}
-          >
-            {loading ? "Loading..." : "Login"}
-          </button>
-        </form>
-        <button
-          onClick={handleGoogleSignIn}
-          className="w-full mt-4 px-4 py-2 text-white font-semibold bg-red-500 hover:bg-red-600 rounded-lg"
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-primary to-secondary p-4">
+      <Navbar />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.5 }}
+          className="flex-grow w-full h-full flex flex-col items-center justify-center p-6"
         >
-          Sign in with Google
-        </button>
-        <p className="mt-4 text-center text-sm text-gray-600">
-          Don't have an account?{" "}
-          <a href="/signup" className="text-blue-500 hover:underline">
-            Sign up
-          </a>
-        </p>
-        {error && <p className="mt-4 text-sm text-red-600">{error}</p>}
-      </div>
+          <Card className="w-full max-w-md bg-surface-container text-on-surface rounded-xl shadow-lg p-6 space-y-6">
+            <p className="text-center text-primary font-bold text-2xl mb-4">
+              Login to Your Account
+            </p>
+
+            <form onSubmit={handleLogin} className="space-y-3 mb-5">
+              <TextField
+                label="Email"
+                type="email"
+                value={email}
+                onInput={(e) => setEmail(e.target.value)}
+                className="w-full"
+                required
+              />
+              <div className="h-2"></div>
+              <TextField
+                label="Password"
+                type="password"
+                value={password}
+                onInput={(e) => setPassword(e.target.value)}
+                className="w-full"
+                required
+              />
+              <div className="h-2"></div>
+              <Button
+                type="submit"
+                variant="filled"
+                className="w-full rounded-lg text-lg"
+                disabled={loading}
+              >
+                {loading ? (
+                  <CircularProgress
+                    isIndeterminate={true}
+                    className="mr-2 text-inverse-on-surface"
+                  />
+                ) : (
+                  "Login"
+                )}
+              </Button>
+            </form>
+
+            <Button
+              onClick={handleGoogleSignIn}
+              variant="filled"
+              color="primary"
+              className="w-full flex items-center justify-center rounded-lg text-lg text-on-secondary-container"
+            >
+              <FcGoogle className="mr-2 text-2xl" />
+              Sign in with Google
+            </Button>
+
+            {error && <p className="text-error text-sm text-center">{error}</p>}
+
+            <p className="text-sm text-center text-on-surface-variant mt-4">
+              Don't have an account?{" "}
+              <a
+                href="/signup"
+                className="text-primary font-medium hover:underline"
+              >
+                Sign up
+              </a>
+            </p>
+          </Card>
+        </motion.div>
     </div>
   );
 }

@@ -1,23 +1,53 @@
-// Daksh wrote this
 "use client";
 
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import Link from "next/link";
+import ThemeControl from "@/components/ThemeControl";
+import { Button } from "actify";
+import { motion } from "framer-motion";
 
 export default function Navbar() {
+  const pathname = usePathname();
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  const isOnLoginPage =
+    pathname.includes("/login") || pathname.includes("/signup");
+
   return (
-    <nav className="bg-gray-800 p-4 text-white shadow-lg">
+    <motion.nav className="bg-secondary-container p-4 text-white shadow-lg w-full sticky top-0 z-50"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 0.5 }}>
       <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-2xl font-bold">RSSFeed</h1>
-        <ul className="flex space-x-4">
-          <li>
-            <Link href="/login">
-              <p className="bg-blue-500 px-4 py-2 rounded hover:bg-blue-700 transition">
-                Get Started
-              </p>
-            </Link>
-          </li>
-        </ul>
+        <Link
+          className="text-2xl font-bold text-on-secondary-container"
+          href="/"
+        >
+          RSSFeed
+        </Link>
+        <div className="flex items-center space-x-8">
+          <div className="w-52">
+            <ThemeControl initialTheme="system" />
+          </div>
+          {isMounted && !isOnLoginPage && (
+            <Button
+              variant="filled"
+              color="primary"
+              className="w-44 px-2 py-2 rounded transition hover:bg-on-primary-container font-semibold"
+              onClick={() => {
+                window.location.href = "/login";
+              }}
+            >
+              Get Started
+            </Button>
+          )}
+        </div>
       </div>
-    </nav>
+    </motion.nav>
   );
 }

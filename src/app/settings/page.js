@@ -10,19 +10,33 @@ import { MdArrowDropDown } from "react-icons/md";// Imported for  dropdown
 import { SegmentedButton, SegmentedButtonSet, Icon } from "actify";  // Imported for toggle buttons
 import { FaArrowLeft } from "react-icons/fa";// used in back button
 import { getUserInfoFromDatabase } from "@/lib/firebase/auth_database";
-import { getCurrentUserID, getUserInfoFromFirebaseAuth, logoutSession } from "@/lib/session";
+import {
+  getCurrentUserID,
+  getUserInfoFromFirebaseAuth,
+  logoutSession,
+} from "@/lib/session";
 import { FIREBASE_FIRESTORE_CLIENT } from "@/lib/firebase/client";
-import { setTheme } from "@/components/DarkConfig";// Sets theme whether dark or light
+
+
+import { useApplyStoredTheme } from "@/components/DarkConfig";
+
 import ChangePassword from "@/components/changePassword";
+import ThemeControl from "@/components/ThemeControl";
 
 export default function App() {
-  const [user, setUser] = useState(null);// Sets intial user state to null
+
+  useApplyStoredTheme();
+
+  const [user, setUser] = useState(null);
+
   const [isLoading, setIsLoading] = useState(true);
   const [username, setUsername] = useState("");// Used when user want to change username
   const [bio, setBio] = useState(""); // Add state for bio
   const [message, setMessage] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(true);
+
   const [selectedColorMode, setSelectedColorMode] = useState("system");// Uses system state unless changed for theme
+
 
   const [isDropdownOpen, setIsDropdownOpen] = useState({// Uses for dropdowns state and when user clicks on dropdown button then it changes to flase
     username: false,
@@ -45,7 +59,8 @@ export default function App() {
     };
     fetchUserData();
   }, []);
-  setTheme();
+
+useApplyStoredTheme();
 
   const fetchData = async () => {// Authenticates user
     const userData = await getUserInfoFromFirebaseAuth();
@@ -68,6 +83,7 @@ export default function App() {
     window.location.href = "/home";
   }
   
+
 
   const handleSignOut = async () => {// Signs out a user and redirects them to /login page
     await logoutSession();
@@ -167,7 +183,6 @@ export default function App() {
       </div>
     );
   }
-  
 
   return (
     <div className="min-h-screen flex justify-center items-center">
@@ -181,7 +196,9 @@ export default function App() {
         <div className="flex flex-col items-center justify-center border-r pr-24">
           {/* Ternary operator to see if user has a profile picture otherswise sets default profile picture */}
           {user && user.data.photoURL ? (
+
             <Image src={user.data.photoURL} alt="Profile Picture" width={180} height={180} className="rounded-full" /> 
+
           ) : (
             <FaUserCircle className="text-gray-700 w-[180px] h-[180px]" />
           )}
@@ -189,6 +206,7 @@ export default function App() {
           <h1 className="text-3xl font-semibold mt-3 text-black">Settings</h1>
           {user && (
             <>
+
                 <p className="mt-2 text-xl font-bold text-black">Email: {user.data.email}</p>
                 <p className="text-xl font-bold text-black">Username: {user.data.displayName}</p>
               {user.data.bio && (
@@ -197,23 +215,28 @@ export default function App() {
               
               )}
               
+
             </>
           )}
         </div>
           {/* Change username dropdwon */}
         <div className="flex flex-col items-start justify-center gap-10 w-full max-w-lg">
           <div className="w-full">
+
             {/*When user clicks the dropdwon button toggleDropdown changes username value to True */}
             <button onClick={() => toggleDropdown("username")} className="border px-3 py-2 text-black rounded-md w-full text-left flex justify-between items-center">
+
               Change Username
               <MdArrowDropDown className="inline ml-2" />
             </button>
             {/* Displays if dropdwon is open */}
             {isDropdownOpen.username && (
               <div className="mt-2 p-2 border rounded-md bg-white shadow-lg w-full">
+
                 {/* Input where user enters new name, then setUsername will change username value*/}
                 <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Enter new username" className="border px-3 py-2 text-black rounded-md w-full" />
                 <button onClick={updateUsername} disabled={isLoading} className={`px-4 py-2 rounded-md w-full mt-2 ${isLoading ? "bg-gray-400" : "bg-blue-500 text-white hover:bg-blue-600"}`}>
+
                   {isLoading ? "Saving..." : "Change Username"}
                 </button>
               </div>
@@ -243,7 +266,10 @@ export default function App() {
           </div>
             {/* Password dropdown*/}
           <div className="w-full">
-            <button onClick={() => toggleDropdown("password")} className="border px-3 py-2 text-black rounded-md w-full text-left flex justify-between items-center">
+            <button
+              onClick={() => toggleDropdown("password")}
+              className="border px-3 py-2 text-black rounded-md w-full text-left flex justify-between items-center"
+            >
               Change Password
               <MdArrowDropDown className="inline ml-2" />
             </button>
@@ -255,6 +281,7 @@ export default function App() {
               </div>
             )}
           </div>
+
             {/* FAQs dropdwon */}
           <div className="w-full">
             <button onClick={() => toggleDropdown("faq")} className="border px-3 py-2 text-black rounded-md w-full text-left flex justify-between items-center">
@@ -300,6 +327,7 @@ export default function App() {
           </div>
             {/* Sign out button */}
           <button onClick={handleSignOut} className="rounded-md bg-red-400 px-4 py-2 text-white transition-all duration-300 ease-in-out hover:bg-red-600 hover:text-white w-full">
+
             Sign out
           </button>
         </div>

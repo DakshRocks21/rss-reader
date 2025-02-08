@@ -1,5 +1,8 @@
 # RSS-Reader
 
+
+Demo Creds : `daksh@dakshthapar.com:123456`
+
 ## Misc TODO
 
 - [ ] Input validation for URL. Check if it's RSS is valid.
@@ -49,4 +52,18 @@
 
 - **Purpose**: Provides a flexible and customizable dropdown component for React.
 - **Why Used**: To allow users to select RSS feeds from a dropdown list, enabling easy feed selection and management.
+
+## Library: `react-icons`
+
+> Written by Puru
+
+- **Purpose**: Allows for a default profile picture to be displayed if user does not have one
+- **Why Used**: Ensures a default profile picture is shown
+
+## Library: `actify`
+
+> Written by Puru
+
+- **Purpose**: Ensures ease in toggling themes for user as well as improved UX for toggling themes rather than the regular button html element
+- **Why Used**: Used as a component to toggle themes
 

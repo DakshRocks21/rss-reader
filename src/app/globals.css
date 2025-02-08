@@ -1,17 +1,120 @@
+/* Added by Daksh and Puru
+Daksh also made a python script to convert the colours from the generator to the tailwindcss format.
+it is in convert.py
+*/
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body.light {
-  --background: #ffffff;  
-  --foreground: #201414;   
+  --md-sys-color-primary: 144 74 73;
+  --md-sys-color-surface-tint: 144 74 73;
+  --md-sys-color-on-primary: 255 255 255;
+  --md-sys-color-primary-container: 255 218 216;
+  --md-sys-color-on-primary-container: 115 51 51;
+  --md-sys-color-secondary: 119 86 85;
+  --md-sys-color-on-secondary: 255 255 255;
+  --md-sys-color-secondary-container: 255 218 216;
+  --md-sys-color-on-secondary-container: 93 63 62;
+  --md-sys-color-tertiary: 116 90 46;
+  --md-sys-color-on-tertiary: 255 255 255;
+  --md-sys-color-tertiary-container: 255 222 170;
+  --md-sys-color-on-tertiary-container: 90 67 25;
+  --md-sys-color-error: 186 26 26;
+  --md-sys-color-on-error: 255 255 255;
+  --md-sys-color-error-container: 255 218 214;
+  --md-sys-color-on-error-container: 147 0 10;
+  --md-sys-color-background: 255 248 247;
+  --md-sys-color-on-background: 35 25 25;
+  --md-sys-color-surface: 255 248 247;
+  --md-sys-color-on-surface: 35 25 25;
+  --md-sys-color-surface-variant: 244 221 220;
+  --md-sys-color-on-surface-variant: 83 67 66;
+  --md-sys-color-outline: 133 115 114;
+  --md-sys-color-outline-variant: 215 193 192;
+  --md-sys-color-shadow: 0 0 0;
+  --md-sys-color-scrim: 0 0 0;
+  --md-sys-color-inverse-surface: 56 46 45;
+  --md-sys-color-inverse-on-surface: 255 237 235;
+  --md-sys-color-inverse-primary: 255 179 176;
+  --md-sys-color-primary-fixed: 255 218 216;
+  --md-sys-color-on-primary-fixed: 59 8 11;
+  --md-sys-color-primary-fixed-dim: 255 179 176;
+  --md-sys-color-on-primary-fixed-variant: 115 51 51;
+  --md-sys-color-secondary-fixed: 255 218 216;
+  --md-sys-color-on-secondary-fixed: 44 21 20;
+  --md-sys-color-secondary-fixed-dim: 230 189 186;
+  --md-sys-color-on-secondary-fixed-variant: 93 63 62;
+  --md-sys-color-tertiary-fixed: 255 222 170;
+  --md-sys-color-on-tertiary-fixed: 39 25 0;
+  --md-sys-color-tertiary-fixed-dim: 227 194 140;
+  --md-sys-color-on-tertiary-fixed-variant: 90 67 25;
+  --md-sys-color-surface-dim: 232 214 213;
+  --md-sys-color-surface-bright: 255 248 247;
+  --md-sys-color-surface-container-lowest: 255 255 255;
+  --md-sys-color-surface-container-low: 255 240 239;
+  --md-sys-color-surface-container: 252 234 232;
+  --md-sys-color-surface-container-high: 246 228 227;
+  --md-sys-color-surface-container-highest: 240 222 221;
+  /* --md-ref-typeface-plain: 'Poppins', sans-serif;
+  --md-ref-typeface-mono: 'Martian Mono', monospace; */
+  background: rgb(var(--md-sys-color-background));
 }
- 
- 
+
 body.dark {
-  --background: #433434;  
-  --foreground: #ffffff;  
+  --md-sys-color-primary: 255 179 176;
+    --md-sys-color-surface-tint: 255 179 176;
+    --md-sys-color-on-primary: 87 29 30;
+    --md-sys-color-primary-container: 115 51 51;
+    --md-sys-color-on-primary-container: 255 218 216;
+    --md-sys-color-secondary: 230 189 186;
+    --md-sys-color-on-secondary: 68 41 40;
+    --md-sys-color-secondary-container: 93 63 62;
+    --md-sys-color-on-secondary-container: 255 218 216;
+    --md-sys-color-tertiary: 227 194 140;
+    --md-sys-color-on-tertiary: 65 45 5;
+    --md-sys-color-tertiary-container: 90 67 25;
+    --md-sys-color-on-tertiary-container: 255 222 170;
+    --md-sys-color-error: 255 180 171;
+    --md-sys-color-on-error: 105 0 5;
+    --md-sys-color-error-container: 147 0 10;
+    --md-sys-color-on-error-container: 255 218 214;
+    --md-sys-color-background: 26 17 17;
+    --md-sys-color-on-background: 240 222 221;
+    --md-sys-color-surface: 26 17 17;
+    --md-sys-color-on-surface: 240 222 221;
+    --md-sys-color-surface-variant: 83 67 66;
+    --md-sys-color-on-surface-variant: 215 193 192;
+    --md-sys-color-outline: 160 140 139;
+    --md-sys-color-outline-variant: 83 67 66;
+    --md-sys-color-shadow: 0 0 0;
+    --md-sys-color-scrim: 0 0 0;
+    --md-sys-color-inverse-surface: 240 222 221;
+    --md-sys-color-inverse-on-surface: 56 46 45;
+    --md-sys-color-inverse-primary: 144 74 73;
+    --md-sys-color-primary-fixed: 255 218 216;
+    --md-sys-color-on-primary-fixed: 59 8 11;
+    --md-sys-color-primary-fixed-dim: 255 179 176;
+    --md-sys-color-on-primary-fixed-variant: 115 51 51;
+    --md-sys-color-secondary-fixed: 255 218 216;
+    --md-sys-color-on-secondary-fixed: 44 21 20;
+    --md-sys-color-secondary-fixed-dim: 230 189 186;
+    --md-sys-color-on-secondary-fixed-variant: 93 63 62;
+    --md-sys-color-tertiary-fixed: 255 222 170;
+    --md-sys-color-on-tertiary-fixed: 39 25 0;
+    --md-sys-color-tertiary-fixed-dim: 227 194 140;
+    --md-sys-color-on-tertiary-fixed-variant: 90 67 25;
+    --md-sys-color-surface-dim: 26 17 17;
+    --md-sys-color-surface-bright: 66 55 54;
+    --md-sys-color-surface-container-lowest: 20 12 12;
+    --md-sys-color-surface-container-low: 35 25 25;
+    --md-sys-color-surface-container: 39 29 29;
+    --md-sys-color-surface-container-high: 50 40 39;
+    --md-sys-color-surface-container-highest: 61 50 50;
+    background: rgb(var(--md-sys-color-background));
 }
+
 body {
   color: var(--foreground);
   background: var(--background);
@@ -68,8 +171,9 @@ body {
   --md-sys-color-surface-container: 252 234 232;
   --md-sys-color-surface-container-high: 246 228 227;
   --md-sys-color-surface-container-highest: 240 222 221;
-  --md-ref-typeface-plain: 'Poppins', sans-serif;
-  --md-ref-typeface-mono: 'Martian Mono', monospace;
+  /* --md-ref-typeface-plain: 'Poppins', sans-serif;
+  --md-ref-typeface-mono: 'Martian Mono', monospace; */
+  background: rgb(var(--md-sys-color-background));
 }
 
 @media (prefers-color-scheme: dark) {
@@ -123,5 +227,122 @@ body {
     --md-sys-color-surface-container: 39 29 29;
     --md-sys-color-surface-container-high: 50 40 39;
     --md-sys-color-surface-container-highest: 61 50 50;
+    background: rgb(var(--md-sys-color-background));
   }
 }
+
+.embla {
+  max-width: 48rem;
+  margin: auto;
+  --slide-height: 19rem;
+  --slide-spacing: 1rem;
+  --slide-size: 100%;
+}
+.embla__viewport {
+  overflow: hidden;
+}
+.embla__container {
+  display: flex;
+  touch-action: pan-x pinch-zoom;
+  margin-top: calc(var(--slide-spacing) * -1);
+  height: calc(var(--slide-spacing) + var(--slide-height));
+  flex-direction: column;
+}
+.embla__slide {
+  transform: translate3d(0, 0, 0);
+  flex: 0 0 var(--slide-size);
+  min-height: 0;
+  padding-top: var(--slide-spacing);
+}
+.embla__slide__number {
+  box-shadow: inset 0 0 0 0.2rem var(--detail-medium-contrast);
+  border-radius: 1.8rem;
+  font-size: 4rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  user-select: none;
+}
+.embla__controls {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  justify-content: space-between;
+  gap: 1.2rem;
+  margin-top: 1.8rem;
+}
+.embla__buttons {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  align-items: center;
+}
+.embla__button {
+  -webkit-tap-highlight-color: rgba(var(--text-high-contrast-rgb-value), 0.5);
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  touch-action: manipulation;
+  display: inline-flex;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  box-shadow: inset 0 0 0 0.2rem var(--detail-medium-contrast);
+  width: 3.6rem;
+  height: 3.6rem;
+  z-index: 1;
+  border-radius: 50%;
+  color: var(--text-body);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.embla__button:disabled {
+  color: var(--detail-high-contrast);
+}
+.embla__button__svg {
+  width: 35%;
+  height: 35%;
+}
+.embla__dots {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  align-items: center;
+  margin-right: calc((2.6rem - 1.4rem) / 2 * -1);
+}
+.embla__dot {
+  -webkit-tap-highlight-color: rgba(var(--text-high-contrast-rgb-value), 0.5);
+  -webkit-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  touch-action: manipulation;
+  display: inline-flex;
+  text-decoration: none;
+  cursor: pointer;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  width: 2.6rem;
+  height: 2.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+.embla__dot:after {
+  box-shadow: inset 0 0 0 0.2rem var(--detail-medium-contrast);
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  content: '';
+}
+.embla__dot--selected:after {
+  box-shadow: inset 0 0 0 0.2rem var(--text-body);
+}
+

@@ -11,6 +11,8 @@ import { setTheme } from "@/components/DarkConfig";
 
 import { RenderSubscribedInterests, RenderInterestSelection } from "./RenderInterests";
 import { Categories } from "./Filters";
+import { CircularProgress } from "actify";
+import { setTheme } from "@/components/DarkConfig";
 
 export default function Interests() {
   const [user, setUser] = useState(null);
@@ -28,16 +30,14 @@ export default function Interests() {
       url: "https://www.tomshardware.com/rss.xml",
       categories: ["Technology", "Hardware"],
       image: "images/TomsHardware.png",
-      description: "A technology news outlet specialising in hardware.",
-      checked: false
+      description: "A technology news outlet specialising in hardware."
     },
     {
       name: "HardwareZone",
       url: "https://feeds.feedburner.com/hardwarezone/all",
       categories: ["Technology", "Hardware", "Singapore"],
       image: "images/HardwareZone.png",
-      description: "An Singaporean technology forum and news outlet specialising in hardware.",
-      checked: false
+      description: "An Singaporean technology forum and news outlet specialising in hardware."
     }
   ])
     setTheme();
@@ -47,7 +47,6 @@ export default function Interests() {
       const userData = await getUserInfoFromFirebaseAuth();
       if (!userData) {
         setIsAuthenticated(false);
-        setIsLoading(false);
         window.location.href = "/login";
         return;
       }
@@ -76,22 +75,49 @@ export default function Interests() {
     fetchFeeds();
   }, []);
 
-  if (!isAuthenticated && isLoading) return <p>LOADING...</p>;
-
   // Check respective preset feed checkboxes if user is already subscribed to them, remove duplicates
-  const populateFeeds = () => {
-    for (let i = 0; i < feeds.length; i++) {
-      for (let presetFeed of presetFeeds) {
-        if (feeds[i].url === presetFeed.url) {
-          presetFeed.checked = true;
-          feeds.splice(i, 1);
-        }
-      }
-    }
+  useEffect(() => {
+    if (!isLoading && presetFeeds.length > 0 && presetFeeds[0].checked === undefined) {
+      const populateFeeds = () => {
+        let newPresetFeeds = presetFeeds.map(presetFeed => {
+          const feed = feeds.find(feed => feed.url === presetFeed.url);
+          if (feed) {
+            return { ...presetFeed, checked: true };
+          }
+          return { ...presetFeed, checked: false };
+        });
 
-    console.log(presetFeeds)
+        let newFeeds = feeds.filter(feed => {
+          const presetFeed = presetFeeds.find(presetFeed => presetFeed.url === feed.url);
+          return !presetFeed
+        }).map(feed => ({ ...feed, checked: true }));
 
-    feeds.forEach(feed => feed.checked = true); // Check all remaining feeds (since they are subscribed if they are already in the database)
+        return [newFeeds, newPresetFeeds];
+      };
+      
+      const [newFeeds, newPresetFeeds] = populateFeeds();
+      setFeeds(newFeeds);
+      setPresetFeeds(newPresetFeeds);
+    };
+
+  }, [isLoading, presetFeeds])
+
+  // useEffect(() => {
+  //   setTheme();
+  // }, [])
+
+  const LoadingSpinner = () => (
+    <div className="flex items-center justify-center w-screen h-screen bg-background">
+      <CircularProgress isIndeterminate={true} />
+    </div>
+  );
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <LoadingSpinner />
+      </div>
+    )
   }
 
   const handleCategoryFilterChange = (category) => {
@@ -103,6 +129,7 @@ export default function Interests() {
   };
 
   return (
+
     <div className="p-6 min-h-screen">
       <Header
         user={user}
@@ -112,8 +139,7 @@ export default function Interests() {
         }}
         isOnHomePage={false}
       />
-      {populateFeeds()}
-      <AddFeed onAddFeed={() => window.location.reload()} />
+      <AddFeed categoryList={categoryList} onAddFeed={() => window.location.reload()} />
       <Categories categoryList={categoryList} onCategoryChange={(category) => handleCategoryFilterChange(category)} />
       <RenderSubscribedInterests feeds={feeds} filter={categoryFilterList} />
       <RenderInterestSelection presetFeeds={presetFeeds} filter={categoryFilterList} />

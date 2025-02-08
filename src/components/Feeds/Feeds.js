@@ -1,16 +1,18 @@
 // This file is written by Daksh
+import CategorySection from "@/components/Feeds/CategorySection";
 
-import CategorySection from "@/components/CategorySection";
-
-export default function Feeds({ feeds, keyword, category }) {
-  
+export default function Feeds({
+  feeds,
+  keyword,
+  filteredCategory
+}) {
   const allItems = feeds
     .flatMap((feed) => {
       const publisher = feed.data.title || "Unknown Publisher";
       return feed.data.items.map((item) => ({
-        publisher,
-        categories: feed.categories || [],
         ...item,
+        publisher,
+        categories: feed.categories || ["Uncategorized"],
       }));
     })
     .filter((item) => {
@@ -20,33 +22,37 @@ export default function Feeds({ feeds, keyword, category }) {
       ) {
         return false;
       }
-      if (
-        category.length &&
-        !category.some((cat) => item.categories.includes(cat))
-      ) {
-        return false;
-      }
       return true;
     });
 
-  allItems.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+  const filteredFeeds = [];
 
-  const groupedFeeds = category.length
-    ? category.reduce((acc, cat) => {
-        acc[cat] = allItems.filter((item) => item.categories.includes(cat));
-        return acc;
-      }, {})
-    : { "Your Feeds": allItems };
+  if (filteredCategory.length > 0) {
+    console.log("Filtering by category");
+    for (const item of allItems) {
+      if (item.categories.length === 0) {
+        item.categories = ["Uncategorized"];
+      }
+      for (const category of item.categories) {
+        if (filteredCategory.includes(category)) {
+          filteredFeeds.push(item);
+          break;
+        }
+      }
+    }
+  } else {
+    filteredFeeds.push(...allItems);
+  }
+
+  filteredFeeds.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
+
 
   return (
     <div>
-      {Object.keys(groupedFeeds).map((category, index) => (
-        <CategorySection
-          key={index}
-          category={category}
-          feeds={groupedFeeds[category]}
-        />
-      ))}
+      <CategorySection
+        feeds={filteredFeeds}
+        category_selected={filteredCategory}
+      />
     </div>
   );
 }

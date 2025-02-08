@@ -6,9 +6,17 @@ import { getFeedsFromDatabase } from "@/lib/firebase/feed_database";
 import Sidebar from "@/components/Sidebar";
 import Feeds from "@/components/Feeds/Feeds";
 import Header from "@/components/Header";
-import { setTheme } from "@/components/DarkConfig";
+import { Checkbox, CheckboxGroup, CircularProgress } from "actify";
+import { FaFilter } from "react-icons/fa";
+import BottomNav from "@/components/mobile/BottomNav";
+import BottomSheet from "@/components/mobile/BottomSheet";
+import { useApplyStoredTheme } from "@/components/DarkConfig";
+import { FaSearch, FaRegSadTear } from "react-icons/fa";
+import { Button } from "actify";
 
 export default function HomePage() {
+  useApplyStoredTheme();
+
   const [feeds, setFeeds] = useState([]);
   const [categoryList, setCategoryList] = useState([]);
   const [keywordSearched, setKeywordSearched] = useState("");
@@ -18,6 +26,17 @@ export default function HomePage() {
   const [isLoadingUser, setIsLoadingUser] = useState(true);
   const [isLoadingFeeds, setIsLoadingFeeds] = useState(false);
   const [error, setError] = useState(null);
+  const [isMobile, setIsMobile] = useState(false);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  useEffect(() => {
+    // Check screen size for dynamic UI updates
+    const checkScreenSize = () => setIsMobile(window.innerWidth < 1200);
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -37,7 +56,6 @@ export default function HomePage() {
         setIsLoadingUser(false);
       }
     };
-
     fetchUserData();
   }, []);
 
@@ -46,7 +64,6 @@ export default function HomePage() {
       fetchFeeds();
     }
   }, [isAuthenticated]);
-
 
   const fetchFeeds = async () => {
     setIsLoadingFeeds(true);
@@ -59,64 +76,128 @@ export default function HomePage() {
         if (!response.ok) throw new Error("Failed to fetch RSS feed");
         feed.data = await response.json();
       }
-
       const categories = data
         .flatMap((feed) => feed.categories || [])
         .filter((value, index, self) => self.indexOf(value) === index);
-
       setCategoryList(categories);
       setFeeds(data || []);
+      console.log("Fetched feeds", data);
+      console.log("Categories", categories);
     } catch (err) {
       setError(err.message);
     } finally {
       setIsLoadingFeeds(false);
     }
   };
-  setTheme();
 
-  const LoadingSpinner = () => (
-    <div className="flex items-center justify-center w-full h-full">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-    </div>
-  );
+  const handleCategoryChange = (selected) => {
+    setSelectedCategories(selected);
+    setFilterCategory(selected);
+  };
 
-  if (isLoadingUser) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <LoadingSpinner />
-      </div>
-    );
-  }
-  
-  if (error) return <p>{error}</p>;
+  if (error) return <p className="p-4 text-red-500">{error}</p>;
   if (!isAuthenticated) return null;
 
   return (
-    <div className="min-h-screen flex">
-      <Sidebar
-        user={user}
-        categoryList={categoryList}
-        setFilterCategory={setFilterCategory}
-      />
+    // Use an inline style to directly show the effect of var(--md-sys-color-background)
+    <div
+      className="flex min-h-screen"
+      style={{ backgroundColor: `rgb(var(--md-sys-color-background))` }}
+    >
+      {/* Desktop Sidebar */}
+      {!isMobile && (
+        <Sidebar
+          user={user}
+          categoryList={categoryList}
+          setFilterCategory={setFilterCategory}
+        />
+      )}
+
       <div className="flex-1 p-6">
         <Header
           user={user}
           keywordSearched={keywordSearched}
           setKeywordSearched={setKeywordSearched}
+          isMobile={isMobile}
         />
+
         {isLoadingFeeds ? (
           <div className="h-64 flex items-center justify-center">
-            <LoadingSpinner />
+            <CircularProgress isIndeterminate={true} />
+          </div>
+        ) : // Filter feeds based on selected categories
+        feeds.length === 0 ? (
+          <div className="flex flex-col items-center justify-center h-80 text-center bg-surface-container-low rounded-lg shadow-md p-6">
+            <FaRegSadTear className="text-6xl text-on-surface-variant mb-4" />
+            <h2 className="text-2xl font-semibold text-on-surface">
+              No Feeds Found
+            </h2>
+            <p className="text-md text-on-surface-variant mt-2">
+              It looks like you haven’t added any interests yet. Start exploring
+              topics that matter to you!
+            </p>
+            <Button
+              className="mt-5"
+              color="primary"
+              variant="filled"
+              icon={<FaSearch />}
+              onClick={() => (window.location.href = "/interests")}
+            >
+              Explore Interests
+            </Button>
           </div>
         ) : (
           <Feeds
-            feeds={feeds}
-            keyword={keywordSearched}
-            category={filterCategory}
-            categories={categoryList}
+            feeds={
+              filterCategory.length > 0
+                ? feeds.filter((feed) =>
+                    feed.categories.some((category) =>
+                      filterCategory.includes(category)
+                    )
+                  )
+                : feeds
+            }
+            keywordSearched={keywordSearched}
+            filteredCategory={filterCategory}
           />
         )}
       </div>
+
+      {/* Mobile: Floating Filter Button */}
+      {isMobile && (
+        <button
+          onClick={() => setIsFilterOpen(true)}
+          className="fixed bottom-20 right-6 bg-primary p-3 rounded-full shadow-md z-50"
+          aria-label="Open Filter"
+        >
+          <FaFilter className="text-white text-xl" />
+        </button>
+      )}
+
+      {/* Mobile: Custom Bottom Sheet */}
+      <BottomSheet isOpen={isFilterOpen} onClose={() => setIsFilterOpen(false)}>
+        {isLoadingFeeds ? (
+          <div className="text-on-surface-variant text-sm">
+            Loading categories...
+          </div>
+        ) : (
+          <CheckboxGroup
+            label="Categories"
+            value={selectedCategories}
+            onChange={handleCategoryChange}
+            className="space-y-3 text-on-primary-container text-xl"
+          >
+            {categoryList.map((category) => (
+              <div key={category} className="flex items-center space-x-3">
+                <Checkbox value={category} />
+                <span className="text-on-primary-container">{category}</span>
+              </div>
+            ))}
+          </CheckboxGroup>
+        )}
+      </BottomSheet>
+
+      {isMobile && <BottomNav />}
     </div>
   );
 }

@@ -1,7 +1,15 @@
 // Daksh wrote this
 
+"use client";
+
 import { useState } from "react";
-import { FaSearch, FaUserCircle, FaSignOutAlt, FaCog } from "react-icons/fa";
+import {
+  FaSearch,
+  FaUserCircle,
+  FaSignOutAlt,
+  FaCog,
+  FaPlus,
+} from "react-icons/fa";
 import Image from "next/image";
 import { logoutSession } from "@/lib/session";
 
@@ -10,6 +18,7 @@ export default function Header({
   keywordSearched,
   setKeywordSearched,
   isOnHomePage = true,
+  isMobile = false,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -26,28 +35,36 @@ export default function Header({
 
   if (isOnHomePage) {
     return (
-      <div
-        className={`relative flex items-center w-full text-black`}
-      >
-        <FaSearch className="absolute left-3 text-gray-500" />
-        <input
-          type="text"
-          placeholder="Search articles..."
-          value={keywordSearched}
-          onChange={(e) => setKeywordSearched(e.target.value)}
-          className="pl-10 p-2 w-full border rounded-md border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        />
+      <div className="z-50 flex flex-row items-center justify-between p-4 rounded-lg sticky top-0 space-x-4">
+        <div className={`relative flex items-center w-full`}>
+          <FaSearch className="absolute left-3 text-gray-500" />
+          <input
+            type="text"
+            placeholder="Search articles..."
+            value={keywordSearched}
+            onChange={(e) => setKeywordSearched(e.target.value)}
+            className="pl-10 p-2 w-full border rounded-md bg-primary-container shadow-sm focus:outline-none focus:ring-2 focus:ring-tertiary-container focus:border-tertiary-container"
+          />
+        </div>
+        {!isMobile && (
+          <button
+            className="p-2 bg-primary-container rounded-full cursor-pointer"
+            onClick={() => (window.location.href = "/interests")}
+          >
+            <FaPlus className="text-xl text-on-primary-container" />
+          </button>
+        )}
       </div>
     );
   }
 
   return (
-    // Chin Ray: Made header rounded, anchor to top of page, implement search bar show/hide
-    <div className="bg-white shadow-lg p-4 flex items-center justify-between rounded-lg sticky top-0">
-      <h1 className="text-xl font-bold text-gray-800">
+    // Chin Ray: Made header rounded, anchor to top of page, implement search bar show/hide, theming
+    <div className="bg-secondary-container shadow-lg p-4 flex items-center justify-between rounded-lg sticky top-0">
+      <h1 className="text-xl font-bold text-on-secondary-container">
         <a href="/">RSS Feeds</a>
       </h1>
-      
+
       <div className="relative">
         <div className="cursor-pointer" onClick={toggleDropdown}>
           {user && user.picture ? (
@@ -59,7 +76,7 @@ export default function Header({
               className="rounded-full"
             />
           ) : (
-            <FaUserCircle className="text-2xl text-gray-700" />
+            <FaUserCircle className="text-2xl text-on-secondary-container" />
           )}
         </div>
 

@@ -2,8 +2,9 @@
 "use client"
 import React, { useState } from "react";
 import { addFeedToDatabase } from "@/lib/firebase/feed_database";
+import CreatableSelect from "react-select/creatable";
 
-export default function AddFeed({ onAddFeed, error }) {
+export default function AddFeed({ onAddFeed, error, categoryList }) {
   const [feedName, setFeedName] = useState("");
   const [feedUrl, setFeedUrl] = useState("");
   const [feedCategory, setFeedCategory] = useState("");
@@ -14,7 +15,7 @@ export default function AddFeed({ onAddFeed, error }) {
     if (feedUrl.trim()) {
       setIsLoading(true);
       console.log()
-      await addFeedToDatabase({name: feedName, feedUrl: feedUrl, categories: feedCategory.split(",") || ["Uncategorised"] });
+      await addFeedToDatabase({name: feedName, feedUrl: feedUrl, categories: feedCategory.map(category => category.label) || ["Uncategorised"] });
       await onAddFeed();
       setIsLoading(false);
       setFeedUrl("");
@@ -24,12 +25,12 @@ export default function AddFeed({ onAddFeed, error }) {
 
   return (
     <>
-      <h2 className="text-lg font-semibold text-gray-800 mb-4 mt-5">Add a New Feed</h2>
-      <div className="bg-white p-6 rounded-lg shadow-md mb-6 border border-gray-200">
+      <h2 className="text-lg font-semibold text-on-surface mb-4 mt-5">Add a New Feed</h2>
+      <div className="bg-surface-bright p-6 rounded-lg shadow-md mb-6 border border-gray-200">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {/* Feed URL Input */}
           <div>
-            <label htmlFor="feed-name" className="block text-l font-medium text-gray-700 mb-1">
+            <label htmlFor="feed-name" className="block text-l font-medium text-on-surface mb-1">
               Feed Name
             </label>
             <input
@@ -38,13 +39,13 @@ export default function AddFeed({ onAddFeed, error }) {
               value={feedName}
               onChange={(e) => setFeedName(e.target.value)}
               placeholder="Enter RSS Feed Name"
-              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full p-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
           {/* Feed URL Input */}
           <div>
-            <label htmlFor="feed-url" className="block text-l font-medium text-gray-700 mb-1">
+            <label htmlFor="feed-url" className="block text-l font-medium text-on-surface mb-1">
               RSS Feed URL
             </label>
             <input
@@ -53,22 +54,21 @@ export default function AddFeed({ onAddFeed, error }) {
               value={feedUrl}
               onChange={(e) => setFeedUrl(e.target.value)}
               placeholder="Enter RSS Feed URL"
-              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full p-2 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
 
           {/* Feed Category Input */}
           <div>
-            <label htmlFor="feed-category" className="block text-l font-medium text-gray-700 mb-1">
+            <label htmlFor="feed-category" className="block text-l font-medium text-on-surface mb-1">
               Category
             </label>
-            <input
+            <CreatableSelect
               id="feed-category"
-              type="text"
-              value={feedCategory}
-              onChange={(e) => setFeedCategory(e.target.value)}
+              isMulti
+              options={categoryList.map(category => ({ value: category, label: category }))}
+              onChange={(choice) => setFeedCategory(choice)}
               placeholder="Enter Feed Categories (delimited by commas)"
-              className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             />
           </div>
         </div>
@@ -83,8 +83,8 @@ export default function AddFeed({ onAddFeed, error }) {
           <button
             onClick={handleAddFeed}
             disabled={!feedUrl.trim() || isLoading}
-            className={`px-4 py-2 rounded-md font-semibold text-white ${
-              isLoading ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600 cursor-pointer"
+            className={`px-4 py-2 rounded-md font-semibold text-on-secondary-container ${
+              isLoading ? "bg-blue-300 cursor-not-allowed" : "bg-secondary-container hover:bg-outline cursor-pointer"
             } transition-all`}
           >
             {isLoading ? "Adding..." : "Add Feed"}
