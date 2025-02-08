@@ -1,10 +1,10 @@
 //Puru Wrote This
 import { useState } from "react";
 import { getAuth, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
-import { logoutSession } from "@/lib/session";
+import { logoutSession } from "@/lib/session";// To logout users
 
 export default function ChangePassword() {
-    const [oldPassword, setOldPassword] = useState("");
+    const [oldPassword, setOldPassword] = useState("");// Sets inital state for old password, new password and confirm password as well as the message displayed
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [passwordMessage, setPasswordMessage] = useState("");
@@ -13,11 +13,11 @@ export default function ChangePassword() {
     const changePassword = async () => {
     setPasswordMessage("");
 
-    if (!oldPassword || !newPassword || !confirmPassword) {
+    if (!oldPassword || !newPassword || !confirmPassword) {// Checks if any field in empty in the input
         setPasswordMessage("All fields are required.");
         return;
     }
-    if (newPassword !== confirmPassword) {
+    if (newPassword !== confirmPassword) {// Checks if new password and confirm password are matching
         setPasswordMessage("New password are not matching!");
         return;
     }
@@ -30,12 +30,12 @@ export default function ChangePassword() {
 
     try {
         setIsLoading(true);
-        const credential = EmailAuthProvider.credential(currentUser.email, oldPassword);
-        await reauthenticateWithCredential(currentUser, credential);
+        const credential = EmailAuthProvider.credential(currentUser.email, oldPassword);// Checks if user entered correct old password
+        await reauthenticateWithCredential(currentUser, credential);// Authenticates user
 
-        await updatePassword(currentUser, newPassword);
+        await updatePassword(currentUser, newPassword);//Updates new password in firebase
         setPasswordMessage("Password has been successfully reset!");
-        await logoutSession();
+        await logoutSession();// Log user out
         window.location.href = "/login";
     } catch (error) {
         console.error("Error resetting password:", error);
@@ -49,6 +49,7 @@ export default function ChangePassword() {
     <div className="mt-5">
 
         <div className="flex flex-col gap-4 w-full max-w-md mx-auto mt-3">
+        {/* Input for old password */}
         <input
             type="password"
             placeholder="Old Password"
@@ -56,6 +57,7 @@ export default function ChangePassword() {
             onChange={(e) => setOldPassword(e.target.value)}
             className="border border-gray-300 text-black p-2 rounded"
         />
+        {/* Input for new password */}
         <input
             type="password"
             placeholder="New Password"
@@ -63,6 +65,7 @@ export default function ChangePassword() {
             onChange={(e) => setNewPassword(e.target.value)}
             className="border border-gray-300 text-black p-2 rounded"
         />
+        {/* Input for confirm password  */}
         <input
             type="password"
             placeholder="Confirm Password"
@@ -70,6 +73,7 @@ export default function ChangePassword() {
             onChange={(e) => setConfirmPassword(e.target.value)}
             className="border border-gray-300 text-black p-2 rounded"
         />
+        {/* Button that resents password */}
         <button
             onClick={changePassword}
             disabled={isLoading}
@@ -79,6 +83,7 @@ export default function ChangePassword() {
         >
             {isLoading ? "Processing..." : "Reset Password"}
         </button>
+        {/*Displays password message as needed to user */}
         {passwordMessage && <p className="text-red-500">{passwordMessage}</p>}
         </div>
     </div>
