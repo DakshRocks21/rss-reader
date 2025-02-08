@@ -3,7 +3,7 @@
 
 import { useState, useEffect } from "react";
 import { getAuth, updateProfile } from "firebase/auth";
-import { collection, doc, setDoc } from "firebase/firestore";
+import { collection, doc, setDoc, updateDoc } from "firebase/firestore";
 import { FaUserCircle } from "react-icons/fa"; // Used for profile picture if user does not have one
 import Image from "next/image";
 import { MdArrowDropDown } from "react-icons/md"; // Imported for  dropdown
@@ -126,7 +126,7 @@ export default function App() {
       displayName: username,
       photoURL: user.data.photoURL || "",
       bio: bio,
-      createdAt: new Date(),
+      createdAt: user.data.createdAt,
     });
     await setUsername(""); // Sets username to blank
   };
@@ -151,7 +151,7 @@ export default function App() {
 
       const usersCollection = collection(FIREBASE_FIRESTORE_CLIENT, "users");
       const userDocRef = doc(usersCollection, await getCurrentUserID());
-      await setDoc(
+      await updateDoc(
         userDocRef,
         {
           // Updates firebase with new bio

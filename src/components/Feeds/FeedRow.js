@@ -3,6 +3,7 @@
 import { Card, Button } from "actify";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export default function FeedRow({ feed, type }) {
   const { publisher, title, contentSnippet, pubDate, link, image } = feed;
@@ -27,24 +28,20 @@ export default function FeedRow({ feed, type }) {
             />
           )}
           <div className="p-6 space-y-4">
-            <p
-              as="a"
+            <Link
               href={link}
               target="_blank"
               rel="noopener noreferrer"
-              variant="h5"
               className="text-title-large text-primary font-bold hover:underline hover:text-primary-dark"
             >
               {title}
-            </p>
-            <p variant="body2" className="text-on-surface-variant">
+            </Link>
+            <p className="text-on-surface-variant line-clamp-5">
               {contentSnippet}
             </p>
             <div className="flex justify-between items-center">
-              <p variant="body2" className="text-primary">
-                {publisher || "Unknown Publisher"}
-              </p>
-              <p variant="caption" className="text-on-surface-variant">
+              <p className="text-primary w-8/12 line-clamp-2">{publisher || "Unknown Publisher"}</p>
+              <p className="text-on-surface-variant">
                 {timeAgo}
               </p>
             </div>
@@ -54,11 +51,14 @@ export default function FeedRow({ feed, type }) {
     );
   } else if (type === "list") {
     return (
-      <motion.div
+      <motion.a
         className="bg-surface shadow-lg hover:shadow-xl rounded-xl transition-shadow duration-300 w-full flex flex-row"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.4 }}
+        target="_blank"
+        rel="noopener noreferrer"
+        href={link}
       >
         {image && (
           <Image
@@ -70,29 +70,22 @@ export default function FeedRow({ feed, type }) {
           />
         )}
         <div className="py-3 px-3 space-y-4 flex flex-col w-full">
-          <p
-            as="a"
-            href={link}
-            target="_blank"
-            rel="noopener noreferrer"
-            variant="h5"
-            className="text-title-medium text-primary font-bold hover:underline hover:text-primary-dark"
-          >
+          <p className="text-title-medium text-primary font-bold hover:text-primary-dark">
             {title}
           </p>
-          <p variant="body2" className="text-on-surface-variant">
+          <p className="text-on-surface-variant line-clamp-5">
             {contentSnippet}
           </p>
           <div className="flex justify-between items-center">
-            <p variant="body2" className="text-primary">
+            <p  className="text-primary ">
               {publisher || "Unknown Publisher"}
             </p>
-            <p variant="caption" className="text-on-surface-variant">
+            <p className="text-on-surface-variant ">
               {timeAgo}
             </p>
           </div>
         </div>
-      </motion.div>
+      </motion.a>
     );
   }
 }
