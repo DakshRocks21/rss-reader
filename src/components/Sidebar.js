@@ -18,13 +18,12 @@ export default function Sidebar({ user, categoryList, setFilterCategory }) {
     setFilterCategory(selected);
   };
 
-  console.log(user);
   const isLoading = !categoryList.length;
 
   return (
     <div className="shadow-md w-64 p-4 sticky top-0 h-screen bg-secondary-container flex flex-col">
       <div className="flex items-center space-x-4 mb-4 justify-center">
-        <div className="w-12 h-12 items-center justify-center flex bg-gray-100 rounded-full">
+        <div className="w-11 h-11 items-center justify-center flex bg-gray-100 rounded-full">
           {user && user.picture ? (
             <Image
               src={user.picture}

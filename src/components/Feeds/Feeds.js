@@ -1,8 +1,11 @@
 // This file is written by Daksh
 import CategorySection from "@/components/Feeds/CategorySection";
 
-export default function Feeds({ feeds, keyword, filteredCategory, categories }) {
-
+export default function Feeds({
+  feeds,
+  keyword,
+  filteredCategory
+}) {
   const allItems = feeds
     .flatMap((feed) => {
       const publisher = feed.data.title || "Unknown Publisher";
@@ -22,32 +25,32 @@ export default function Feeds({ feeds, keyword, filteredCategory, categories }) 
       return true;
     });
 
+  const filteredFeeds = [];
 
-  const filteredFeeds = []
-  for (const item of allItems) {
-   if (item.categories.length === 0) {
-     item.categories = ["Uncategorized"];
-   }
-   
-   if (filteredCategory.length > 0) {
+  if (filteredCategory.length > 0) {
+    console.log("Filtering by category");
+    for (const item of allItems) {
+      if (item.categories.length === 0) {
+        item.categories = ["Uncategorized"];
+      }
       for (const category of item.categories) {
         if (filteredCategory.includes(category)) {
           filteredFeeds.push(item);
           break;
         }
       }
-   } else {
-      filteredFeeds.push(item);
-   }   
+    }
+  } else {
+    filteredFeeds.push(...allItems);
   }
 
   filteredFeeds.sort((a, b) => new Date(b.pubDate) - new Date(a.pubDate));
-    
+
 
   return (
     <div>
       <CategorySection
-        feeds={filteredFeeds} 
+        feeds={filteredFeeds}
         category_selected={filteredCategory}
       />
     </div>

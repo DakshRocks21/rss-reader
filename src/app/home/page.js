@@ -81,6 +81,8 @@ export default function HomePage() {
         .filter((value, index, self) => self.indexOf(value) === index);
       setCategoryList(categories);
       setFeeds(data || []);
+      console.log("Fetched feeds", data);
+      console.log("Categories", categories);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -146,13 +148,17 @@ export default function HomePage() {
           </div>
         ) : (
           <Feeds
-            feeds={feeds.filter((feed) =>
-              feed.categories.some((category) =>
-                filterCategory.includes(category)
-              )
-            )}
+            feeds={
+              filterCategory.length > 0
+                ? feeds.filter((feed) =>
+                    feed.categories.some((category) =>
+                      filterCategory.includes(category)
+                    )
+                  )
+                : feeds
+            }
             keywordSearched={keywordSearched}
-            filterCategory={filterCategory}
+            filteredCategory={filterCategory}
           />
         )}
       </div>

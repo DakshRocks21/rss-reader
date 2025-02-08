@@ -9,6 +9,7 @@ import Autoplay from "embla-carousel-autoplay";
 const EmblaCarousel = dynamic(() => import("./EmblaCarousel"), { ssr: false });
 
 export default function CategorySection({ category_selected, feeds }) {
+
   const header =
     category_selected.length === 0
       ? "Your Feeds"
