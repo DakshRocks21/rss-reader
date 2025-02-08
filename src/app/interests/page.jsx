@@ -7,6 +7,7 @@ import { getUserInfoFromFirebaseAuth } from "@/lib/session";
 import { getFeedsFromDatabase } from "@/lib/firebase/feed_database";
 import AddFeed from "@/app/interests/AddFeed";
 import Header from "@/components/Header";
+import { setTheme } from "@/components/DarkConfig";
 
 import { RenderSubscribedInterests, RenderInterestSelection } from "./RenderInterests";
 import { Categories } from "./Filters";
@@ -39,7 +40,7 @@ export default function Interests() {
       description: "An Singaporean technology forum and news outlet specialising in hardware."
     }
   ])
-
+    setTheme();
   // Authentication protection
   useEffect(() => {
     const fetchData = async () => {
@@ -128,7 +129,8 @@ export default function Interests() {
   };
 
   return (
-    <div className="p-6 bg-gradient-to-b bg-background min-h-screen">
+
+    <div className="p-6 min-h-screen">
       <Header
         user={user}
         onSignOut={async () => {
