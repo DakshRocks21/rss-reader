@@ -16,7 +16,7 @@ export function RenderSubscribedInterests({ feeds, filter, isMobile }) {
                         (filter.length === 0 || feed.categories.some(category => filter.includes(category))) ? (
                             <div className={`bg-surface-bright p-6 rounded-lg drop-shadow-md mb-6 w-fit max-w-2xl mr-6 flex items-center`} key={feed.url}>
                                 <div className={styles.container}>
-                                    {isMobile ? (
+                                    {!isMobile ? (
                                         (feed.name && feed.name != "" ? (
                                             <>
                                                 {
@@ -100,7 +100,7 @@ export function RenderInterestSelection({ presetFeeds, filter, isMobile }) {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-3 gap-6">
                     {presetFeeds.map((feed) => (
                         (filter.length === 0 || feed.categories.some(category => filter.includes(category))) ? (
-                            <div className="bg-surface-bright p-6 rounded-lg shadow-md border border-gray-200 flex items-center" key={feed.url}>
+                            <div className="bg-surface-bright p-6 rounded-lg shadow-md flex items-center" key={feed.url}>
                                 <div className="flex items-center w-full space-x-4">
                                     {feed.image ? (
                                         <img src={feed.image} alt={feed.name} className="w-12 h-12 object-cover rounded-md" />
