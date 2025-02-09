@@ -11,6 +11,7 @@ export default function ChangePassword() {
     const [isLoading, setIsLoading] = useState(false);
     const [isGoogleSignin,setIsGoogleSignIn] = useState(false);
 
+
     const changePassword = async () => {
     setPasswordMessage("");
 
@@ -45,7 +46,6 @@ export default function ChangePassword() {
         setIsLoading(false);
     }
     };
-    
 
     return (
     <div className="mt-5">
