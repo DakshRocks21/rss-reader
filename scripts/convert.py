@@ -1,10 +1,12 @@
+
+
+# Written by Daksh
+
 import re
 
 def process_css(css_input):
-    # Regex to find `rgb()` wrapped values and extract the color values
+    # ChatGPT
     rgb_pattern = re.compile(r"rgb\(([\d\s.]+)\)")
-    
-    # Regex to find decimal values for conversion
     color_pattern = re.compile(r"([\d\.]+)\s+([\d\.]+)\s+([\d\.]+)")
     
     # Step 1: Remove `rgb()` wrapping
@@ -19,9 +21,9 @@ def process_css(css_input):
     
     converted_css = re.sub(color_pattern, replace_color, css_no_rgb)
     return converted_css
-# Add your CSS variables here
+
 css_variables = open("payload.txt").read()
 
-# Convert and print the result
 converted_css = process_css(css_variables)
 print(converted_css)
+# after i converted it, i copied it to the css file.

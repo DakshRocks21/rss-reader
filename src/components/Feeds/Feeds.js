@@ -7,6 +7,9 @@ export default function Feeds({
   keywordSearched,
   filteredCategory
 }) {
+  // This is the main component that displays the feeds
+  // It has all the formatting logic/filtering logic
+
 
   const allItems = feeds
     .flatMap((feed) => {
@@ -30,7 +33,7 @@ export default function Feeds({
   const filteredFeeds = [];
 
   if (filteredCategory.length > 0) {
-    console.log("Filtering by category");
+    //console.log("Filtering by category");
     for (const item of allItems) {
       if (item.categories.length === 0) {
         item.categories = ["Uncategorized"];

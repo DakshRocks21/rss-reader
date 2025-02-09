@@ -38,6 +38,8 @@ export default function HomePage() {
 
   useEffect(() => {
     // Check screen size for dynamic UI updates
+    // This is used to determine if the sidebar should be shown or not
+    // This is also used for the header component to show/hide the plus buttom
     const checkScreenSize = () => setIsMobile(window.innerWidth < 1200);
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
@@ -74,6 +76,8 @@ export default function HomePage() {
   }, [isAuthenticated]);
 
   const fetchFeeds = async () => {
+    // Once the user is authenticated, fetch feeds from the database
+    // then for each feed, fetch the RSS feed data
     setIsLoadingFeeds(true);
     setFeedLoadingMessage("Starting feed fetch...");
 
@@ -96,7 +100,9 @@ export default function HomePage() {
               console.warn(`Skipping feed due to rate limit or server error: ${feedName}`);
               continue; 
             } else {
-              throw new Error(`Failed to fetch ${feedName} (status ${response.status})`);
+              // dont crash the app if the feed fails to load, just continue without that feed
+              console.log(`Failed to fetch ${feedName} (status ${response.status})`);
+              continue;
             }
           }
 
@@ -111,7 +117,9 @@ export default function HomePage() {
           ) {
             console.warn(`Skipping feed: ${feedName} due to IP-based rate limit`);
           } else {
-            throw innerError;
+            //lets not throw the error, just log it... 
+            //throw innerError;
+            console.log(innerError);
           }
         }
       }
@@ -138,7 +146,7 @@ export default function HomePage() {
     setFilterCategory(selected);
   };
 
-  if (error) return <p className="p-4 text-red-500">{error}</p>;
+  if (error) return <p className="p-4 text-red-500">{error}<br/>Reload the page or try again later.</p>;
   if (!isAuthenticated) return null;
 
   return (

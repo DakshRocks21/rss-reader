@@ -37,6 +37,7 @@ export default function Header({
     window.location.href = "/settings";
   };
 
+  // Home Page Sidebar
   if (isOnHomePage) {
     return (
       <div className="z-50 flex flex-row items-center justify-between p-4 rounded-lg sticky top-0 space-x-4">
@@ -62,6 +63,7 @@ export default function Header({
     );
   }
 
+  // This is for the Add Feed Page and Settings Pag
   return (
     <motion.nav className="bg-secondary-container p-4 text-white flex items-center justify-between rounded-lg w-full sticky top-0 z-50"
       initial={{ opacity: 0 }}

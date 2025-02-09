@@ -6,7 +6,6 @@ import EmblaCarouselLib from 'embla-carousel'
 import Autoplay from 'embla-carousel-autoplay'
 
 import { PrevButton, NextButton, usePrevNextButtons } from './EmblaButtons'
-import { DotButton, useDotButton } from './EmblaDotButtons'
 
 const EmblaCarousel = ({ slides = [], options = {}, plugins = [], renderSlide }) => {
   const viewportRef = useRef(null)
@@ -21,7 +20,7 @@ const EmblaCarousel = ({ slides = [], options = {}, plugins = [], renderSlide })
 
   const { prevBtnDisabled, nextBtnDisabled, onPrevButtonClick, onNextButtonClick } =
     usePrevNextButtons(embla)
-  const { selectedIndex, scrollSnaps, onDotButtonClick } = useDotButton(embla)
+  
 
   return (
     <div

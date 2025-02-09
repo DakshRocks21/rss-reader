@@ -12,6 +12,8 @@ import {
 } from "actify";
 import dynamic from "next/dynamic";
 
+// Dynamic import for Navbar
+// This is used to lazy load the Navbar component
 const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
 
 export default function LandingPage() {
