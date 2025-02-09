@@ -3,7 +3,6 @@
 
 import React, { useEffect, useRef, useState } from 'react'
 import EmblaCarouselLib from 'embla-carousel'
-import Autoplay from 'embla-carousel-autoplay'
 
 import { PrevButton, NextButton, usePrevNextButtons } from './EmblaButtons'
 
@@ -26,26 +25,25 @@ const EmblaCarousel = ({ slides = [], options = {}, plugins = [], renderSlide })
     <div
       className="max-w-3xl mx-auto"
       style={{
-        '--slide-height': '35rem',
+        '--slide-height': '40rem',
         '--slide-spacing': '1rem',
         '--slide-size': '100%',
       }}
     >
       <div className="overflow-hidden" ref={viewportRef}>
         <div
-          className="flex flex-col items-center"
+          className="flex flex-col items-center space-y-16"
           style={{
             marginTop: "calc(var(--slide-spacing) * -1)",
-            height: "calc(var(--slide-spacing) + var(--slide-height))",
+            height: "calc(var(--slide-height))",
             touchAction: 'pan-x pinch-zoom', 
           }}
         >
           {slides.map((slide, index) => (
             <div
               key={index}
-              className="transform"
-              style={{
-                flex: "0 0 var(--slide-size)",
+              className="transform w-full"
+              style={{                
                 paddingTop: "var(--slide-spacing)",
               }}
             >

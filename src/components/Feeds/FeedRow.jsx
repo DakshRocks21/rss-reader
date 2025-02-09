@@ -15,10 +15,11 @@ export default function FeedRow({ feed, type }) {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.2, duration: 0.4 }}
+        className="w-full h-full"
       >
         <Card
           onClick={() => window.open(link, "_blank", "noopener,noreferrer")}
-          className="max-w-2xl bg-surface-container text-on-primary-container cursor-pointer shadow-lg hover:shadow-xl rounded-xl transition-shadow duration-300"
+          className={`${type === "tiles" ? "max-w-3xl" : "w-full"} bg-surface-container text-on-primary-container cursor-pointer shadow-lg hover:shadow-xl rounded-xl transition-shadow duration-300`}
         >
           {image && (
             <Image

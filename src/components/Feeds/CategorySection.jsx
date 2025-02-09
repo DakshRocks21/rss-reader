@@ -7,8 +7,11 @@ import { FaThLarge, FaList } from "react-icons/fa";
 import { MdViewCarousel } from "react-icons/md";
 import { Pagination } from "actify";
 import Autoplay from "embla-carousel-autoplay";
+import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures'
+
 import {FaSearch, FaRegFrown } from "react-icons/fa";
 import { Button } from "actify";
+
 const EmblaCarousel = dynamic(() => import("./EmblaCarousel"), { ssr: false });
 
 export default function CategorySection({ category_selected, feeds }) {
@@ -19,7 +22,7 @@ export default function CategorySection({ category_selected, feeds }) {
 
   const [viewMode, setViewMode] = useState("tiles");
   const [currentPage, setCurrentPage] = useState(1);
-  const [selectedPageSize, setSelectedPageSize] = useState(10);
+  const [selectedPageSize, setSelectedPageSize] = useState(20);
   const totalPages = Math.ceil(feeds.length / selectedPageSize);
   const paginatedFeeds = feeds.slice(
     (currentPage - 1) * selectedPageSize,
@@ -29,7 +32,7 @@ export default function CategorySection({ category_selected, feeds }) {
   // Memoize options and plugins so they don't change on every render.
   const carouselOptions = useMemo(() => ({ axis: "y", loop: true }), []);
   const carouselPlugins = useMemo(
-    () => [Autoplay({ stopOnInteraction: true })],
+    () => [Autoplay({ stopOnInteraction: true }), WheelGesturesPlugin()],
     []
   );
 
