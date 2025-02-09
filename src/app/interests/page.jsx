@@ -7,6 +7,7 @@ import { getUserInfoFromFirebaseAuth } from "@/lib/session";
 import { getFeedsFromDatabase } from "@/lib/firebase/feed_database";
 import AddFeed from "@/app/interests/AddFeed";
 import Header from "@/components/Header";
+import BottomNav from "@/components/mobile/BottomNav";
 
 import { RenderSubscribedInterests, RenderInterestSelection } from "./RenderInterests";
 import { Categories } from "./Filters";
@@ -21,6 +22,8 @@ export default function Interests() {
   const [categoryList, setCategoryList] = useState([]);
   const [categoryFilterList, setCategoryFilterList] = useState([]);
   const [error, setError] = useState(null);
+
+  const [isMobile, setIsMobile] = useState(false);
 
   const [presetFeeds, setPresetFeeds] = useState([
     {
@@ -100,7 +103,7 @@ export default function Interests() {
         const presetCategories = presetFeeds
           .flatMap((feed) => feed.categories || [])
           .filter((value, index, self) => self.indexOf(value) === index);
-        
+
         setFeeds(data);
         setCategoryList(Array.from(new Set([...categories, ...presetCategories])));
         setIsLoading(false);
@@ -111,6 +114,14 @@ export default function Interests() {
     };
 
     fetchFeeds();
+  }, []);
+
+  useEffect(() => {
+    // Check screen size for dynamic UI updates
+    const checkScreenSize = () => setIsMobile(window.innerWidth < 1200);
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
   // Check respective preset feed checkboxes if user is already subscribed to them, remove duplicates
@@ -163,7 +174,6 @@ export default function Interests() {
   };
 
   return (
-
     <div className="p-6 min-h-screen">
       <Header
         user={user}
@@ -172,11 +182,13 @@ export default function Interests() {
           window.location.href = "/login";
         }}
         isOnHomePage={false}
+        isMobile={isMobile}
       />
       <AddFeed categoryList={categoryList} onAddFeed={() => window.location.reload()} />
-      <Categories categoryList={categoryList} onCategoryChange={(category) => handleCategoryFilterChange(category)} />
-      <RenderSubscribedInterests feeds={feeds} filter={categoryFilterList} />
-      <RenderInterestSelection presetFeeds={presetFeeds} filter={categoryFilterList} />
+      <Categories categoryList={categoryList} onCategoryChange={(category) => handleCategoryFilterChange(category)} isMobile={isMobile} />
+      <RenderSubscribedInterests feeds={feeds} filter={categoryFilterList} isMobile={isMobile}/>
+      <RenderInterestSelection presetFeeds={presetFeeds} filter={categoryFilterList} isMobile={isMobile}/>
+      {isMobile && <BottomNav />}
     </div>
   )
 }

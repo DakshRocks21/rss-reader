@@ -1,12 +1,11 @@
 // Chin Ray wrote this
-import { FaSearch, FaRegSadTear } from "react-icons/fa";
 
-export function Categories({ categoryList, onCategoryChange }) {
+export function Categories({ categoryList, onCategoryChange, isMobile }) {
   return (
     <>
       <h2 className="text-lg font-semibold text-on-surface mb-4 mt-5">Categories</h2>
       <div className="rounded-lg mb-6">
-        <div className="flex flex-wrap space-x-10">
+        <div className={`flex flex-wrap ${!isMobile ? "space-x-10" : "space-x-2"}`}>
           {categoryList.map((category) => (
               <label
                 key={category}
