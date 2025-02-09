@@ -3,7 +3,6 @@
 import { Card, Button } from "actify";
 import Image from "next/image";
 import { motion } from "framer-motion";
-import Link from "next/link";
 
 export default function FeedRow({ feed, type }) {
   const { publisher, title, contentSnippet, pubDate, link, image } = feed;
@@ -84,7 +83,13 @@ export default function FeedRow({ feed, type }) {
   }
 }
 
+
+
 const formatTimeAgo = (pubDate) => {
+  /* 
+    Converts the published date to a human-readable format
+    e.g. 1 minute ago, 2 hours ago, Yesterday, 3 days ago, 1 Jan 2021
+  */
   const now = new Date();
   const published = new Date(pubDate);
   const diffMs = now - published;

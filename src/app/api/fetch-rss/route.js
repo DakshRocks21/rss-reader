@@ -1,3 +1,5 @@
+// Written by Daksh
+
 import { NextResponse } from "next/server";
 import Parser from "rss-parser";
 
@@ -11,6 +13,12 @@ const parser = new Parser({
 });
 
 function extractBestImage(mediaGroup) {
+  /*
+  * This function is used to extract the best image from the media group.
+  * It sorts the media group based on the width and height of the images.
+  * It returns the URL of the image with the highest width and height.
+  * If the media group is null or not an array, then it will return null.
+  */
   if (!mediaGroup || !Array.isArray(mediaGroup)) return null;
 
   const mediaImages = mediaGroup
@@ -25,6 +33,11 @@ function extractBestImage(mediaGroup) {
 }
 
 function extractImageFromContent(content) {
+  /* 
+  * This function is used to extract the image from the content of the feed.
+  * It uses a regular expression to match the image URL from the content.
+  * If the content is null, then it will return null.
+  */
   if (!content) return null;
 
   const urlMatch = content.match(/https?:\/\/[^\s"]+\.(jpg|jpeg|png|gif)/i);
@@ -45,6 +58,7 @@ export async function GET(request) {
   try {
     const feed = await parser.parseURL(feedUrl);
 
+    // I try to find a image in the feed items
     feed.items = feed.items.map((item) => {
       if (!item.image) {
         item.image =

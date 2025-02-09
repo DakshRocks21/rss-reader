@@ -1,7 +1,14 @@
 // This file is written by Daksh
+
 import { NextResponse } from "next/server";
 
 export async function middleware(request) {
+  /*
+  * This middleware function is used to check if the user is authenticated or not.
+  * If the user is authenticated, then it will redirect the user to the home page.
+  * If the user is not authenticated, then it will redirect the user to the login page.
+  */
+ 
   const isAuthenticated = request.cookies.get("firebaseToken");
   
   const pathname = request.nextUrl.pathname;
@@ -27,4 +34,4 @@ export async function middleware(request) {
   }
 
   return NextResponse.next();
-}
+} 

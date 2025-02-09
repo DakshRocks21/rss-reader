@@ -1,3 +1,5 @@
+// Daksh wrote this
+
 "use client";
 
 import { motion } from "framer-motion";
@@ -10,11 +12,13 @@ import {
 } from "actify";
 import dynamic from "next/dynamic";
 
+// Dynamic import for Navbar
+// This is used to lazy load the Navbar component
 const Navbar = dynamic(() => import('@/components/Navbar'), { ssr: false });
 
 export default function LandingPage() {
   return (
-    // Animate the overall container on page load
+    // Added a motion.div up here to animate the navbar
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

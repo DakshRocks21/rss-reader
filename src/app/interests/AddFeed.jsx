@@ -1,4 +1,5 @@
 // Daksh and Chin Ray wrote this
+
 "use client"
 import React, { useState } from "react";
 import { addFeedToDatabase } from "@/lib/firebase/feed_database";

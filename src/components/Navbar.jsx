@@ -1,3 +1,5 @@
+// Daksh wrote this
+
 "use client";
 
 import { usePathname } from "next/navigation";
@@ -15,6 +17,7 @@ export default function Navbar() {
     setIsMounted(true);
   }, []);
 
+  // Check if the user is on the login page or signup page for the Get Started button
   const isOnLoginPage =
     pathname.includes("/login") || pathname.includes("/signup");
 
