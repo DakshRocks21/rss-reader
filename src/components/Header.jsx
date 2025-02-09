@@ -64,6 +64,7 @@ export default function Header({
 
   return (
     // Chin Ray: Made header rounded, anchor to top of page, implement search bar show/hide, theming
+    (!isMobile &&
     <motion.nav className="bg-secondary-container p-4 text-white flex items-center justify-between rounded-lg w-full sticky top-0 z-50"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -115,5 +116,6 @@ export default function Header({
         </div>
       </div>
     </motion.nav>
+    )
   );
 }
