@@ -1,3 +1,6 @@
+// Daksh wrote this
+// We are probably not going to use this file, but it's good to have it in case we need it later.
+
 const CACHE_NAME = "rss-reader-cache-v1";
 const urlsToCache = ["/", "/home", "/interests"];
 

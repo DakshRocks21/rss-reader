@@ -1,4 +1,5 @@
 // Daksh wrote this
+
 import {
   collection,
   doc,
@@ -33,6 +34,7 @@ export const SignUpWithEmailPass = async (email, password, username) => {
       displayName: username,
       photoURL: user.photoURL || "",
       createdAt: new Date(),
+      bio: "",
     });
     const Idtoken = await userCredential.user.getIdToken();
     await createSession(Idtoken);
@@ -58,6 +60,7 @@ export const SignInWithGoogle = async () => {
         displayName: user.displayName,
         photoURL: user.photoURL || "",
         createdAt: new Date(),
+        bio: "",
       });
     }
 

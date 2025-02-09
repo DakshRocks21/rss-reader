@@ -1,4 +1,5 @@
 // Written by Daksh
+
 import dynamic from "next/dynamic";
 import { memo, useMemo, useState } from "react";
 import FeedRow from "./FeedRow";

@@ -7,6 +7,9 @@ import { getIdToken, signOut, onAuthStateChanged } from "firebase/auth";
 import { createSession } from "../lib/session";
 import { FIREBASE_AUTH_CLIENT } from "../lib/firebase/client";
 
+// This function is used to refresh the session of the user
+// It adds a ROOT listener to the authentication state of the user and refreshes the session
+// This also refreshes the token of the user
 export default function AuthComp() {
   useEffect(() => {
     const refresh = async (user) => {

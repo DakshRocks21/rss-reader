@@ -1,11 +1,16 @@
 // This file is written by Daksh
+
 import CategorySection from "@/components/Feeds/CategorySection";
 
 export default function Feeds({
   feeds,
-  keyword,
+  keywordSearched,
   filteredCategory
 }) {
+  // This is the main component that displays the feeds
+  // It has all the formatting logic/filtering logic
+
+
   const allItems = feeds
     .flatMap((feed) => {
       const publisher = feed.data.title || "Unknown Publisher";
@@ -17,8 +22,8 @@ export default function Feeds({
     })
     .filter((item) => {
       if (
-        keyword &&
-        !item.title.toLowerCase().includes(keyword.toLowerCase())
+        keywordSearched &&
+        !item.title.toLowerCase().includes(keywordSearched.toLowerCase())
       ) {
         return false;
       }
@@ -28,7 +33,7 @@ export default function Feeds({
   const filteredFeeds = [];
 
   if (filteredCategory.length > 0) {
-    console.log("Filtering by category");
+    //console.log("Filtering by category");
     for (const item of allItems) {
       if (item.categories.length === 0) {
         item.categories = ["Uncategorized"];

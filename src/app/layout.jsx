@@ -1,4 +1,5 @@
 // Daksh wrote this
+
 import './globals.css';
 import AuthComp from '@/components/AuthComp';
 
@@ -30,6 +31,8 @@ export const metadata = {
   },
 };
 
+// I use AuthComp to check if the user is authenticated or not
+// This also RELOADS the token when the user's name changes, as well as the user when he/she signs out or signs in
 export default function RootLayout({ children }) {
   return (
     <html>

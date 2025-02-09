@@ -35,7 +35,6 @@ export const addFeedToDatabase = async ({ name, feedUrl, categories, image = nul
     }
 
     feeds.push({ name: name, url: feedUrl, categories: categories, image: image, description: description });
-    console.log(feeds);
     await updateDoc(dataPath, { feeds });
   }
 };

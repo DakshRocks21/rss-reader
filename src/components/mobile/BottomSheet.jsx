@@ -7,8 +7,10 @@ import { createPortal } from "react-dom";
 import { FaTimes } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 
-
 export default function BottomSheet({ isOpen, onClose, children }) {
+  // This component is used to create a bottom sheet that can be used to show filters or other options
+
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";

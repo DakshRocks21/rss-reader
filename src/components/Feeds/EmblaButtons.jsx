@@ -1,5 +1,6 @@
 // Written by Daksh
 // Adapted from https://www.embla-carousel.com/
+
 import React, { useCallback, useEffect, useState } from 'react'
 import { FaChevronDown, FaChevronUp } from 'react-icons/fa'
 

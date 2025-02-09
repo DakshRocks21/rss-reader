@@ -69,13 +69,6 @@ export default function Interests() {
       description: "A pro-BJP news outlet in India."
     },
     {
-      name: "ABP Live (India News)",
-      url: "https://news.abplive.com/news/india/feed",
-      categories: ["India", "News", "Politics"],
-      image: "images/ABPLive.png",
-      description: "A mainstream news outlet in India."
-    },
-    {
       name: "Zee News (Nation)",
       url: "https://zeenews.india.com/rss/india-national-news.xml",
       categories: ["India", "News", "Politics"],
