@@ -7,7 +7,7 @@ import { collection, doc, setDoc } from "firebase/firestore";
 import { FaUserCircle } from "react-icons/fa"; // Used for profile picture if user does not have one
 import Image from "next/image";
 import { MdArrowDropDown } from "react-icons/md"; // Imported for  dropdown
-import { SegmentedButton, SegmentedButtonSet, Icon } from "actify"; // Imported for toggle buttons
+import { SegmentedButton, SegmentedButtonSet, Icon, Provider } from "actify"; // Imported for toggle buttons
 import { FaArrowLeft } from "react-icons/fa"; // used in back button
 import { getUserInfoFromDatabase } from "@/lib/firebase/auth_database";
 import {
@@ -18,7 +18,7 @@ import {
 import { FIREBASE_FIRESTORE_CLIENT } from "@/lib/firebase/client";
 import { CircularProgress } from "actify";
 import { useApplyStoredTheme } from "@/components/DarkConfig";
-
+import {motion} from "framer-motion";
 import ChangePassword from "@/components/changePassword";
 import ThemeControl from "@/components/ThemeControl";
 
@@ -26,15 +26,13 @@ export default function App() {
   useApplyStoredTheme();
 
   const [user, setUser] = useState(null);
-
   const [isLoading, setIsLoading] = useState(true);
   const [username, setUsername] = useState(""); // Used when user want to change username
   const [bio, setBio] = useState(""); // Add state for bio
   const [message, setMessage] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(true);
-
   const [selectedColorMode, setSelectedColorMode] = useState("system"); // Uses system state unless changed for theme
-
+  const [isGoogleUser, setIsGoogleUser] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState({
     // Uses for dropdowns state and when user clicks on dropdown button then it changes to flase
     username: false,
@@ -50,6 +48,16 @@ export default function App() {
         const userId = await getCurrentUserID();
         const userData = await getUserInfoFromDatabase(userId);
         setUser(userData);
+
+        const auth = getAuth();
+        const currentUser = auth.currentUser;
+        if (currentUser){// Checks if user has used google sign to check whether to display password dropdown or not
+          const isGoogle = currentUser.providerData[0].providerId === "google.com";
+          if(isGoogle){
+          setIsGoogleUser(true);
+          }
+          
+        }
       } catch (error) {
         console.error("Error fetching user data:", error);
       } finally {
@@ -103,11 +111,11 @@ export default function App() {
       setIsLoading(true);
       const auth = getAuth();
       const currentUser = auth.currentUser; // sets current user
-      /*
+      
       if (!isAuthenticated) {
         setMessage("No user is currently signed in.");
         return;
-      }*/
+      }
       await updateProfile(currentUser, { displayName: username }); // Updates new username and sets new user data
       setMessage("Username successfully updated!");
       setUser({ ...user, data: { ...user.data, displayName: username } });
@@ -130,6 +138,8 @@ export default function App() {
     });
     await setUsername(""); // Sets username to blank
   };
+  console.log(isGoogleUser);
+
 
   const updateBio = async () => {
     // Updates bio of a user
@@ -144,21 +154,21 @@ export default function App() {
       const auth = getAuth();
       const currentUser = auth.currentUser; // Sets current user
 
-      /*if (!isAuthenticated) {
+      if (!isAuthenticated) {
         setMessage("No user is currently signed in.");
         return;
-      }*/
+      }
 
       const usersCollection = collection(FIREBASE_FIRESTORE_CLIENT, "users");
       const userDocRef = doc(usersCollection, await getCurrentUserID());
-      await setDoc(
-        userDocRef,
-        {
-          // Updates firebase with new bio
-          bio: bio,
-        },
-        { merge: true }
-      );
+      await setDoc(userDocRef, {
+        // Updates firebase with new paticulars of a user
+        email: user.data.email,
+        displayName: username,
+        photoURL: user.data.photoURL || "",
+        bio: bio,
+        createdAt: new Date(),
+      });
 
       setMessage("Bio successfully updated!");
       setUser({ ...user, data: { ...user.data, bio: bio } }); // Updates users data
@@ -190,6 +200,12 @@ export default function App() {
     );
   }
   return (
+    <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    exit={{ opacity: 0, y: -20 }}
+    transition={{ duration: 0.6 }}
+  >
     <div className="min-h-screen flex justify-center items-center">
       <button
         onClick={goBack} // The back button
@@ -299,24 +315,24 @@ export default function App() {
               </div>
             )}
           </div>
-          {/* Password dropdown*/}
-          <div className="w-full">
-            <button
-              onClick={() => toggleDropdown("password")}
-              className="border px-3 py-2 text-on-primary-container rounded-md w-full text-left flex justify-between items-center"
-            >
-              Change Password
-              <MdArrowDropDown className="inline ml-2" />
-            </button>
-            {/* Displays change password when user presses on dropdown */}
-            {isDropdownOpen.password && (
-              <div className="mt-2 p-2 border rounded-md bg-white shadow-lg w-full">
-                <ChangePassword />
-                {/* Change password componenet is used which returns the neccessary inputs */}
+          
+            {!isGoogleUser && (
+              <div className="w-full">
+                <button
+                  onClick={() => toggleDropdown("password")}
+                  className="border px-3 py-2 text-on-primary-container rounded-md w-full text-left flex justify-between items-center"
+                >
+                  Change Password
+                  <MdArrowDropDown className="inline ml-2" />
+                </button>
+                {isDropdownOpen.password && (
+                  <div className="mt-2 p-2 border rounded-md bg-white shadow-lg w-full">
+                    <ChangePassword />
+                  </div>
+                )}
               </div>
             )}
-          </div>
-
+            
           {/* FAQs dropdwon */}
           <div className="w-full">
             <button
@@ -360,5 +376,6 @@ export default function App() {
         </div>
       </div>
     </div>
+    </motion.div>
   );
 }

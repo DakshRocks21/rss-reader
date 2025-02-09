@@ -1,6 +1,6 @@
 //Puru Wrote This
 import { useState } from "react";
-import { getAuth, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
+import { getAuth, updatePassword, reauthenticateWithCredential, EmailAuthProvider,fetchSignInMethodsForEmail, SignInMethod } from "firebase/auth";
 import { logoutSession } from "@/lib/session";// To logout users
 
 export default function ChangePassword() {
@@ -9,6 +9,7 @@ export default function ChangePassword() {
     const [confirmPassword, setConfirmPassword] = useState("");
     const [passwordMessage, setPasswordMessage] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [isGoogleSignin,setIsGoogleSignIn] = useState(false);
 
     const changePassword = async () => {
     setPasswordMessage("");
@@ -27,6 +28,13 @@ export default function ChangePassword() {
         setPasswordMessage("User is not authenticated!");
         return;
     }
+    /*await fetchSignInMethodsForEmail(auth,currentUser.email)
+    .then((signInMethod) => {
+        if (signInMethod.includes("google.com")) {
+            setIsGoogleSignIn(true);
+            console.log(true);
+        }
+    })*/
 
     try {
         setIsLoading(true);
@@ -44,6 +52,7 @@ export default function ChangePassword() {
         setIsLoading(false);
     }
     };
+    
 
     return (
     <div className="mt-5">
