@@ -1,4 +1,5 @@
 // Daksh wrote this
+
 import './globals.css';
 import AuthComp from '@/components/AuthComp';
 

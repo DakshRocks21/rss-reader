@@ -1,3 +1,5 @@
+// Written by Daksh
+
 "use client";
 
 import { useState, useEffect } from "react";
@@ -39,7 +41,9 @@ export default function HomePage() {
     const checkScreenSize = () => setIsMobile(window.innerWidth < 1200);
     checkScreenSize();
     window.addEventListener("resize", checkScreenSize);
+    console.log(keywordSearched);
     return () => window.removeEventListener("resize", checkScreenSize);
+    
   }, []);
 
   useEffect(() => {

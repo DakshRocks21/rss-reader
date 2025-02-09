@@ -1,11 +1,13 @@
 // This file is written by Daksh
+
 import CategorySection from "@/components/Feeds/CategorySection";
 
 export default function Feeds({
   feeds,
-  keyword,
+  keywordSearched,
   filteredCategory
 }) {
+
   const allItems = feeds
     .flatMap((feed) => {
       const publisher = feed.data.title || "Unknown Publisher";
@@ -17,8 +19,8 @@ export default function Feeds({
     })
     .filter((item) => {
       if (
-        keyword &&
-        !item.title.toLowerCase().includes(keyword.toLowerCase())
+        keywordSearched &&
+        !item.title.toLowerCase().includes(keywordSearched.toLowerCase())
       ) {
         return false;
       }

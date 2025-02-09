@@ -60,21 +60,6 @@ const EmblaCarousel = ({ slides = [], options = {}, plugins = [], renderSlide })
         <PrevButton disabled={prevBtnDisabled} onClick={onPrevButtonClick} />
         <NextButton disabled={nextBtnDisabled} onClick={onNextButtonClick} />
       </div>
-
-      {/* Dot Navigation */}
-      {/* <div className="flex justify-center mt-4">
-        {scrollSnaps.map((_, index) => (
-          <DotButton
-            key={index}
-            className={`bg-transparent border-[0.2rem] border-[#888] rounded-full w-[2.6rem] h-[2.6rem] mx-[0.4rem] cursor-pointer ${
-              selectedIndex === index && 'border-[#333]'
-            }`}
-            onClick={() => onDotButtonClick(index)}
-          >
-          </DotButton>
-        ))}
-      </div> */}
-
     </div>
   )
 }

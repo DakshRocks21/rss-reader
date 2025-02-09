@@ -1,5 +1,6 @@
 // Puru Wrote This
 // Used as a function to set the theme in each page
+
 "use client";
 import { useEffect } from "react";
 

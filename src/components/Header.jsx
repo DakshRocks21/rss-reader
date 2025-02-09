@@ -1,5 +1,5 @@
-// Daksh laid the groundwork
-// Chin Ray took over development midway, wrote the modernised version
+// Daksh laid the groundwork, search and motion
+// Chin Ray added the back button and did some styling
 
 "use client";
 
@@ -41,13 +41,13 @@ export default function Header({
     return (
       <div className="z-50 flex flex-row items-center justify-between p-4 rounded-lg sticky top-0 space-x-4">
         <div className={`relative flex items-center w-full`}>
-          <FaSearch className="absolute left-3 text-gray-500" />
+          <FaSearch className="absolute left-3 text-on-surface-variant" />
           <input
             type="text"
             placeholder="Search articles..."
             value={keywordSearched}
             onChange={(e) => setKeywordSearched(e.target.value)}
-            className="pl-10 p-2 w-full border rounded-md bg-primary-container shadow-sm focus:outline-none focus:ring-2 focus:ring-tertiary-container focus:border-tertiary-container"
+            className="pl-10 p-2 w-full text-on-surface-variant border rounded-md bg-primary-container shadow-sm focus:outline-none focus:ring-2 focus:ring-tertiary-container focus:border-tertiary-container"
           />
         </div>
         {!isMobile && (
@@ -63,7 +63,6 @@ export default function Header({
   }
 
   return (
-    // Chin Ray: Made header rounded, anchor to top of page, implement search bar show/hide, theming
     <motion.nav className="bg-secondary-container p-4 text-white flex items-center justify-between rounded-lg w-full sticky top-0 z-50"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

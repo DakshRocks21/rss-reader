@@ -1,3 +1,5 @@
+// Puru and Daksh Wrote This
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -61,16 +63,6 @@ const ThemeControl = ({ initialTheme = "system", onThemeChange }) => {
           icon={<FaSun />}
           onPress={() => setSelectedColorMode("light")}
         />
-        {/* 
-          If you want to support a system option in the UI, you can uncomment the code below.
-          <SegmentedButton
-            title="system"
-            data-value="system"
-            className="text-black"
-            selected={selectedColorMode === "system"}
-            onPress={() => setSelectedColorMode("system")}
-          />
-        */}
       </div>
     </SegmentedButtonSet>
   );
