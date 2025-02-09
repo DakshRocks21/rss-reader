@@ -7,7 +7,6 @@ import { collection, doc, setDoc } from "firebase/firestore";
 import { FaUserCircle } from "react-icons/fa"; // Used for profile picture if user does not have one
 import Image from "next/image";
 import { MdArrowDropDown } from "react-icons/md"; // Imported for  dropdown
-import { SegmentedButton, SegmentedButtonSet, Icon, Provider } from "actify"; // Imported for toggle buttons
 import { FaArrowLeft } from "react-icons/fa"; // used in back button
 import { getUserInfoFromDatabase } from "@/lib/firebase/auth_database";
 import {
@@ -40,6 +39,8 @@ export default function App() {
     faq: false,
     bio: false,
   });
+  const auth = getAuth();
+  const currentUser = auth.currentUser;
 
   useEffect(() => {
     // Used to fetch user data otheriwse protects settings page byt redirecting unauthorised user to /login
@@ -48,9 +49,6 @@ export default function App() {
         const userId = await getCurrentUserID();
         const userData = await getUserInfoFromDatabase(userId);
         setUser(userData);
-
-        const auth = getAuth();
-        const currentUser = auth.currentUser;
         if (currentUser){// Checks if user has used google sign to check whether to display password dropdown or not
           const isGoogle = currentUser.providerData[0].providerId === "google.com";
           if(isGoogle){
@@ -109,13 +107,6 @@ export default function App() {
     try {
       setMessage("");
       setIsLoading(true);
-      const auth = getAuth();
-      const currentUser = auth.currentUser; // sets current user
-      
-      if (!isAuthenticated) {
-        setMessage("No user is currently signed in.");
-        return;
-      }
       await updateProfile(currentUser, { displayName: username }); // Updates new username and sets new user data
       setMessage("Username successfully updated!");
       setUser({ ...user, data: { ...user.data, displayName: username } });
@@ -133,12 +124,10 @@ export default function App() {
       email: user.data.email,
       displayName: username,
       photoURL: user.data.photoURL || "",
-      bio: bio,
-      createdAt: new Date(),
+      bio: user.data.bio,
+      createdAt: user.data.createdAt,
     });
-    await setUsername(""); // Sets username to blank
   };
-  console.log(isGoogleUser);
 
 
   const updateBio = async () => {
@@ -151,8 +140,7 @@ export default function App() {
     try {
       setMessage("");
       setIsLoading(true);
-      const auth = getAuth();
-      const currentUser = auth.currentUser; // Sets current user
+
 
       if (!isAuthenticated) {
         setMessage("No user is currently signed in.");
@@ -164,12 +152,12 @@ export default function App() {
       await setDoc(userDocRef, {
         // Updates firebase with new paticulars of a user
         email: user.data.email,
-        displayName: username,
+        displayName: user.data.displayName,
         photoURL: user.data.photoURL || "",
         bio: bio,
-        createdAt: new Date(),
+        createdAt: user.data.createdAt,
       });
-
+      
       setMessage("Bio successfully updated!");
       setUser({ ...user, data: { ...user.data, bio: bio } }); // Updates users data
     } catch (error) {
@@ -178,7 +166,7 @@ export default function App() {
     } finally {
       setIsLoading(false);
     }
-    setBio("");
+    //setBio("");
   };
 
   const toggleDropdown = (section) => {

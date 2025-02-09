@@ -1,6 +1,6 @@
 //Puru Wrote This
 import { useState } from "react";
-import { getAuth, updatePassword, reauthenticateWithCredential, EmailAuthProvider,fetchSignInMethodsForEmail, SignInMethod } from "firebase/auth";
+import { getAuth, updatePassword, reauthenticateWithCredential, EmailAuthProvider } from "firebase/auth";
 import { logoutSession } from "@/lib/session";// To logout users
 
 export default function ChangePassword() {
@@ -28,13 +28,6 @@ export default function ChangePassword() {
         setPasswordMessage("User is not authenticated!");
         return;
     }
-    /*await fetchSignInMethodsForEmail(auth,currentUser.email)
-    .then((signInMethod) => {
-        if (signInMethod.includes("google.com")) {
-            setIsGoogleSignIn(true);
-            console.log(true);
-        }
-    })*/
 
     try {
         setIsLoading(true);
