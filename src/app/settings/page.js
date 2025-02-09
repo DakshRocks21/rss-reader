@@ -40,8 +40,10 @@ export default function App() {
     bio: false,
   });
   const auth = getAuth();
-  const currentUser = auth.currentUser;
-
+  const [currentUser,setCurrentUser] = useState(auth.currentUser);
+  
+  //console.log(currentUser);
+  
   useEffect(() => {
     // Used to fetch user data otheriwse protects settings page byt redirecting unauthorised user to /login
     const fetchUserData = async () => {
@@ -49,13 +51,13 @@ export default function App() {
         const userId = await getCurrentUserID();
         const userData = await getUserInfoFromDatabase(userId);
         setUser(userData);
-        if (currentUser){// Checks if user has used google sign to check whether to display password dropdown or not
-          const isGoogle = currentUser.providerData[0].providerId === "google.com";
-          if(isGoogle){
-          setIsGoogleUser(true);
-          }
-          
+        if (auth.currentUser) {// Checks if user uses google sign in
+          setCurrentUser(auth.currentUser); 
+          const isGoogle = auth.currentUser.providerData[0].providerId === "google.com";
+          setIsGoogleUser(isGoogle); 
         }
+          
+        
       } catch (error) {
         console.error("Error fetching user data:", error);
       } finally {
